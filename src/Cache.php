@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Bring\BlocksWP;
 
 use WP_REST_Request;
-use Bring\BlocksWP\utils;
-use Bring\BlocksWP\config;
 
 class Cache {
 	private static $apikey = "";
