@@ -19,7 +19,8 @@ class Cache {
 		foreach ($dynamic_blocks as $name => $callback) {
 			register_block_type("bring/$name", [
 				"api_version" => 2,
-				"render_callback" => function ($attributes, $content) use ($callback) { // FIXME: unused variable
+				"render_callback" => function ($attributes, $content) use ($callback) {
+					// FIXME: unused variable
 					$cache = $callback($attributes);
 					if (!$cache) {
 						return;

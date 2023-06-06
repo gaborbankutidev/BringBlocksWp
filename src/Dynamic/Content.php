@@ -78,12 +78,7 @@ class Content {
 			$layout_post_types = Config::get_layout_post_types();
 
 			// return if not block supported or layout post type
-			if (
-				!in_array(
-					$post_type,
-					array_merge($supported_post_types, $layout_post_types),
-				)
-			) {
+			if (!in_array($post_type, array_merge($supported_post_types, $layout_post_types))) {
 				return [
 					"data" => null,
 				];

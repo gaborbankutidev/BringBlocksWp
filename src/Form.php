@@ -110,10 +110,7 @@ class Form {
 		}
 		$submitted_fields = $request_body["formData"];
 
-		$registered_fields = apply_filters(
-			"bring_" . $form_name . "_form_fields",
-			[],
-		);
+		$registered_fields = apply_filters("bring_" . $form_name . "_form_fields", []);
 		$form_data = [];
 		foreach ($registered_fields as $key => $registered_field) {
 			$field_name = $registered_field["name"];
@@ -133,9 +130,7 @@ class Form {
 				continue;
 			}
 
-			$form_data[$field_name] = sanitize_text_field(
-				$submitted_fields[$field_name],
-			);
+			$form_data[$field_name] = sanitize_text_field($submitted_fields[$field_name]);
 		}
 
 		$submission_id = wp_insert_post([

@@ -15,7 +15,8 @@ class Render {
 		add_action("wp", self::get_content_for_csr(...));
 	}
 
-	private static function render_content($content) { // FIXME: unused variable
+	private static function render_content($content) {
+		// FIXME: unused variable
 		// return if bring cache
 		if (Cache::is_bring_cache()) {
 			return "<div id='bringCache'></div>";
@@ -25,11 +26,7 @@ class Render {
 		$header = "";
 		$default_header_id = get_option("bring_default_header_id");
 		if ($default_header_id) {
-			$default_header = get_post_meta(
-				$default_header_id,
-				"bring_content_html",
-				true,
-			);
+			$default_header = get_post_meta($default_header_id, "bring_content_html", true);
 			if ($default_header) {
 				$default_header = base64_decode($default_header);
 				$header = "<header>$default_header</header>";
@@ -40,11 +37,7 @@ class Render {
 		$footer = "";
 		$default_footer_id = get_option("bring_default_footer_id");
 		if ($default_footer_id) {
-			$default_footer = get_post_meta(
-				$default_footer_id,
-				"bring_content_html",
-				true,
-			);
+			$default_footer = get_post_meta($default_footer_id, "bring_content_html", true);
 			if ($default_footer) {
 				$default_footer = base64_decode($default_footer);
 				$footer = "<footer>$default_footer</footer>";
@@ -60,15 +53,11 @@ class Render {
 		}
 
 		if (is_tax() || is_tag() || is_category()) {
-			$main = base64_decode(
-				get_term_meta($entity_id, "bring_content_html", true),
-			);
+			$main = base64_decode(get_term_meta($entity_id, "bring_content_html", true));
 		}
 
 		if (is_singular()) {
-			$main = base64_decode(
-				get_post_meta($entity_id, "bring_content_html", true),
-			);
+			$main = base64_decode(get_post_meta($entity_id, "bring_content_html", true));
 		}
 
 		$disable_hydration = apply_filters("bring_disable_hydration", false)
@@ -82,11 +71,7 @@ class Render {
 		// handle header and footer for cache service
 		$header_or_footer_id = Cache::header_or_footer_id();
 		if ($header_or_footer_id) {
-			$header_or_footer = get_post_meta(
-				$header_or_footer_id,
-				"bring_content_object",
-				true,
-			);
+			$header_or_footer = get_post_meta($header_or_footer_id, "bring_content_object", true);
 			if ($header_or_footer) {
 				return [
 					"siteProps" => Site::get_site_props(),

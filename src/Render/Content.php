@@ -45,11 +45,7 @@ class Content {
 			return $content;
 		}
 
-		$default_header = get_post_meta(
-			$default_header_id,
-			"bring_content_object",
-			true,
-		);
+		$default_header = get_post_meta($default_header_id, "bring_content_object", true);
 		// header not found
 		if (!$default_header) {
 			return $content;
@@ -70,11 +66,7 @@ class Content {
 			return $content;
 		}
 
-		$default_footer = get_post_meta(
-			$default_footer_id,
-			"bring_content_object",
-			true,
-		);
+		$default_footer = get_post_meta($default_footer_id, "bring_content_object", true);
 		// footer not found
 		if (!$default_footer) {
 			return $content;
@@ -109,24 +101,15 @@ class Content {
 		}
 	}
 
-	private static function get_default_general_layout(
-		array $content,
-		string $general_layout,
-	) {
-		$default_layout_id = get_option(
-			"bring_default_" . $general_layout . "_layout_id",
-		);
+	private static function get_default_general_layout(array $content, string $general_layout) {
+		$default_layout_id = get_option("bring_default_" . $general_layout . "_layout_id");
 		// layout_id not found
 		if (!$default_layout_id) {
 			wp_redirect("/");
 			exit();
 		}
 
-		$default_layout = get_post_meta(
-			$default_layout_id,
-			"bring_content_object",
-			true,
-		);
+		$default_layout = get_post_meta($default_layout_id, "bring_content_object", true);
 		// layout not found
 		if (!$default_layout) {
 			wp_redirect("/");
@@ -138,10 +121,7 @@ class Content {
 		return $content;
 	}
 
-	public static function get_default_taxonomy_layout(
-		array $content,
-		$term_id = 0,
-	) {
+	public static function get_default_taxonomy_layout(array $content, $term_id = 0) {
 		if (!$term_id) {
 			$term_id = get_queried_object_id();
 		}
@@ -157,20 +137,14 @@ class Content {
 			exit();
 		}
 
-		$default_layout_id = get_option(
-			"bring_default_tax_" . $taxonomy . "_layout_id",
-		);
+		$default_layout_id = get_option("bring_default_tax_" . $taxonomy . "_layout_id");
 		// redirect if layout_id is unset for the taxonomy
 		if (!$default_layout_id) {
 			wp_redirect("/");
 			exit();
 		}
 
-		$default_layout = get_post_meta(
-			$default_layout_id,
-			"bring_content_object",
-			true,
-		);
+		$default_layout = get_post_meta($default_layout_id, "bring_content_object", true);
 		// redirect if layout is unset for the taxonomy
 		if (!$default_layout) {
 			wp_redirect("/");
@@ -195,19 +169,13 @@ class Content {
 			return $content;
 		}
 
-		$default_layout_id = get_option(
-			"bring_default_pt_" . $post_type . "_layout_id",
-		);
+		$default_layout_id = get_option("bring_default_pt_" . $post_type . "_layout_id");
 		// layout_id not found
 		if (!$default_layout_id) {
 			return $content;
 		}
 
-		$default_layout = get_post_meta(
-			$default_layout_id,
-			"bring_content_object",
-			true,
-		);
+		$default_layout = get_post_meta($default_layout_id, "bring_content_object", true);
 		// layout not found
 		if (!$default_layout) {
 			return $content;

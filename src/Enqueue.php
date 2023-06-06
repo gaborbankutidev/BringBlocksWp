@@ -12,7 +12,8 @@ class Enqueue {
 		add_action("wp_enqueue_scripts", self::client(...));
 	}
 
-	private static function admin($screen) { // FIXME: unused variable
+	private static function admin($screen) {
+		// FIXME: unused variable
 		$theme_version = wp_get_theme()->get("Version");
 
 		// cache
@@ -68,11 +69,7 @@ class Enqueue {
 		]);
 
 		// set bring cache
-		wp_localize_script(
-			"bring-blocks-scripts",
-			"bringCache",
-			Render::get_bring_cache(),
-		);
+		wp_localize_script("bring-blocks-scripts", "bringCache", Render::get_bring_cache());
 	}
 
 	private static function client() {
@@ -96,10 +93,6 @@ class Enqueue {
 			true,
 		);
 
-		wp_localize_script(
-			"bring-components",
-			"bringCache",
-			Render::get_bring_cache(),
-		);
+		wp_localize_script("bring-components", "bringCache", Render::get_bring_cache());
 	}
 }

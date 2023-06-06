@@ -59,12 +59,7 @@ class BringSettings {
 	 * Register sections and fields
 	 */
 	private static function setup_settings_page_fields() {
-		add_settings_section(
-			"bring_site_defaults",
-			"Site defaults",
-			null,
-			"bring_theme",
-		);
+		add_settings_section("bring_site_defaults", "Site defaults", null, "bring_theme");
 
 		register_setting("bring_theme_options", "bring_cache_apikey");
 		add_settings_field(
@@ -158,10 +153,7 @@ class LayoutSettings {
 
 		// selects for general layouts
 		foreach (self::LAYOUT_GENERALS as $general) {
-			register_setting(
-				"bring_layout_options",
-				"bring_default_" . "$general" . "_layout_id",
-			);
+			register_setting("bring_layout_options", "bring_default_" . "$general" . "_layout_id");
 			add_settings_field(
 				"bring_default_" . $general . "_layout_id",
 				ucfirst("$general layout"),
@@ -182,10 +174,7 @@ class LayoutSettings {
 			);
 
 			foreach ($layout_post_types as $post_type) {
-				register_setting(
-					"bring_layout_options",
-					"bring_default_pt_" . "$post_type" . "_layout_id",
-				);
+				register_setting("bring_layout_options", "bring_default_pt_" . "$post_type" . "_layout_id");
 				add_settings_field(
 					"bring_default_pt_" . $post_type . "_layout_id",
 					ucfirst("$post_type layout"),
@@ -207,10 +196,7 @@ class LayoutSettings {
 			);
 
 			foreach ($layout_taxonomies as $taxonomy) {
-				register_setting(
-					"bring_layout_options",
-					"bring_default_tax_" . "$taxonomy" . "_layout_id",
-				);
+				register_setting("bring_layout_options", "bring_default_tax_" . "$taxonomy" . "_layout_id");
 				add_settings_field(
 					"bring_default_tax_" . $taxonomy . "_layout_id",
 					ucfirst("$taxonomy layout"),
@@ -229,7 +215,8 @@ class LayoutSettings {
 	/**
 	 * Renders headers select
 	 */
-	private static function default_header_id_select($arguments) { // FIXME: unused variable
+	private static function default_header_id_select($arguments) {
+		// FIXME: unused variable
 		$bring_default_header_id = get_option("bring_default_header_id");
 
 		$args = [
@@ -253,7 +240,8 @@ class LayoutSettings {
 	/**
 	 * Renders footer select
 	 */
-	private static function default_footer_id_select($arguments) { // FIXME: unused variable
+	private static function default_footer_id_select($arguments) {
+		// FIXME: unused variable
 		$bring_default_footer_id = get_option("bring_default_footer_id");
 
 		$args = [
@@ -282,9 +270,7 @@ class LayoutSettings {
 		$selector,
 		$with_none = false,
 	) {
-		$bring_default_layout_id = get_option(
-			"bring_default_" . $selector . "_layout_id",
-		);
+		$bring_default_layout_id = get_option("bring_default_" . $selector . "_layout_id");
 
 		$args = [
 			"post_type" => "bring_layout",
@@ -318,9 +304,9 @@ class LayoutSettings {
 		}
 
 		$options = "";
-		foreach ($bring_layout_ids as $key => $bring_layout_id) { // FIXME: unused variable
-			$selected =
-				$bring_default_layout_id == $bring_layout_id ? "selected" : "";
+		foreach ($bring_layout_ids as $key => $bring_layout_id) {
+			// FIXME: unused variable
+			$selected = $bring_default_layout_id == $bring_layout_id ? "selected" : "";
 			$title = get_the_title($bring_layout_id);
 			$options .= "<option value='$bring_layout_id' $selected>$title</option>";
 		}

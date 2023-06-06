@@ -10,10 +10,7 @@ class Options {
 		return new Options();
 	}
 
-	public function __construct(
-		public bool $useForms = false,
-		public string $apikey = "",
-	) {
+	public function __construct(public bool $useForms = false, public string $apikey = "") {
 	}
 
 	public function setUseForms(bool $value) {

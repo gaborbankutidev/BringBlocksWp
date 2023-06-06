@@ -46,11 +46,7 @@ class Utils {
 	/**
 	 * Returns entity image by entity id & type in ImageType format
 	 */
-	public static function get_entity_image(
-		$entity_id,
-		$entity_type = "post",
-		$size = "thumbnail",
-	) {
+	public static function get_entity_image($entity_id, $entity_type = "post", $size = "thumbnail") {
 		$image_id = 0;
 
 		// get meta data
@@ -70,11 +66,7 @@ class Utils {
 	/**
 	 * Recursively get taxonomy and its children
 	 */
-	public static function get_taxonomy_hierarchy(
-		$taxonomy,
-		$collect_data = null,
-		$parent = 0,
-	) {
+	public static function get_taxonomy_hierarchy($taxonomy, $collect_data = null, $parent = 0) {
 		$term_ids = get_terms($taxonomy, [
 			"parent" => $parent,
 			"hide_empty" => false,
@@ -87,14 +79,11 @@ class Utils {
 			return $terms;
 		}
 
-		foreach ($term_ids as $key => $term_id) { // FIXME: unused variable
+		foreach ($term_ids as $key => $term_id) {
+			// FIXME: unused variable
 			$term = [
 				"id" => $term_id,
-				"children" => self::get_taxonomy_hierarchy(
-					$taxonomy,
-					$collect_data,
-					$term_id,
-				),
+				"children" => self::get_taxonomy_hierarchy($taxonomy, $collect_data, $term_id),
 			];
 
 			if (is_callable($collect_data)) {
@@ -145,12 +134,10 @@ class Utils {
 
 		$token_payload = [];
 		try {
-			$decoded = JWT::decode(
-				$token,
-				new Key(Config::get_jwt_secret_key(), "HS256"),
-			);
+			$decoded = JWT::decode($token, new Key(Config::get_jwt_secret_key(), "HS256"));
 			$token_payload = (array) $decoded;
-		} catch (\Throwable $e) { // FIXME: unused variable ?????
+		} catch (\Throwable $e) {
+			// FIXME: unused variable ?????
 			return;
 		}
 

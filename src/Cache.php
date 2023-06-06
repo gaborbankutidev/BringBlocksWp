@@ -34,18 +34,12 @@ class Cache {
 	 */
 	private static function check_and_validate() {
 		// return if bringCache is not set
-		if (
-			!isset($_GET["bringCache"]) ||
-			sanitize_text_field($_GET["bringCache"]) != "1"
-		) {
+		if (!isset($_GET["bringCache"]) || sanitize_text_field($_GET["bringCache"]) != "1") {
 			return;
 		}
 
 		// redirect if api key is missing or wrong
-		if (
-			!isset($_GET["apikey"]) ||
-			sanitize_text_field($_GET["apikey"]) != self::$apikey
-		) {
+		if (!isset($_GET["apikey"]) || sanitize_text_field($_GET["apikey"]) != self::$apikey) {
 			wp_redirect("/");
 			exit();
 		}
@@ -58,12 +52,7 @@ class Cache {
 			return;
 		}
 
-		if (
-			!in_array(get_post_type($header_or_footer_id), [
-				"bring_header",
-				"bring_footer",
-			])
-		) {
+		if (!in_array(get_post_type($header_or_footer_id), ["bring_header", "bring_footer"])) {
 			return;
 		}
 
@@ -90,10 +79,7 @@ class Cache {
 	private static function trigger_cache(WP_REST_Request $request) {
 		$request_body = $request->get_json_params();
 
-		if (
-			!isset($request_body["entityType"]) ||
-			!isset($request_body["entityId"])
-		) {
+		if (!isset($request_body["entityType"]) || !isset($request_body["entityId"])) {
 			return [
 				"success" => false,
 				"message" => "Entity type or id is wrong",
@@ -145,11 +131,7 @@ class Cache {
 
 		$response_body = wp_remote_retrieve_body($response);
 
-		$updated = update_term_meta(
-			$entity_id,
-			"bring_content_html",
-			base64_encode($response_body),
-		);
+		$updated = update_term_meta($entity_id, "bring_content_html", base64_encode($response_body));
 		if ($updated) {
 			update_term_meta($entity_id, "bring_last_cached", Date("Y.m.d. H:i:s"));
 		}
@@ -175,8 +157,7 @@ class Cache {
 			return false;
 		}
 
-		$headerOrFooter =
-			$post_type == "bring_header" || $post_type == "bring_footer";
+		$headerOrFooter = $post_type == "bring_header" || $post_type == "bring_footer";
 
 		$args = [
 			"method" => "POST",
@@ -199,11 +180,7 @@ class Cache {
 
 		$response_body = wp_remote_retrieve_body($response);
 
-		$updated = update_post_meta(
-			$entity_id,
-			"bring_content_html",
-			base64_encode($response_body),
-		);
+		$updated = update_post_meta($entity_id, "bring_content_html", base64_encode($response_body));
 		if ($updated) {
 			update_post_meta($entity_id, "bring_last_cached", Date("Y.m.d. H:i:s"));
 		}
@@ -215,10 +192,7 @@ class Cache {
 		$token = Utils::generate_token();
 
 		$post_types = array_unique(
-			array_merge(
-				Config::get_supported_post_types(),
-				Config::get_layout_post_types(),
-			),
+			array_merge(Config::get_supported_post_types(), Config::get_layout_post_types()),
 			SORT_REGULAR,
 		);
 		foreach ($post_types as $post_type) {

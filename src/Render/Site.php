@@ -25,7 +25,8 @@ class Site {
 		$menu_terms = get_terms("nav_menu");
 
 		$menus = [];
-		foreach ($menu_terms as $key => $menu_term) { // FIXME: unused variable
+		foreach ($menu_terms as $key => $menu_term) {
+			// FIXME: unused variable
 			$menus[] = [
 				"id" => $menu_term->term_id,
 				"name" => strtolower($menu_term->name),

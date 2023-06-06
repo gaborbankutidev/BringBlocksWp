@@ -35,12 +35,7 @@ class Lists {
 		];
 	}
 
-	public static function get(
-		$entity_type,
-		$entity_slug,
-		$limit = -1,
-		$custom_data = [],
-	) {
+	public static function get($entity_type, $entity_slug, $limit = -1, $custom_data = []) {
 		// author
 		if ($entity_type == "author") {
 			// TODO author support
@@ -76,11 +71,7 @@ class Lists {
 				$custom_data,
 			);
 
-			$args = apply_filters(
-				"bring_dynamic_taxonomy_list_query_args_$taxonomy",
-				$args,
-				$custom_data,
-			);
+			$args = apply_filters("bring_dynamic_taxonomy_list_query_args_$taxonomy", $args, $custom_data);
 
 			$term_ids = get_terms($args);
 
@@ -138,11 +129,7 @@ class Lists {
 				$custom_data,
 			);
 
-			$term_list = apply_filters(
-				"bring_dynamic_taxonomy_list_$taxonomy",
-				$term_list,
-				$custom_data,
-			);
+			$term_list = apply_filters("bring_dynamic_taxonomy_list_$taxonomy", $term_list, $custom_data);
 
 			return $term_list;
 		}
@@ -177,11 +164,7 @@ class Lists {
 				$custom_data,
 			);
 
-			$args = apply_filters(
-				"bring_dynamic_post_list_query_args_$post_type",
-				$args,
-				$custom_data,
-			);
+			$args = apply_filters("bring_dynamic_post_list_query_args_$post_type", $args, $custom_data);
 
 			$post_ids = get_posts($args);
 

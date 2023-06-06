@@ -49,11 +49,7 @@ class Props {
 			// props
 			$term_props = [
 				"name" => $term->name,
-				"image" => GlobalUtils::get_entity_image(
-					$term->term_id,
-					"taxonomy",
-					"large",
-				),
+				"image" => GlobalUtils::get_entity_image($term->term_id, "taxonomy", "large"),
 				"excerpt" => get_term_meta($term->term_id, "excerpt", true) ?? "",
 				"description" => $term->description ?? "",
 				"slug" => $term->slug,
@@ -97,11 +93,7 @@ class Props {
 			// props
 			$post_props = [
 				"name" => $post->post_title,
-				"image" => GlobalUtils::get_entity_image(
-					$post->ID,
-					"post",
-					"large",
-				),
+				"image" => GlobalUtils::get_entity_image($post->ID, "post", "large"),
 				"excerpt" => $post->post_excerpt ?? "",
 				"description" => get_post_meta($post->ID, "description", true) ?? "",
 				"slug" => $post->post_name,
@@ -112,11 +104,7 @@ class Props {
 				$post_props["excerpt"] = $post->post_excerpt;
 			}
 
-			$image = GlobalUtils::get_entity_image(
-				$post->ID,
-				"post",
-				"large",
-			);
+			$image = GlobalUtils::get_entity_image($post->ID, "post", "large");
 			if ($image["src"]) {
 				$post_props["image"] = $image;
 			}

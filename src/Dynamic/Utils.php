@@ -14,9 +14,7 @@ class Utils {
 			? sanitize_text_field($request_body["entityType"])
 			: "post";
 
-		return in_array($entity_type, ["post", "taxonomy", "author"])
-			? $entity_type
-			: false;
+		return in_array($entity_type, ["post", "taxonomy", "author"]) ? $entity_type : false;
 	}
 
 	public static function get_entity_slug(WP_REST_Request $request) {
@@ -32,9 +30,7 @@ class Utils {
 	public static function get_entity_id(WP_REST_Request $request) {
 		$request_body = $request->get_json_params();
 
-		return isset($request_body["entityId"])
-			? sanitize_text_field($request_body["entityId"])
-			: false;
+		return isset($request_body["entityId"]) ? sanitize_text_field($request_body["entityId"]) : false;
 	}
 
 	public static function get_limit(WP_REST_Request $request) {
@@ -50,17 +46,12 @@ class Utils {
 	public static function get_custom_data(WP_REST_Request $request) {
 		$request_body = $request->get_json_params();
 
-		return isset($request_body["customData"]) &&
-			is_array($request_body["customData"])
+		return isset($request_body["customData"]) && is_array($request_body["customData"])
 			? $request_body["customData"]
 			: [];
 	}
 
-	public static function get_props_cache_key(
-		$entity_type,
-		$entity_id,
-		$custom_data_key = "",
-	) {
+	public static function get_props_cache_key($entity_type, $entity_id, $custom_data_key = "") {
 		return $custom_data_key
 			? "prop_{$entity_type}_{$entity_id}_{$custom_data_key}"
 			: "prop_{$entity_type}_{$entity_id}";

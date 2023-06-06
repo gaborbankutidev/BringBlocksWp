@@ -48,11 +48,7 @@ class Props {
 		$last_name = $user_meta->last_name;
 
 		$entity_props["name"] = "$first_name $last_name";
-		$entity_props["image"] = Utils::get_entity_image(
-			$entity_id,
-			"author",
-			"full",
-		);
+		$entity_props["image"] = Utils::get_entity_image($entity_id, "author", "full");
 
 		$excerpt = get_user_meta($entity_id, "excerpt", true);
 		if ($excerpt) {
@@ -70,11 +66,7 @@ class Props {
 			$entity_slug, // FIXME
 		);
 
-		$entity_props = apply_filters(
-			"bring_author_props",
-			$entity_props,
-			$entity_id,
-		);
+		$entity_props = apply_filters("bring_author_props", $entity_props, $entity_id);
 
 		$entity_props["entityType"] = "author";
 		$entity_props["entityId"] = $entity_id;
@@ -92,11 +84,7 @@ class Props {
 		$entity_slug = $term->taxonomy;
 
 		$entity_props["name"] = $term->name;
-		$entity_props["image"] = Utils::get_entity_image(
-			$entity_id,
-			"taxonomy",
-			"full",
-		);
+		$entity_props["image"] = Utils::get_entity_image($entity_id, "taxonomy", "full");
 
 		$excerpt = get_term_meta($entity_id, "excerpt", true);
 		if ($excerpt) {
@@ -118,18 +106,9 @@ class Props {
 			$entity_slug,
 		);
 
-		$entity_props = apply_filters(
-			"bring_taxonomy_props",
-			$entity_props,
-			$entity_id,
-			$entity_slug,
-		);
+		$entity_props = apply_filters("bring_taxonomy_props", $entity_props, $entity_id, $entity_slug);
 
-		$entity_props = apply_filters(
-			"bring_taxonomy_props_$entity_slug",
-			$entity_props,
-			$entity_id,
-		);
+		$entity_props = apply_filters("bring_taxonomy_props_$entity_slug", $entity_props, $entity_id);
 
 		$entity_props["entityType"] = "taxonomy";
 		$entity_props["entitySlug"] = $entity_slug;
@@ -148,11 +127,7 @@ class Props {
 		$entity_slug = $post->post_type;
 
 		$entity_props["name"] = $post->post_title;
-		$entity_props["image"] = Utils::get_entity_image(
-			$entity_id,
-			"post",
-			"full",
-		);
+		$entity_props["image"] = Utils::get_entity_image($entity_id, "post", "full");
 
 		if ($post->post_excerpt) {
 			$entity_props["excerpt"] = $post->post_excerpt;
@@ -174,18 +149,9 @@ class Props {
 			$entity_slug,
 		);
 
-		$entity_props = apply_filters(
-			"bring_post_props",
-			$entity_props,
-			$entity_id,
-			$entity_slug,
-		);
+		$entity_props = apply_filters("bring_post_props", $entity_props, $entity_id, $entity_slug);
 
-		$entity_props = apply_filters(
-			"bring_post_props_$entity_slug",
-			$entity_props,
-			$entity_id,
-		);
+		$entity_props = apply_filters("bring_post_props_$entity_slug", $entity_props, $entity_id);
 
 		$entity_props["entityType"] = "post";
 		$entity_props["entitySlug"] = $entity_slug;
