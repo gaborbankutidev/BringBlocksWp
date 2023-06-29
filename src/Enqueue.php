@@ -19,7 +19,7 @@ class Enqueue {
 		// cache
 		wp_register_script(
 			"bring-cache-scripts",
-			get_template_directory_uri() . "/assets/cache.js",
+			get_template_directory_uri() . "/vendor/bring/blocks-wp/assets/cache.js",
 			["jquery"],
 			$theme_version,
 			true,
@@ -33,7 +33,7 @@ class Enqueue {
 		// editor styles
 		wp_enqueue_style(
 			"editor-styles",
-			get_template_directory_uri() . "/assets/editor.css",
+			get_template_directory_uri() . "/vendor/bring/blocks-wp/assets/editor.css",
 			[],
 			$theme_version,
 			"all",

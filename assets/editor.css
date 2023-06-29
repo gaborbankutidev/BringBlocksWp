@@ -1,0 +1,78 @@
+html :where(.wp-block) {
+	max-width: initial !important;
+}
+
+.editor-styles-wrapper::after {
+	content: "";
+	position: absolute;
+	top: 24px;
+	left: 8px;
+	width: 40px;
+	height: 40px;
+	background-size: contain;
+	background-image: url("/wp-content/themes/bring-theme/vendor/bring/blocks-wp/assets/bring-icon.png");
+}
+
+.editor-styles-wrapper .is-root-container p {
+	line-height: normal;
+}
+
+.block-editor-inner-blocks {
+	width: 100%;
+}
+
+.editor-styles-wrapper .wp-block {
+	margin-left: 12px !important;
+	margin-right: 12px !important;
+}
+
+.editor-row-content > div > div {
+	display: grid;
+}
+
+.editor-row-content-1 > div > div {
+	grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.editor-row-content-2 > div > div {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.editor-row-content-3 > div > div {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.editor-row-content-4 > div > div {
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.editor-row-content-5 > div > div {
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.editor-row-content-6 > div > div {
+	grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+.editor-row-content-7 > div > div {
+	grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+.editor-row-content-8 > div > div {
+	grid-template-columns: repeat(8, minmax(0, 1fr));
+}
+.editor-row-content-9 > div > div {
+	grid-template-columns: repeat(9, minmax(0, 1fr));
+}
+.editor-row-content-10 > div > div {
+	grid-template-columns: repeat(10, minmax(0, 1fr));
+}
+.editor-row-content-11 > div > div {
+	grid-template-columns: repeat(11, minmax(0, 1fr));
+}
+.editor-row-content-12 > div > div {
+	grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.editor-row-content > div > div > div {
+	display: flex;
+}
+
+.responsive-screen-select-button {
+	padding-right: 12px !important;
+	padding-left: 6px !important;
+	width: initial !important;
+}
