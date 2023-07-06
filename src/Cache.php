@@ -182,7 +182,7 @@ class Cache {
 
 		$response_body = wp_remote_retrieve_body($response);
 
-		$current_content_html = get_post_meta($entity_id, "bring_content_html");
+		$current_content_html = get_post_meta($entity_id, "bring_content_html", true);
 		if ($current_content_html == base64_encode($response_body)) {
 			update_post_meta($entity_id, "bring_last_cached", Date("Y.m.d. H:i:s"));
 			return [
