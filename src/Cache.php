@@ -182,6 +182,16 @@ class Cache {
 
 		$response_body = wp_remote_retrieve_body($response);
 
+		$current_content_html = get_post_meta($entity_id, "bring_content_html");
+		if ($current_content_html == base64_encode($response_body)) {
+			update_post_meta($entity_id, "bring_last_cached", Date("Y.m.d. H:i:s"));
+			return [
+				"success" => true,
+				"response_body" => $response_body,
+				"info" => "Update was not required since the content of the page didn't change!",
+			];
+		}
+
 		$updated = update_post_meta($entity_id, "bring_content_html", base64_encode($response_body));
 		if ($updated) {
 			update_post_meta($entity_id, "bring_last_cached", Date("Y.m.d. H:i:s"));
