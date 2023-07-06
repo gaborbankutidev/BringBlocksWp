@@ -10,11 +10,15 @@ class Cache {
 	private static $apikey = "";
 	private static $is_bring_cache = false;
 	private static $header_or_footer_id = 0;
-	private static $bring_cache_url = "http://0.0.0.0:3000/";
+	private static $bring_cache_url = "https://bring-cache.herokuapp.com";
 
-	public static function init($apikey) {
+	public static function init($apikey, bool $development_mode = false) {
 		// set apikey
 		self::$apikey = $apikey;
+
+		if ($development_mode) {
+			self::$bring_cache_url = "http://0.0.0.0:3000/";
+		}
 
 		// check query & validate apikey
 		add_action("wp", self::check_and_validate(...));

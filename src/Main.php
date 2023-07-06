@@ -14,7 +14,7 @@ class Main {
 		$options->useForms && Form::init();
 
 		// init cache
-		$options->apikey && Cache::init($options->apikey);
+		$options->apikey && Cache::init($options->apikey, $options->developmentMode);
 
 		// init bring layout model
 		Layout::init();

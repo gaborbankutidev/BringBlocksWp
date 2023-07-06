@@ -10,7 +10,11 @@ class Options {
 		return new Options();
 	}
 
-	public function __construct(public bool $useForms = false, public string $apikey = "") {
+	public function __construct(
+		public bool $useForms = false,
+		public string $apikey = "",
+		public bool $developmentMode = false,
+	) {
 	}
 
 	public function setUseForms(bool $value) {
@@ -20,6 +24,11 @@ class Options {
 
 	public function setApikey(string $value) {
 		$this->apikey = $value;
+		return $this;
+	}
+
+	public function setDevelopmentMode(bool $value) {
+		$this->developmentMode = $value;
 		return $this;
 	}
 }
