@@ -13,6 +13,18 @@ class Render {
 		//add_shortcode("bringRenderContent", self::render_content(...));
 		add_filter("the_content", self::render_content(...), 99);
 		add_action("wp", self::get_content_for_csr(...));
+
+		/* remove wordpress hooks that manipulate the content before hydration */
+
+		// add_filter("bring_disable_hydration", "__return_true");
+		remove_action("wp_footer", "the_block_template_skip_link");
+		// Removes the decoding attribute from images added inside post content.
+		add_filter("wp_img_tag_add_decoding_attr", "__return_false");
+		// Remove the decoding attribute from featured images and the Post Image block.
+		add_filter("wp_get_attachment_image_attributes", function ($attributes) {
+			unset($attributes["decoding"]);
+			return $attributes;
+		});
 	}
 
 	private static function render_content($content) {
@@ -28,7 +40,7 @@ class Render {
 		if ($default_header_id) {
 			$default_header = get_post_meta($default_header_id, "bring_content_html", true);
 			if ($default_header) {
-				$default_header = base64_decode($default_header);
+				$default_header = stripcslashes(base64_decode($default_header));
 				$header = "<header>$default_header</header>";
 			}
 		}
@@ -39,7 +51,7 @@ class Render {
 		if ($default_footer_id) {
 			$default_footer = get_post_meta($default_footer_id, "bring_content_html", true);
 			if ($default_footer) {
-				$default_footer = base64_decode($default_footer);
+				$default_footer = stripcslashes(base64_decode($default_footer));
 				$footer = "<footer>$default_footer</footer>";
 			}
 		}
@@ -53,11 +65,11 @@ class Render {
 		}
 
 		if (is_tax() || is_tag() || is_category()) {
-			$main = base64_decode(get_term_meta($entity_id, "bring_content_html", true));
+			$main = stripcslashes(base64_decode(get_term_meta($entity_id, "bring_content_html", true)));
 		}
 
 		if (is_singular()) {
-			$main = base64_decode(get_post_meta($entity_id, "bring_content_html", true));
+			$main = stripcslashes(base64_decode(get_post_meta($entity_id, "bring_content_html", true)));
 		}
 
 		$disable_hydration = apply_filters("bring_disable_hydration", false)
