@@ -17,6 +17,7 @@ html :where(.wp-block) {
 	line-height: normal;
 }
 
+.editor-row-content,
 .block-editor-inner-blocks {
 	width: 100%;
 }
