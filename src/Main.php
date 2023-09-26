@@ -36,6 +36,9 @@ class Main {
 
 		// enqueue bring scripts & styles
 		Enqueue::init();
+
+		// use content_html for excerpt if empty
+		add_filter("get_the_excerpt", self::updateExcerpt(...), 10, 2);
 	}
 
 	private static function redirects() {
@@ -51,5 +54,31 @@ class Main {
 		}
 
 		// TODO refactor other redirects here
+	}
+
+	private static function updateExcerpt($original_excerpt, $post) {
+		$excerpt = get_post_field("post_excerpt", $post->ID);
+
+		// If excerpt is set, return it.
+		if (!empty($excerpt)) {
+			return $excerpt;
+		}
+
+		// get cached content and return original excerpt if not found
+		$encoded_content = get_post_meta($post->ID, "bring_content_html", true);
+
+		if (empty($encoded_content)) {
+			return $original_excerpt;
+		}
+
+		// decode and process content
+		$decoded_content = base64_decode($encoded_content);
+		if ($decoded_content !== false) {
+			$preprocessed_content = str_replace("><", "> <", $decoded_content);
+			$striped_content = wp_strip_all_tags($preprocessed_content);
+			return wp_trim_words($striped_content, 45, "...");
+		}
+
+		return $original_excerpt;
 	}
 }
