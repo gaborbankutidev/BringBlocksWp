@@ -58,6 +58,7 @@ class Site {
 				"url" => $menu_item->url,
 				"name" => $menu_item->title,
 				"target" => $menu_item->target,
+				"classes" => implode(" ", $menu_item->classes),
 			];
 
 			$children = self::get_menu_items($menu_id, $menu_item->ID);
