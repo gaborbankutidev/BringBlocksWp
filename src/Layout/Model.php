@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Bring\BlocksWP;
+namespace Bring\BlocksWP\Layout;
+
+use Bring\BlocksWP\Config;
 
 /**
  * Register layout related post types: header, footer, layout, library
  */
-class Layout {
+class Model {
 	public static function init() {
 		add_action("init", self::register(...));
 	}
@@ -35,34 +37,34 @@ class Layout {
 			"rewrite" => false,
 			"query_var" => true,
 			"menu_icon" => "",
-			"supports" => ["title", "editor"],
+			"supports" => ["title", "editor", "revisions"], // TODO add optional editor support
 			"show_in_graphql" => false,
 			"show_in_admin_bar" => true,
 		];
 
 		$layout_pts = [
-			"bring_header" => [
+			"header" => [
 				"labels" => [
 					"name" => "Headers",
 					"singular_name" => "Header",
 				],
 				"menu_icon" => "dashicons-welcome-widgets-menus",
 			],
-			"bring_footer" => [
+			"footer" => [
 				"labels" => [
 					"name" => "Footers",
 					"singular_name" => "Footer",
 				],
 				"menu_icon" => "dashicons-welcome-widgets-menus",
 			],
-			"bring_layout" => [
+			"layout" => [
 				"labels" => [
 					"name" => "Layouts",
 					"singular_name" => "Layout",
 				],
 				"menu_icon" => "dashicons-layout",
 			],
-			"bring_library" => [
+			"library" => [
 				"labels" => [
 					"name" => "Library",
 					"singular_name" => "Library",
@@ -71,9 +73,11 @@ class Layout {
 			],
 		];
 
-		// register layuot post types
+		// register layout post types
+		$layout = Config::getLayout();
+
 		foreach ($layout_pts as $pt => $pt_args) {
-			register_post_type($pt, array_merge($def_args, $pt_args));
+			$layout[$pt] && register_post_type("bring_$pt", array_merge($def_args, $pt_args));
 		}
 	}
 }

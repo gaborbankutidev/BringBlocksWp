@@ -1,77 +1,126 @@
 {
-	"_readme": [
-		"This file locks the dependencies of your project to a known state",
-		"Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
-		"This file is @generated automatically"
-	],
-	"content-hash": "ae706597dee5a8b2cf8d9aac52e9635d",
-	"packages": [
-		{
-			"name": "firebase/php-jwt",
-			"version": "v6.5.0",
-			"source": {
-				"type": "git",
-				"url": "https://github.com/firebase/php-jwt.git",
-				"reference": "e94e7353302b0c11ec3cfff7180cd0b1743975d2"
-			},
-			"dist": {
-				"type": "zip",
-				"url": "https://api.github.com/repos/firebase/php-jwt/zipball/e94e7353302b0c11ec3cfff7180cd0b1743975d2",
-				"reference": "e94e7353302b0c11ec3cfff7180cd0b1743975d2",
-				"shasum": ""
-			},
-			"require": {
-				"php": "^7.4||^8.0"
-			},
-			"require-dev": {
-				"guzzlehttp/guzzle": "^6.5||^7.4",
-				"phpspec/prophecy-phpunit": "^2.0",
-				"phpunit/phpunit": "^9.5",
-				"psr/cache": "^1.0||^2.0",
-				"psr/http-client": "^1.0",
-				"psr/http-factory": "^1.0"
-			},
-			"suggest": {
-				"ext-sodium": "Support EdDSA (Ed25519) signatures",
-				"paragonie/sodium_compat": "Support EdDSA (Ed25519) signatures when libsodium is not present"
-			},
-			"type": "library",
-			"autoload": {
-				"psr-4": {
-					"Firebase\\JWT\\": "src"
-				}
-			},
-			"notification-url": "https://packagist.org/downloads/",
-			"license": ["BSD-3-Clause"],
-			"authors": [
-				{
-					"name": "Neuman Vong",
-					"email": "neuman+pear@twilio.com",
-					"role": "Developer"
-				},
-				{
-					"name": "Anant Narayanan",
-					"email": "anant@php.net",
-					"role": "Developer"
-				}
-			],
-			"description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
-			"homepage": "https://github.com/firebase/php-jwt",
-			"keywords": ["jwt", "php"],
-			"support": {
-				"issues": "https://github.com/firebase/php-jwt/issues",
-				"source": "https://github.com/firebase/php-jwt/tree/v6.5.0"
-			},
-			"time": "2023-05-12T15:47:07+00:00"
-		}
-	],
-	"packages-dev": [],
-	"aliases": [],
-	"minimum-stability": "stable",
-	"stability-flags": [],
-	"prefer-stable": false,
-	"prefer-lowest": false,
-	"platform": [],
-	"platform-dev": [],
-	"plugin-api-version": "2.3.0"
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "6d5772384086c17c3625a9039cbb9372",
+    "packages": [
+        {
+            "name": "firebase/php-jwt",
+            "version": "v6.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/firebase/php-jwt.git",
+                "reference": "f03270e63eaccf3019ef0f32849c497385774e11"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/f03270e63eaccf3019ef0f32849c497385774e11",
+                "reference": "f03270e63eaccf3019ef0f32849c497385774e11",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4||^8.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^6.5||^7.4",
+                "phpspec/prophecy-phpunit": "^2.0",
+                "phpunit/phpunit": "^9.5",
+                "psr/cache": "^1.0||^2.0",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.0"
+            },
+            "suggest": {
+                "ext-sodium": "Support EdDSA (Ed25519) signatures",
+                "paragonie/sodium_compat": "Support EdDSA (Ed25519) signatures when libsodium is not present"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Firebase\\JWT\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Neuman Vong",
+                    "email": "neuman+pear@twilio.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Anant Narayanan",
+                    "email": "anant@php.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
+            "homepage": "https://github.com/firebase/php-jwt",
+            "keywords": [
+                "jwt",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/firebase/php-jwt/issues",
+                "source": "https://github.com/firebase/php-jwt/tree/v6.9.0"
+            },
+            "time": "2023-10-05T00:24:42+00:00"
+        }
+    ],
+    "packages-dev": [
+        {
+            "name": "giacocorsiglia/wordpress-stubs",
+            "version": "v5.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/GiacoCorsiglia/wordpress-stubs.git",
+                "reference": "1c6f011f5c241bab7293315d7fb7fca27fe79473"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GiacoCorsiglia/wordpress-stubs/zipball/1c6f011f5c241bab7293315d7fb7fca27fe79473",
+                "reference": "1c6f011f5c241bab7293315d7fb7fca27fe79473",
+                "shasum": ""
+            },
+            "require-dev": {
+                "ext-gettext": "*",
+                "giacocorsiglia/stubs-generator": "^0.5.0",
+                "johnpbloch/wordpress": "5.1.1",
+                "php": "^7.1"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Giaco Corsiglia",
+                    "email": "GiacoCorsiglia@gmail.com"
+                }
+            ],
+            "description": "WordPress function, class, and global variable declaration stubs for easier static analysis.",
+            "homepage": "https://github.com/GiacoCorsiglia/wordpress-stubs",
+            "keywords": [
+                "static analysis",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/GiacoCorsiglia/wordpress-stubs/issues",
+                "source": "https://github.com/GiacoCorsiglia/wordpress-stubs/tree/master"
+            },
+            "time": "2019-03-13T21:16:05+00:00"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
 }
