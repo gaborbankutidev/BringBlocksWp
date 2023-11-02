@@ -60,12 +60,12 @@ class Render {
 		// todo return content & props
 		wp_send_json(
 			[
-				"entityId" => $entityId,
-				"entitySlug" => $entitySlug,
-				"entityType" => $entityType,
+				"id" => $entityId,
+				"slug" => $entitySlug,
+				"type" => $entityType,
 
-				"entityProps" => Props::getEntityProps($entityId, $entityType),
-				"entityContent" => [
+				"props" => Props::getEntityProps($entityId, $entityType),
+				"content" => [
 					"main" => $main,
 					"layout" => Content::getLayout($entitySlug, $entityType),
 					"header" => Content::getHeader(),
