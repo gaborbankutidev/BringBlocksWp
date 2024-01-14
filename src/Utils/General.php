@@ -67,7 +67,7 @@ class General {
 			$image_id = get_post_thumbnail_id($entity_id);
 		}
 
-		if (!$image_id) {
+		if (!$image_id || !is_numeric($image_id)) {
 			return [
 				"src" => "",
 				"alt" => "",
@@ -75,7 +75,7 @@ class General {
 			];
 		}
 
-		return self::getImage($image_id, $size);
+		return self::getImage(intval($image_id), $size);
 	}
 
 	/**
