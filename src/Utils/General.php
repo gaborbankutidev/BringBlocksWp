@@ -47,13 +47,17 @@ class General {
 	/**
 	 * Returns entity image by entity id & type in ImageType format
 	 *
-	 * @param int $entity_id
+	 * @param int|string $entity_id
 	 * @param string $entity_type post | taxonomy | author
 	 * @param string $size thumbnail | medium | medium_large | large | full
 	 *
 	 * @return array [string src, string alt, int|null id]
 	 */
-	public static function getEntityImage(int $entity_id, $entity_type = "post", $size = "thumbnail") {
+	public static function getEntityImage(
+		int|string $entity_id,
+		$entity_type = "post",
+		$size = "thumbnail",
+	) {
 		$image_id = 0;
 
 		// get meta data

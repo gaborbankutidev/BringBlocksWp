@@ -15,14 +15,14 @@ class Dynamic {
 	private static function routes() {
 		// value for a post
 		register_rest_route("bring", "/dynamic/props", [
-			"methods" => "GET",
+			"methods" => "POST",
 			"permission_callback" => "__return_true",
 			"callback" => self::props(...),
 		]);
 
 		// for listing posts
 		register_rest_route("bring", "/dynamic/list", [
-			"methods" => "GET",
+			"methods" => "POST",
 			"permission_callback" => "__return_true",
 			"callback" => self::lists(...),
 		]);
