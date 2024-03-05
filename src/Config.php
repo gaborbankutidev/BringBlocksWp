@@ -16,8 +16,6 @@ class Config {
 		"library" => false,
 	];
 
-	private static $thumbnail = false;
-
 	private static $editor_post_types = ["post", "page"];
 	private static $layout_post_types = ["post"];
 	private static $layout_taxonomies = ["category", "post_tag"];
@@ -58,11 +56,6 @@ class Config {
 	}
 	public function useLibrary($v = true) {
 		self::$layout["library"] = $v;
-		return $this;
-	}
-
-	public function useThumbnail($v = true) {
-		self::$thumbnail = $v;
 		return $this;
 	}
 
@@ -136,9 +129,5 @@ class Config {
 
 	public static function getForms() {
 		return apply_filters("bring_blocks_forms", self::$forms);
-	}
-
-	public static function getThumbnailSupport() {
-		return self::$thumbnail;
 	}
 }
