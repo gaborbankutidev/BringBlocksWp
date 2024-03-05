@@ -18,5 +18,6 @@ class BringBlocks {
 		Dynamic::init();
 
 		Config::getForms() && Form::init();
+		Config::getThumbnailSupport() && add_theme_support("post-thumbnails");
 	}
 }
