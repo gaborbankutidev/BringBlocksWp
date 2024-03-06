@@ -9,6 +9,7 @@ class Editor {
 		Enqueue::init();
 		Api::init();
 		Blocks::init();
+		Revalidate::init();
 
 		// Add favicon
 		add_action("admin_head", function () {
