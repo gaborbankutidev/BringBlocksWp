@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Bring\BlocksWP\Utils;
 
+use Bring\BlocksWP\Config;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use WP_REST_Request;
@@ -49,9 +50,11 @@ class Api {
 	 * Return the jwt Secret Key
 	 */
 	private static function getJwtSecretKey() {
-		!defined("BRING_JWT_SECRET_KEY") && throw new Exception("BRING_JWT_SECRET_KEY is not defined.");
+		$jwt_secret_key = Config::getEnv()["JWT_SECRET_KEY"];
 
-		return constant("BRING_JWT_SECRET_KEY");
+		$jwt_secret_key && throw new Exception("JWT_SECRET_KEY is not defined.");
+
+		return $jwt_secret_key;
 	}
 
 	/**

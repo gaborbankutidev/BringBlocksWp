@@ -37,6 +37,8 @@ class Config {
 
 	private static $blocks = ["postcontent"];
 
+	private static $env = [];
+
 	// Private constructor & setter methods
 	private function __construct() {
 		self::$is_initialized = true;
@@ -87,6 +89,10 @@ class Config {
 		return $this;
 	}
 
+	public function env($env) {
+		self::$env = $env;
+	}
+
 	// Init & Public static getter methods
 	public static function init() {
 		if (self::$is_initialized) {
@@ -129,5 +135,9 @@ class Config {
 
 	public static function getForms() {
 		return apply_filters("bring_blocks_forms", self::$forms);
+	}
+
+	public static function getEnv() {
+		return self::$env;
 	}
 }
