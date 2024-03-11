@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Bring\BlocksWP\Client;
 
+use Bring\BlocksWP\Config;
+
 class Render {
 	public static function init() {
 		add_action("wp", self::render(...));
@@ -15,15 +17,7 @@ class Render {
 		} */
 	}
 
-	public static function render() {
-		if (is_admin()) {
-			return;
-		}
-
-		if (isset($_GET["bypass"]) && $_GET["bypass"] === "1") {
-			return;
-		}
-
+	private static function renderJson() {
 		$entityId = null;
 		$entitySlug = null;
 		$entityType = null;
@@ -74,5 +68,29 @@ class Render {
 			],
 			200,
 		);
+	}
+
+	public static function render() {
+		global $wp;
+
+		if (is_admin()) {
+			return;
+		}
+
+		$bypass = isset($_GET["bypass"]) ? strval($_GET["bypass"]) : null;
+		$data_token = isset($_GET["data_token"]) ? strval($_GET["data_token"]) : null;
+
+		if ($data_token && $data_token === Config::getEnv()["DATA_TOKEN"]) {
+			self::renderJson();
+			return;
+		}
+
+		if ($bypass && $bypass === "1") {
+			return;
+		}
+
+		// Redirect to next site
+		wp_redirect("google.com" . $wp->request);
+		exit();
 	}
 }
