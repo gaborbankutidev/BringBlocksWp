@@ -81,16 +81,18 @@ class Render {
 		$data_token = isset($_GET["data_token"]) ? strval($_GET["data_token"]) : null;
 
 		if ($data_token && $data_token === Config::getEnv()["DATA_TOKEN"]) {
+			// Render json response for next rendering
 			self::renderJson();
 			return;
 		}
 
 		if ($bypass && $bypass === "1") {
+			// Return as normal
 			return;
 		}
 
 		// Redirect to next site
-		wp_redirect("google.com" . $wp->request);
+		wp_redirect(Config::getEnv()["NEXT_URL"] . $wp->request);
 		exit();
 	}
 }
