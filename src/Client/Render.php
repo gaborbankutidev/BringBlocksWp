@@ -81,6 +81,49 @@ class Render {
 		$data_token = isset($_GET["data_token"]) ? strval($_GET["data_token"]) : null;
 
 		if ($data_token && $data_token === Config::getEnv()["DATA_TOKEN"]) {
+			// self::renderJson();
+			// return;
+			// check bypassed page first
+
+			$response = wp_remote_head(home_url() . "/" . $wp->request . "?bypass=1");
+			$response_code = wp_remote_retrieve_response_code($response);
+
+			if ($response_code === "404" || $response_code === 404) {
+				wp_send_json(
+					[
+						"slug" => "not_found",
+						"type" => "general",
+					],
+					$response_code,
+				);
+				return;
+			}
+
+			if (
+				$response_code === "301" ||
+				$response_code === 301 ||
+				$response_code === "302" ||
+				$response_code === 302 ||
+				$response_code === "307" ||
+				$response_code === 307
+			) {
+				$redirect_location = wp_remote_retrieve_header($response, "Location");
+				wp_send_json(
+					[
+						"response_code" => $response_code,
+						"redirect_to" => str_replace(
+							"?bypass=1",
+							"",
+							str_replace(home_url(), "", $redirect_location),
+						),
+					],
+					200,
+				);
+				return;
+			}
+
+			// http://template-v2.bring/asdasdasdasd?data_token=very-secret-data-token
+
 			// Render json response for next rendering
 			self::renderJson();
 			return;
@@ -91,8 +134,9 @@ class Render {
 			return;
 		}
 
-		// Redirect to next site
-		wp_redirect(Config::getEnv()["NEXT_URL"] . $wp->request);
-		exit();
+		return "rekt";
+		// // Redirect to next site
+		// wp_redirect(Config::getEnv()["NEXT_URL"] . $wp->request);
+		// exit();
 	}
 }
