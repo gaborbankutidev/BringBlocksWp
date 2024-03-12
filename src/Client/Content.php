@@ -42,7 +42,7 @@ class Content {
 
 	/**
 	 * @param string $entity_slug
-	 * @param string $entity_type TODO: should be swapped to and enum
+	 * @param string $entity_type TODO: should be swapped to an enum
 	 * @return mixed
 	 */
 	public static function getLayout($entity_slug, $entity_type) {

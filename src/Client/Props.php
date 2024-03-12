@@ -12,7 +12,7 @@ class Props {
 	/**
 	 * Returns entity props for the entity with the given id and type
 	 * @param int $entity_id
-	 * @param string $entity_type  TODO: should be swapped to and enum
+	 * @param string $entity_type  TODO: should be swapped to an enum
 	 * @return array<mixed>
 	 */
 	public static function getEntityProps($entity_id, $entity_type) {

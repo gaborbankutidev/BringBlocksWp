@@ -6,18 +6,13 @@ namespace Bring\BlocksWP\Dynamic;
 
 class Filter {
 	/**
+	 * TODO: REFACTOR THIS TO PROPER INPUTS WITH DISCRIMINATIVE UNIONS
 	 * WP filter triplet for rendering dynamic props and list
-	 *
-	 * @param array     $items
-	 * @param string    $type           props | list_query_args | list_item | list
-	 * @param array		$entity {
-	 * 		@type int 		$id
-	 * 		@type string 	$slug
-	 * 		@type string 	$type     	post | taxonomy | author
-	 * }
-	 * @param array 	$customData
-	 *
-	 * @return array
+	 * @param array<mixed> $items
+	 * @param string $type TODO: should be swapped to an enum (props | list_query_args | list_item | list)
+	 * @param array{id: int|null, slug: string, type: string} $entity TODO: type key should be swapped to an enum  (post | taxonomy | author)
+	 * @param array<mixed> $custom_data
+	 * @return mixed
 	 */
 	public static function apply($items, $type, $entity, $custom_data = []) {
 		$with_id = in_array($type, ["props", "list_item"]);
