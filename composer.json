@@ -17,6 +17,9 @@
 		"firebase/php-jwt": "^6.5"
 	},
 	"require-dev": {
-		"giacocorsiglia/wordpress-stubs": "^5.1"
+		"php-stubs/acf-pro-stubs": "^6.1.7",
+		"phpstan/phpstan": "^1.10",
+		"php-stubs/wordpress-stubs": "^6.4",
+		"szepeviktor/phpstan-wordpress": "^1.3"
 	}
 }
