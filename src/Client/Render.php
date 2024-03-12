@@ -15,6 +15,9 @@ class Render {
 		} */
 	}
 
+	/**
+	 * @return void
+	 */
 	public static function render() {
 		if (is_admin()) {
 			return;

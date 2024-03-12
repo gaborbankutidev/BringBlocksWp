@@ -6,24 +6,32 @@ namespace Bring\BlocksWP\Client;
 
 use Bring\BlocksWP\Utils;
 use Bring\BlocksWP\Config;
+use WP_Error;
 
 class Props {
 	/**
 	 * Returns entity props for the entity with the given id and type
+	 * @param int $entity_id
+	 * @param string $entity_type  TODO: should be swapped to and enum
+	 * @return array<mixed>
 	 */
-	public static function getEntityProps($entityId, $entityType) {
-		switch ($entityType) {
+	public static function getEntityProps($entity_id, $entity_type) {
+		switch ($entity_type) {
 			case "post":
-				return self::getPostEntityProps($entityId);
+				return self::getPostEntityProps($entity_id);
 			case "taxonomy":
-				return self::getTaxonomyEntityProps($entityId);
+				return self::getTaxonomyEntityProps($entity_id);
 			case "author":
-				return self::getAuthorEntityProps($entityId);
+				return self::getAuthorEntityProps($entity_id);
 			default:
 				return [];
 		}
 	}
 
+	/**
+	 * @param int $entity_id
+	 * @return array<mixed>
+	 */
 	public static function getAuthorEntityProps($entity_id) {
 		$entity_props = Utils\Props::getDefaultAuthorEntityProps($entity_id);
 
@@ -37,9 +45,17 @@ class Props {
 		return self::filterEntityProps($entity_props);
 	}
 
+	/**
+	 * @param int $entity_id
+	 * @return array<mixed>|null
+	 */
 	public static function getTaxonomyEntityProps($entity_id) {
 		$entity_props = Utils\Props::getDefaultTaxonomyEntityProps($entity_id);
-		$entity_slug = get_term($entity_id)->taxonomy;
+		$term = get_term($entity_id);
+		if ($term instanceof WP_Error || $term === null) {
+			return null;
+		}
+		$entity_slug = $term->taxonomy;
 
 		$entity_props = apply_filters(
 			"bring_entity_props",
@@ -60,9 +76,18 @@ class Props {
 		return self::filterEntityProps($entity_props);
 	}
 
+	/**
+	 * @param int $entity_id
+	 * @return array<mixed>|null
+	 */
 	public static function getPostEntityProps($entity_id) {
 		$entity_props = Utils\Props::getDefaultPostEntityProps($entity_id);
-		$entity_slug = get_post($entity_id)->post_type;
+		$post = get_post($entity_id);
+		if ($post === null) {
+			return null;
+		}
+
+		$entity_slug = $post->post_type;
 
 		$entity_props = apply_filters(
 			"bring_entity_props",
@@ -84,6 +109,12 @@ class Props {
 	}
 
 	// remove unsupported entity props and set empty values to null
+
+	/**
+	 * Remove unsupported entity props and set empty values to null
+	 * @param array<mixed> $entity_props
+	 * @return array<mixed>
+	 */
 	private static function filterEntityProps($entity_props) {
 		$supported_entity_props = Config::getEntityProps();
 		$filtered_entity_props = [];

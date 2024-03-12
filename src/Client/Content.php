@@ -9,6 +9,8 @@ use Bring\BlocksWP\Config;
 class Content {
 	/**
 	 * Returns content object for a post
+	 * @param int $post_id
+	 * @return mixed
 	 */
 	public static function getContentObject($post_id) {
 		$post_type = get_post_type($post_id);
@@ -22,6 +24,10 @@ class Content {
 		return get_post_meta($post_id, "bring_content_object", true) ?? [];
 	}
 
+	/**
+	 * @param int $entity_id
+	 * @return mixed
+	 */
 	public static function getMain($entity_id) {
 		$post_type = get_post_type($entity_id);
 		$editor_post_types = Config::getEditorPostTypes(true);
@@ -34,52 +40,63 @@ class Content {
 		return self::getContentObject($entity_id);
 	}
 
-	public static function getLayout($entitySlug, $entityType) {
+	/**
+	 * @param string $entity_slug
+	 * @param string $entity_type TODO: should be swapped to and enum
+	 * @return mixed
+	 */
+	public static function getLayout($entity_slug, $entity_type) {
 		$layout_slug = "";
 
-		if ($entityType == "post") {
+		if ($entity_type == "post") {
 			$layout_post_types = Config::getLayoutPostTypes();
-			if (!in_array($entitySlug, $layout_post_types)) {
+			if (!in_array($entity_slug, $layout_post_types)) {
 				return null;
 			}
 
-			$layout_slug = "pt_$entitySlug";
+			$layout_slug = "pt_$entity_slug";
 		}
 
-		if ($entityType == "taxonomy") {
+		if ($entity_type == "taxonomy") {
 			$layout_taxonomies = Config::getLayoutTaxonomies();
-			if (!in_array($entitySlug, $layout_taxonomies)) {
+			if (!in_array($entity_slug, $layout_taxonomies)) {
 				return null;
 			}
 
-			$layout_slug = "tax_$entitySlug";
+			$layout_slug = "tax_$entity_slug";
 		}
 
-		$entityType == "author" && ($layout_slug = "author");
-		$entityType == "general" && ($layout_slug = $entitySlug);
+		$entity_type == "author" && ($layout_slug = "author");
+		$entity_type == "general" && ($layout_slug = $entity_slug);
 
 		$default_layout_id = get_option("bring_default_{$layout_slug}_layout_id");
-		if (!$default_layout_id) {
+		if (!$default_layout_id || !is_int($default_layout_id)) {
 			return null;
 		}
 
 		return self::getContentObject($default_layout_id);
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public static function getHeader() {
 		$default_header_id = get_option("bring_default_header_id");
 		// header_id not found
-		if (!$default_header_id) {
+		if (!$default_header_id || !is_int($default_header_id)) {
 			return null;
 		}
 
 		return self::getContentObject($default_header_id);
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public static function getFooter() {
 		$default_footer_id = get_option("bring_default_footer_id");
 		// footer_id not found
-		if (!$default_footer_id) {
+		if (!$default_footer_id || !is_int($default_footer_id)) {
 			return null;
 		}
 
