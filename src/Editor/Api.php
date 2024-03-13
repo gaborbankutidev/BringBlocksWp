@@ -10,6 +10,9 @@ use Bring\BlocksWP\Config;
 use Bring\BlocksWP\Utils;
 
 class Api {
+	/**
+	 * @return void
+	 */
 	public static function init() {
 		// register routes
 		add_action("rest_api_init", self::routes(...));
@@ -17,6 +20,7 @@ class Api {
 
 	/**
 	 * Registers bring rest api routes
+	 * @return void
 	 */
 	private static function routes() {
 		// options for controls in editor
@@ -36,6 +40,8 @@ class Api {
 
 	/**
 	 * Handles post request for editor options
+	 * @param WP_REST_Request<array<mixed>> $request
+	 * @return array{data: array<mixed>|null}
 	 */
 	private static function options(WP_REST_Request $request) {
 		// check entity type
@@ -81,6 +87,12 @@ class Api {
 
 			// return if empty
 			if (!$terms) {
+				return [
+					"data" => [],
+				];
+			}
+
+			if (!is_array($terms)) {
 				return [
 					"data" => [],
 				];
@@ -132,10 +144,16 @@ class Api {
 				"data" => $post_options,
 			];
 		}
+
+		return [
+			"data" => null,
+		];
 	}
 
 	/**
 	 * Updates object content for the post
+	 * @param WP_REST_Request<array<mixed>> $request
+	 * @return array{success: bool}|WP_Error
 	 */
 	private static function save(WP_REST_Request $request) {
 		$request_body = $request->get_json_params();
@@ -148,6 +166,12 @@ class Api {
 		}
 
 		$entity_id = sanitize_text_field($request_body["entityId"]);
+		if (is_numeric($entity_id)) {
+			return new WP_Error("wrong_params", "entityId is not numeric", [
+				"status" => 400,
+			]);
+		}
+		$entity_id = intval($entity_id);
 
 		// return of post doesn't exist
 		if (!get_post_status($entity_id)) {
@@ -171,7 +195,7 @@ class Api {
 		);
 
 		return [
-			"success" => $object_update,
+			"success" => is_int($object_update) ? true : $object_update,
 		];
 	}
 }

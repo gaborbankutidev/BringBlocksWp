@@ -8,10 +8,16 @@ use Bring\BlocksWP\Utils;
 
 // TODO refactor
 class Enqueue {
+	/**
+	 * @return void
+	 */
 	public static function init() {
 		add_action("enqueue_block_editor_assets", self::editor(...));
 	}
 
+	/**
+	 * @return void
+	 */
 	private static function editor() {
 		$theme_version = wp_get_theme()->get("Version");
 
