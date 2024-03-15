@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace Bring\BlocksWP\Client;
 
+use WP_Term;
+
 class Render {
+	/**
+	 * @return void
+	 */
 	public static function init() {
 		add_action("wp", self::render(...));
 
@@ -45,9 +50,11 @@ class Render {
 			$entityId = get_queried_object_id();
 
 			$term = get_term($entityId);
-			$entitySlug = $term->taxonomy;
+			if ($term instanceof WP_Term) {
+				$entitySlug = $term->taxonomy;
 
-			$entityType = "taxonomy";
+				$entityType = "taxonomy";
+			}
 		}
 
 		if (is_author()) {
@@ -67,10 +74,11 @@ class Render {
 				"slug" => $entitySlug,
 				"type" => $entityType,
 
-				"props" => Props::getEntityProps($entityId, $entityType),
+				"props" => $entityId && $entityType ? Props::getEntityProps($entityId, $entityType) : null,
 				"content" => [
 					"main" => $main,
-					"layout" => Content::getLayout($entitySlug, $entityType),
+					"layout" =>
+						is_string($entitySlug) && $entityType ? Content::getLayout($entitySlug, $entityType) : null,
 					"header" => Content::getHeader(),
 					"footer" => Content::getFooter(),
 				],

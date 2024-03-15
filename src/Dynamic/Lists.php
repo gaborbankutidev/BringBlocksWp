@@ -100,7 +100,6 @@ class Lists {
 				$custom_data,
 			);
 
-			/* @phpstan-ignore-next-line */ // TODO: this will take serious work
 			$entity_list[] = array_merge($item, $custom_item);
 		}
 

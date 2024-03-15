@@ -6,11 +6,6 @@ namespace Bring\BlocksWP;
 
 use Exception;
 
-/**
- * @phpstan-type Env array{DATA_TOKEN:string,JWT_SECRET_KEY:string,NEXT_URL:string}
- * @phpstan-type Layout array{header:bool,footer:bool,layout:bool,library:bool}
- */
-
 class Config {
 	/**
 	 * Check if Config was initialized
@@ -20,7 +15,7 @@ class Config {
 
 	/**
 	 * Static properties
-	 * @var Layout
+	 * @var array{header:bool,footer:bool,layout:bool,library:bool}
 	 */
 	private static $layout = [
 		"header" => false,
@@ -69,7 +64,7 @@ class Config {
 	private static $blocks = ["postcontent"];
 
 	/**
-	 * @var Env|null
+	 * @var array{DATA_TOKEN:string,JWT_SECRET_KEY:string,NEXT_URL:string}|null
 	 */
 	private static $env = null;
 
@@ -169,7 +164,7 @@ class Config {
 	}
 
 	/**
-	 * @param Env $env
+	 * @param array{DATA_TOKEN:string,JWT_SECRET_KEY:string,NEXT_URL:string} $env
 	 * @return Config
 	 */
 	public function env($env) {
@@ -190,7 +185,7 @@ class Config {
 	}
 
 	/**
-	 * @return Layout
+	 * @return array{header:bool,footer:bool,layout:bool,library:bool}
 	 */
 	public static function getLayout() {
 		return self::$layout;
@@ -198,7 +193,7 @@ class Config {
 
 	/**
 	 * @param bool $without_layout_post_types
-	 * @return mixed
+	 * @return array<string>
 	 */
 	public static function getEditorPostTypes($without_layout_post_types = false) {
 		$layout_post_types = [];
@@ -210,28 +205,48 @@ class Config {
 			? self::$editor_post_types
 			: array_merge(self::$editor_post_types, $layout_post_types);
 
-		return apply_filters("bring_blocks_editor_post_types", $editor_post_types);
+		$filtered_result = apply_filters("bring_blocks_editor_post_types", $editor_post_types);
+		/**
+		 * @var array<string> TODO: This should be fixed without typecasting
+		 */
+		$filtered = is_array($filtered_result) ? $filtered_result : [];
+		return $filtered;
 	}
 
 	/**
-	 * @return mixed
+	 * @return array<string>
 	 */
 	public static function getLayoutPostTypes() {
-		return apply_filters("bring_blocks_layout_post_types", self::$layout_post_types);
+		$filtered_result = apply_filters("bring_blocks_layout_post_types", self::$layout_post_types);
+		/**
+		 * @var array<string> TODO: This should be fixed without typecasting
+		 */
+		$filtered = is_array($filtered_result) ? $filtered_result : [];
+		return $filtered;
 	}
 
 	/**
-	 * @return mixed
+	 * @return array<string>
 	 */
 	public static function getLayoutTaxonomies() {
-		return apply_filters("bring_blocks_layout_taxonomies", self::$layout_taxonomies);
+		$filtered_result = apply_filters("bring_blocks_layout_taxonomies", self::$layout_taxonomies);
+		/**
+		 * @var array<string> TODO: This should be fixed without typecasting
+		 */
+		$filtered = is_array($filtered_result) ? $filtered_result : [];
+		return $filtered;
 	}
 
 	/**
-	 * @return mixed
+	 * @return array<string>
 	 */
 	public static function getEntityProps() {
-		return apply_filters("bring_blocks_entity_props", self::$entity_props);
+		$filtered_result = apply_filters("bring_blocks_entity_props", self::$entity_props);
+		/**
+		 * @var array<string> TODO: This should be fixed without typecasting
+		 */
+		$filtered = is_array($filtered_result) ? $filtered_result : [];
+		return $filtered;
 	}
 
 	/**
@@ -242,14 +257,19 @@ class Config {
 	}
 
 	/**
-	 * @return mixed
+	 * @return array<string>
 	 */
 	public static function getForms() {
-		return apply_filters("bring_blocks_forms", self::$forms);
+		$filtered_result = apply_filters("bring_blocks_forms", self::$forms);
+		/**
+		 * @var array<string> TODO: This should be fixed without typecasting
+		 */
+		$filtered = is_array($filtered_result) ? $filtered_result : [];
+		return $filtered;
 	}
 
 	/**
-	 * @return Env
+	 * @return array{DATA_TOKEN:string,JWT_SECRET_KEY:string,NEXT_URL:string}
 	 */
 	public static function getEnv() {
 		if (self::$env === null) {

@@ -30,7 +30,7 @@ class Props {
 			$entity_slug = $term->taxonomy;
 
 			return Filter::apply(
-				$term_props,
+				$term_props ? $term_props : [],
 				"props",
 				[
 					"id" => $entity_id,
@@ -51,7 +51,7 @@ class Props {
 			$entity_slug = $post->post_type;
 
 			return Filter::apply(
-				$post_props,
+				$post_props ? $post_props : [],
 				"props",
 				[
 					"id" => $entity_id,

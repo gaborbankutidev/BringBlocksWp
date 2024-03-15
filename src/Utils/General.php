@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Bring\BlocksWP\Utils;
 
+use WP_Error;
+use WP_Term;
+
 class General {
 	/**
 	 * Var dump variable into a string
+	 * @return string|false
 	 */
 	public static function varDumpToString(mixed $var) {
 		ob_start();
@@ -19,9 +23,9 @@ class General {
 	 * Returns image by attachment id in ImageType format
 	 *
 	 * @param int $image_id
-	 * @param string $size thumbnail | medium | medium_large | large | full
+	 * @param string $size TODO: should be swapped to an enum ( thumbnail | medium | medium_large | large | full )
 	 *
-	 * @return array [string src, string alt, int|null id]
+	 * @return array{src:string,alt:string,id:int|null}
 	 */
 	public static function getImage(int $image_id, $size = "thumbnail") {
 		$img = wp_get_attachment_image_src($image_id, $size);
@@ -34,12 +38,15 @@ class General {
 			];
 		}
 
+		/**
+		 * @var mixed
+		 */
 		$image_src = $img[0];
 		$image_alt = get_post_meta($image_id, "_wp_attachment_image_alt", true);
 
 		return [
-			"src" => $image_src,
-			"alt" => $image_alt ? $image_alt : "",
+			"src" => is_string($image_src) ? $image_src : "",
+			"alt" => is_string($image_alt) ? $image_alt : "",
 			"id" => $image_id,
 		];
 	}
@@ -47,17 +54,13 @@ class General {
 	/**
 	 * Returns entity image by entity id & type in ImageType format
 	 *
-	 * @param int|string $entity_id
-	 * @param string $entity_type post | taxonomy | author
-	 * @param string $size thumbnail | medium | medium_large | large | full
+	 * @param int $entity_id
+	 * @param string $entity_type TODO: should be swapped to an enum ( post | taxonomy | author )
+	 * @param string $size TODO: should be swapped to an enum ( thumbnail | medium | medium_large | large | full )
 	 *
-	 * @return array [string src, string alt, int|null id]
+	 * @return array{src:string,alt:string,id:int|null}
 	 */
-	public static function getEntityImage(
-		int|string $entity_id,
-		$entity_type = "post",
-		$size = "thumbnail",
-	) {
+	public static function getEntityImage(int $entity_id, $entity_type = "post", $size = "thumbnail") {
 		$image_id = 0;
 
 		// get meta data
@@ -84,6 +87,11 @@ class General {
 
 	/**
 	 * Recursively get taxonomy and its children
+	 * @param string $taxonomy
+	 * @param callable|null $collect_data
+	 * @param int $parent
+	 * @param array<mixed> $args
+	 * @return array<mixed>
 	 */
 	public static function getTaxonomyHierarchy(
 		$taxonomy,
@@ -100,15 +108,16 @@ class General {
 			],
 			$args,
 		);
+		/* @phpstan-ignore-next-line */ // TODO: this will take serious work
 		$term_ids = get_terms($a);
 
 		$terms = [];
 
-		if (!is_wp_error($term_ids) || !count($term_ids)) {
+		if ($term_ids instanceof WP_Error) {
 			return $terms;
 		}
 
-		/** @var int $term_id */
+		/** @var int[] $term_ids */
 		foreach ($term_ids as $term_id) {
 			$term = [
 				"id" => $term_id,
@@ -127,12 +136,22 @@ class General {
 
 	/**
 	 * Returns the list of wp menus with the menu objects
+	 * @param bool $with_items
+	 * @return array<mixed>
 	 */
 	public static function getMenus($with_items = true) {
+		/* @phpstan-ignore-next-line */ // This is invalid based on the type files
 		$menu_terms = get_terms("nav_menu");
+
+		if (!is_array($menu_terms)) {
+			return [];
+		}
 
 		$menus = [];
 		foreach ($menu_terms as $menu_term) {
+			if (!$menu_term instanceof WP_Term) {
+				continue;
+			}
 			$menu = [
 				"id" => $menu_term->term_id,
 				"name" => strtolower($menu_term->name),
@@ -152,6 +171,9 @@ class General {
 
 	/**
 	 * Returns the menu item object for the wp menu
+	 * @param int $menu_id
+	 * @param int $parent_item_id
+	 * @return array<mixed>
 	 */
 	public static function getMenuItems($menu_id, $parent_item_id = 0) {
 		$queried_menu_items = wp_get_nav_menu_items($menu_id);

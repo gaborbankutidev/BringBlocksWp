@@ -13,7 +13,7 @@ class Props {
 	 * Returns entity props for the entity with the given id and type
 	 * @param int $entity_id
 	 * @param string $entity_type  TODO: should be swapped to an enum
-	 * @return array<mixed>
+	 * @return array<mixed>|null
 	 */
 	public static function getEntityProps($entity_id, $entity_type) {
 		switch ($entity_type) {
@@ -24,7 +24,7 @@ class Props {
 			case "author":
 				return self::getAuthorEntityProps($entity_id);
 			default:
-				return [];
+				return null;
 		}
 	}
 

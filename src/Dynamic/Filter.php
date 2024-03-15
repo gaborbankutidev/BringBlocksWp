@@ -12,7 +12,7 @@ class Filter {
 	 * @param string $type TODO: should be swapped to an enum (props | list_query_args | list_item | list)
 	 * @param array{id: int|null, slug: string, type: string} $entity TODO: type key should be swapped to an enum  (post | taxonomy | author)
 	 * @param array<mixed> $custom_data
-	 * @return mixed
+	 * @return array<mixed>
 	 */
 	public static function apply($items, $type, $entity, $custom_data = []) {
 		$with_id = in_array($type, ["props", "list_item"]);
@@ -67,6 +67,9 @@ class Filter {
 			);
 		}
 
+		/**
+		 * @var array<mixed> // TODO: this should be checked
+		 */
 		return $items;
 	}
 }

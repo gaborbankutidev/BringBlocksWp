@@ -10,10 +10,16 @@ use Bring\BlocksWP\Config;
  * Register layout related post types: header, footer, layout, library
  */
 class Model {
+	/**
+	 * @return void
+	 */
 	public static function init() {
 		add_action("init", self::register(...));
 	}
 
+	/**
+	 * @return void
+	 */
 	private static function register() {
 		$def_args = [
 			"description" => "",
@@ -77,6 +83,7 @@ class Model {
 		$layout = Config::getLayout();
 
 		foreach ($layout_pts as $pt => $pt_args) {
+			/* @phpstan-ignore-next-line */ // TODO: this will take serious work
 			$layout[$pt] && register_post_type("bring_$pt", array_merge($def_args, $pt_args));
 		}
 	}
