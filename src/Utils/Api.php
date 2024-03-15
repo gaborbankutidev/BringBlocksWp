@@ -8,7 +8,6 @@ use Bring\BlocksWP\Config;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use WP_REST_Request;
-use Exception;
 
 class Api {
 	/**
@@ -103,17 +102,16 @@ class Api {
 
 	/**
 	 * Permission callback to check jwt if the user has permission to edit posts
-<<<<<<< HEAD
-	 * 
-	 * @param WP_REST_Request $request
-	 * @param array<string> $capabilities 
-	 * 
-=======
+	 *
 	 * @param WP_REST_Request<array<mixed>> $request
->>>>>>> master
+	 * @param array<string> $capabilities
+	 *
 	 * @return bool
 	 */
-	public static function permissionCallback(WP_REST_Request $request, $capabilities = ["edit_posts"]) {
+	public static function permissionCallback(
+		WP_REST_Request $request,
+		$capabilities = ["edit_posts"],
+	) {
 		$token = $request->get_header("Authorization");
 
 		$token_payload = [];
