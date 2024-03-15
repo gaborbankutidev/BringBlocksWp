@@ -62,9 +62,6 @@ class Api {
 	 */
 	private static function getJwtSecretKey() {
 		$jwt_secret_key = Config::getEnv()["JWT_SECRET_KEY"];
-
-		$jwt_secret_key && throw new Exception("JWT_SECRET_KEY is not defined.");
-
 		return $jwt_secret_key;
 	}
 

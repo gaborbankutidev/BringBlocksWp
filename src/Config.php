@@ -273,7 +273,9 @@ class Config {
 	 */
 	public static function getEnv() {
 		if (self::$env === null) {
-			throw new Exception("No env"); // TODO
+			throw new Exception(
+				"Environment variables are not initialized! Did you forget to forget to set them with Config::init()...->env(...)?",
+			);
 		}
 		return self::$env;
 	}
