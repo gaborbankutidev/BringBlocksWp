@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Bring\BlocksWP;
 
+use Bring\BlocksWP\Auth\Auth;
 use Bring\BlocksWP\Layout\Layout;
 use Bring\BlocksWP\Editor\Editor;
 use Bring\BlocksWP\Client\Client;
 use Bring\BlocksWP\Dynamic\Dynamic;
 use Bring\BlocksWP\Form\Form;
 use Bring\BlocksWP\Exceptions\EnvironmentVariableMissingException;
-use Bring\BlocksWP\Exceptions\EnvironmentVariableWrongTypeException;
+// use Bring\BlocksWP\Exceptions\EnvironmentVariableWrongTypeException;
 
 class BringBlocks {
 	/**
@@ -19,6 +20,7 @@ class BringBlocks {
 	public static function init() {
 		self::checkEnv();
 
+		Auth::init();
 		Layout::init();
 		Editor::init();
 		Client::init();
