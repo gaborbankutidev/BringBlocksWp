@@ -1,7 +1,7 @@
 {
 	"name": "bring/blocks-wp",
 	"type": "library",
-	"version": "0.2.6",
+	"version": "0.2.7",
 	"autoload": {
 		"psr-4": {
 			"Bring\\BlocksWP\\": "src/"
