@@ -94,8 +94,13 @@ class Api {
 
 	/**
 	 * Permission callback to check jwt if the user has permission to edit posts
+	 * 
+	 * @param WP_REST_Request $request
+	 * @param array<string> $capabilities 
+	 * 
+	 * @return bool
 	 */
-	public static function permissionCallback(WP_REST_Request $request) {
+	public static function permissionCallback(WP_REST_Request $request, $capabilities = ["edit_posts"]) {
 		$token = $request->get_header("Authorization");
 
 		$token_payload = [];
@@ -114,10 +119,14 @@ class Api {
 
 		wp_set_current_user($user_id);
 
-		if (!current_user_can("edit_posts")) {
-			return false;
+		$user_has_permission = false;
+		foreach ($capabilities as $capability) {
+			if (current_user_can($capability)) {
+				$user_has_permission = true;
+				break;
+			}
 		}
 
-		return true;
+		return $user_has_permission;
 	}
 }
