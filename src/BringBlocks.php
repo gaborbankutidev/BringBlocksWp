@@ -11,6 +11,9 @@ use Bring\BlocksWP\Dynamic\Dynamic;
 use Bring\BlocksWP\Form\Form;
 
 class BringBlocks {
+	/**
+	 * @return void
+	 */
 	public static function init() {
 		Layout::init();
 		Editor::init();

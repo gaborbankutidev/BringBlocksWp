@@ -4,7 +4,17 @@ declare(strict_types=1);
 
 namespace Bring\BlocksWP\Dynamic;
 
+use WP_Error;
+use WP_Term;
+
 class Lists {
+	/**
+	 * @param string $entity_type TODO: should be swapped to an enum
+	 * @param string $entity_slug
+	 * @param int $limit
+	 * @param array<mixed> $custom_data
+	 * @return mixed
+	 */
 	public static function getDynamicList($entity_type, $entity_slug, $limit = -1, $custom_data = []) {
 		$entity_ids = [];
 
@@ -28,10 +38,15 @@ class Lists {
 				[
 					"slug" => $entity_slug,
 					"type" => $entity_type,
+					"id" => null,
 				],
 				$custom_data,
 			);
 
+			/**
+			 * @var int[]|WP_Error
+			 */
+			/* @phpstan-ignore-next-line */ // TODO: this will take serious work
 			$entity_ids = get_terms($args);
 		}
 
@@ -50,15 +65,20 @@ class Lists {
 				[
 					"slug" => $entity_slug,
 					"type" => $entity_type,
+					"id" => null,
 				],
 				$custom_data,
 			);
 
+			/**
+			 * @var int[]
+			 */
+			/* @phpstan-ignore-next-line */ // TODO: this will take serious work
 			$entity_ids = get_posts($args);
 		}
 
 		// return if empty
-		if (!$entity_ids) {
+		if (!is_array($entity_ids)) {
 			return [];
 		}
 
@@ -89,10 +109,9 @@ class Lists {
 			[
 				"slug" => $entity_slug,
 				"type" => $entity_type,
+				"id" => null,
 			],
 			$custom_data,
 		);
-
-		return null;
 	}
 }

@@ -9,10 +9,16 @@ use WP_REST_Response;
 use Bring\BlocksWP\Config;
 
 class Api {
+	/**
+	 * @return void
+	 */
 	public static function init() {
 		add_action("rest_api_init", self::routes(...));
 	}
 
+	/**
+	 * @return void
+	 */
 	private static function routes() {
 		// options for controls in editor
 		register_rest_route("bring", "/form/submit", [
@@ -22,6 +28,10 @@ class Api {
 		]);
 	}
 
+	/**
+	 * @param WP_REST_Request<array<mixed>> $request
+	 * @return WP_REST_Response
+	 */
 	private static function submit(WP_REST_Request $request) {
 		$request_body = $request->get_json_params();
 
