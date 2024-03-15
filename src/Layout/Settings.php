@@ -9,8 +9,14 @@ use Bring\BlocksWP\Config;
 // TODO: refactor this class
 class Settings {
 	private const LAYOUT_GENERALS = ["author", "date", "search", "not_found"];
-	private static $layout_config = [];
+	/**
+	 * @var array{header:bool,footer:bool,layout:bool,library:bool}
+	 */
+	private static $layout_config;
 
+	/**
+	 * @return void
+	 */
 	public static function init() {
 		self::$layout_config = Config::getLayout();
 
@@ -20,6 +26,7 @@ class Settings {
 
 	/**
 	 * Create settings page for bring layout
+	 * @return void
 	 */
 	private static function createSettingsPage() {
 		if (
@@ -41,6 +48,7 @@ class Settings {
 
 	/**
 	 * Render settings page content
+	 * @return void
 	 */
 	private static function settingsPageContent() {
 		ob_start();
@@ -63,13 +71,14 @@ class Settings {
 
 	/**
 	 * Register sections and fields
+	 * @return void
 	 */
 	private static function setupSettingsPageFields() {
 		// General section
 		add_settings_section(
 			"bring_general_layout_defaults",
 			"General layout defaults",
-			null,
+			fn() => null,
 			"bring_layout",
 		);
 
@@ -117,7 +126,7 @@ class Settings {
 			add_settings_section(
 				"bring_post_type_layout_defaults",
 				"Post type layout defaults",
-				null,
+				fn() => null,
 				"bring_layout",
 			);
 
@@ -139,7 +148,7 @@ class Settings {
 			add_settings_section(
 				"bring_taxonomy_layout_defaults",
 				"Taxonomy layout defaults",
-				null,
+				fn() => null,
 				"bring_layout",
 			);
 
@@ -161,6 +170,7 @@ class Settings {
 
 	/**
 	 * Renders headers select
+	 * @return void
 	 */
 	private static function defaultHeaderIdSelect() {
 		$bring_default_header_id = get_option("bring_default_header_id");
@@ -185,6 +195,7 @@ class Settings {
 
 	/**
 	 * Renders footer select
+	 * @return void
 	 */
 	private static function defaultFooterIdSelect() {
 		$bring_default_footer_id = get_option("bring_default_footer_id");
@@ -209,6 +220,9 @@ class Settings {
 
 	/**
 	 * Renders post layout select
+	 * @param string $selector
+	 * @param bool $with_none
+	 * @return void
 	 */
 	private static function defaultPostLayoutIdSelect($selector, $with_none = false) {
 		$bring_default_layout_id = get_option("bring_default_" . $selector . "_layout_id");
@@ -233,6 +247,11 @@ class Settings {
 
 	/**
 	 * Generates the select field for the given in layout id-s
+	 * @param array<int> $bring_layout_ids
+	 * @param mixed $bring_default_layout_id
+	 * @param mixed $option_id
+	 * @param bool $with_none
+	 * @return string
 	 */
 	private static function buildSelectForLayout(
 		$bring_layout_ids,
@@ -255,6 +274,11 @@ class Settings {
 		if ($with_none) {
 			$selected = $bring_default_layout_id ? "selected" : "";
 			$none_option = "<option value='0' $selected>None</option>";
+		}
+
+		// return nothing if $option_id is not a string
+		if (!(is_string($option_id) || is_int($option_id))) {
+			return "";
 		}
 
 		$output_html = "

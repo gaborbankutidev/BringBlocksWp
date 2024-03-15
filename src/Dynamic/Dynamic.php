@@ -8,10 +8,16 @@ use Bring\BlocksWP\Utils;
 use WP_REST_Request;
 
 class Dynamic {
+	/**
+	 * @return void
+	 */
 	public static function init() {
 		add_action("rest_api_init", self::routes(...));
 	}
 
+	/**
+	 * @return void
+	 */
 	private static function routes() {
 		// value for a post
 		register_rest_route("bring", "/dynamic/props", [
@@ -35,6 +41,10 @@ class Dynamic {
 		]);
 	}
 
+	/**
+	 * @param WP_REST_Request<array<mixed>> $request
+	 * @return array{data: mixed|null}
+	 */
 	private static function props(WP_REST_Request $request) {
 		// Check entity type is set
 		$entity_type = Utils\Api::getEntityType($request);
@@ -78,6 +88,10 @@ class Dynamic {
 		];
 	}
 
+	/**
+	 * @param WP_REST_Request<array<mixed>> $request
+	 * @return array{data: mixed}
+	 */
 	private static function lists(WP_REST_Request $request) {
 		// check entity type is set
 		$entity_type = Utils\Api::getEntityType($request);
@@ -118,6 +132,9 @@ class Dynamic {
 		];
 	}
 
+	/**
+	 * @return array{data: array<mixed>|null}
+	 */
 	private static function site() {
 		$site_props = [
 			"menus" => Utils\General::getMenus(),

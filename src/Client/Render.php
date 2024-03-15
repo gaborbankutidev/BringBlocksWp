@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace Bring\BlocksWP\Client;
 
 use Bring\BlocksWP\Config;
+use WP_Term;
 
 class Render {
+	/**
+	 * @return void
+	 */
 	public static function init() {
 		add_action("wp", self::render(...));
 
@@ -17,6 +21,9 @@ class Render {
 		} */
 	}
 
+	/**
+	 * @return void
+	 */
 	private static function renderJson() {
 		$entityId = null;
 		$entitySlug = null;
@@ -36,9 +43,11 @@ class Render {
 			$entityId = get_queried_object_id();
 
 			$term = get_term($entityId);
-			$entitySlug = $term->taxonomy;
+			if ($term instanceof WP_Term) {
+				$entitySlug = $term->taxonomy;
 
-			$entityType = "taxonomy";
+				$entityType = "taxonomy";
+			}
 		}
 
 		if (is_author()) {
@@ -58,10 +67,11 @@ class Render {
 				"slug" => $entitySlug,
 				"type" => $entityType,
 
-				"props" => Props::getEntityProps($entityId, $entityType),
+				"props" => $entityId && $entityType ? Props::getEntityProps($entityId, $entityType) : null,
 				"content" => [
 					"main" => $main,
-					"layout" => Content::getLayout($entitySlug, $entityType),
+					"layout" =>
+						is_string($entitySlug) && $entityType ? Content::getLayout($entitySlug, $entityType) : null,
 					"header" => Content::getHeader(),
 					"footer" => Content::getFooter(),
 				],
@@ -70,6 +80,9 @@ class Render {
 		);
 	}
 
+	/**
+	 * @return void
+	 */
 	public static function render() {
 		global $wp;
 
@@ -96,7 +109,6 @@ class Render {
 					],
 					$response_code,
 				);
-				return;
 			}
 
 			if (
@@ -119,14 +131,12 @@ class Render {
 					],
 					200,
 				);
-				return;
 			}
 
 			// http://template-v2.bring/asdasdasdasd?data_token=very-secret-data-token
 
 			// Render json response for next rendering
 			self::renderJson();
-			return;
 		}
 
 		if ($bypass && $bypass === "1") {

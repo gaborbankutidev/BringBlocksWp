@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Bring\BlocksWP\Editor;
 
 class Editor {
+	/**
+	 * @return void
+	 */
 	public static function init() {
 		Enqueue::init();
 		Api::init();
