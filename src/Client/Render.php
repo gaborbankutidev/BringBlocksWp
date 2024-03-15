@@ -107,7 +107,7 @@ class Render {
 						"slug" => "not_found",
 						"type" => "general",
 					],
-					$response_code,
+					intval($response_code),
 				);
 			}
 
