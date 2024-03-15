@@ -8,10 +8,16 @@ namespace Bring\BlocksWP\Form;
  * Register form related post types
  */
 class Model {
+	/**
+	 * @return void
+	 */
 	public static function init() {
 		add_action("init", self::register(...));
 	}
 
+	/**
+	 * @return void
+	 */
 	private static function register() {
 		/*
 		 * Post type: Bring form submissions

@@ -4,97 +4,187 @@ declare(strict_types=1);
 
 namespace Bring\BlocksWP\Utils;
 
+use WP_Error;
+use WP_Post;
+use WP_Term;
+
 class Props {
 	/**
 	 * Returns entity props for the entity with the given id and type
+	 * @param int $entity_id
+	 * @param string $entity_type  TODO: should be swapped to an enum
+	 * @return mixed
 	 */
-	public static function getDefaultEntityProps($entityId, $entityType) {
-		switch ($entityType) {
+	public static function getDefaultEntityProps($entity_id, $entity_type) {
+		switch ($entity_type) {
 			case "post":
-				return self::getDefaultPostEntityProps($entityId);
+				return self::getDefaultPostEntityProps($entity_id);
 			case "taxonomy":
-				return self::getDefaultTaxonomyEntityProps($entityId);
+				return self::getDefaultTaxonomyEntityProps($entity_id);
 			case "author":
-				return self::getDefaultAuthorEntityProps($entityId);
+				return self::getDefaultAuthorEntityProps($entity_id);
 			default:
 				return [];
 		}
 	}
 
+	/**
+	 * @param int $entity_id
+	 * @return array{
+	 * 		name:string,
+	 * 		image:array{
+	 * 			src:string,
+	 * 			alt:string,
+	 * 			id:int|null
+	 * 		},
+	 * 		description:string|null,
+	 * 		excerpt:string|null,
+	 * 		url:string,
+	 *		entityType:string,
+	 * 		entityId:int
+	 * 		}
+	 */
 	public static function getDefaultAuthorEntityProps($entity_id) {
 		$entity_props = [];
+
+		/**
+		 * @var array<string,mixed>
+		 */
 		$user_meta = get_user_meta($entity_id);
-		$first_name = $user_meta->first_name;
-		$last_name = $user_meta->last_name;
+		$first_name = $user_meta["first_name"];
+		$last_name = $user_meta["last_name"];
 
-		$entity_props["name"] = "$first_name $last_name";
-		$entity_props["image"] = General::getEntityImage($entity_id, "author", "full");
+		$name =
+			(is_string($first_name) ? $first_name : "") . " " . (is_string($last_name) ? $last_name : "");
+		$image = General::getEntityImage($entity_id, "author", "full");
 
-		$excerpt = get_user_meta($entity_id, "excerpt", true);
-		if ($excerpt) {
-			$entity_props["excerpt"] = $excerpt;
-		}
+		$excerpt_meta = get_user_meta($entity_id, "excerpt", true);
+		$excerpt = is_string($excerpt_meta) ? $excerpt_meta : null;
 
-		$entity_props["description"] = $user_meta->description;
-		$entity_props["url"] = get_author_posts_url($entity_id);
+		$description_meta = $user_meta["description"];
+		$description = is_string($description_meta) ? $description_meta : null;
+		$url = get_author_posts_url($entity_id);
 
-		$entity_props["entityType"] = "author";
-		$entity_props["entityId"] = $entity_id;
+		$entity_type = "author";
 
-		return $entity_props;
+		return [
+			"name" => $name,
+			"image" => $image,
+			"description" => $description,
+			"excerpt" => $excerpt,
+			"url" => $url,
+			"entityType" => $entity_type,
+			"entityId" => $entity_id,
+		];
 	}
 
+	/**
+	 * @param int $entity_id
+	 * @return array{
+	 * 		name:string,
+	 * 		image:array{
+	 * 			src:string,
+	 * 			alt:string,
+	 * 			id:int|null
+	 * 		},
+	 * 		excerpt:string|null,
+	 * 		description:string|null,
+	 * 		slug:string,
+	 * 		url:string,
+	 * 		entityType:string,
+	 * 		entitySlug:string,
+	 * 		entityId:int
+	 * 		}|null
+	 */
 	public static function getDefaultTaxonomyEntityProps($entity_id) {
-		$entity_props = [];
 		$term = get_term($entity_id);
+		if (!$term instanceof WP_Term) {
+			return null;
+		}
+
 		$entity_slug = $term->taxonomy;
+		$name = $term->name;
+		$image = General::getEntityImage($entity_id, "taxonomy", "full");
 
-		$entity_props["name"] = $term->name;
-		$entity_props["image"] = General::getEntityImage($entity_id, "taxonomy", "full");
-
-		$excerpt = get_term_meta($entity_id, "excerpt", true);
-		if ($excerpt) {
-			$entity_props["excerpt"] = $excerpt;
+		$url = get_term_link($term);
+		if ($url instanceof WP_Error) {
+			return null;
 		}
 
-		if ($term->description) {
-			$entity_props["description"] = $term->description;
-		}
+		$slug = $term->slug;
+		$excerpt_meta = get_term_meta($entity_id, "excerpt", true);
+		$excerpt = is_string($excerpt_meta) ? $excerpt_meta : null;
+		$description = $term->description ? $term->description : null;
+		$entity_type = "taxonomy";
 
-		$entity_props["slug"] = $term->slug;
-		$entity_props["url"] = get_term_link($term);
-
-		$entity_props["entityType"] = "taxonomy";
-		$entity_props["entitySlug"] = $entity_slug;
-		$entity_props["entityId"] = $entity_id;
-
-		return $entity_props;
+		return [
+			"name" => $name,
+			"image" => $image,
+			"excerpt" => $excerpt,
+			"description" => $description,
+			"slug" => $slug,
+			"url" => $url,
+			"entityType" => $entity_type,
+			"entitySlug" => $entity_slug,
+			"entityId" => $entity_id,
+		];
 	}
 
+	/**
+	 * @param int $entity_id
+	 * @return array{
+	 * 		name:string,
+	 * 		image:array{
+	 * 			src:string,
+	 * 			alt:string,
+	 * 			id:int|null
+	 * 		},
+	 *      slug: string,
+	 * 		excerpt:string|null,
+	 * 		description:string|null,
+	 * 		url:string,
+	 * 		entityType:string,
+	 * 		entitySlug:string,
+	 * 		entityId:int
+	 * 		}|null
+	 */
 	public static function getDefaultPostEntityProps($entity_id) {
-		$entity_props = [];
 		$post = get_post($entity_id);
+
+		if (!$post instanceof WP_Post) {
+			return null;
+		}
+
 		$entity_slug = $post->post_type;
 
-		$entity_props["name"] = $post->post_title;
-		$entity_props["image"] = General::getEntityImage($entity_id, "post", "full");
+		$name = $post->post_title;
+		$image = General::getEntityImage($entity_id, "post", "full");
 
-		if ($post->post_excerpt) {
-			$entity_props["excerpt"] = $post->post_excerpt;
+		$excerpt_meta = $post->post_excerpt;
+		$excerpt = $excerpt_meta ? $excerpt_meta : null;
+
+		$description_meta = get_post_meta($entity_id, "description", true);
+		$description = is_string($description_meta) ? $description_meta : null;
+
+		$slug = $post->post_name;
+
+		$url = get_permalink($post);
+		if (!$url) {
+			return null;
 		}
 
-		$description = get_post_meta($entity_id, "description", true);
-		if ($description) {
-			$entity_props["description"] = $description;
-		}
+		$entity_type = "post";
 
-		$entity_props["slug"] = $post->post_name;
-		$entity_props["url"] = get_permalink($post);
-
-		$entity_props["entityType"] = "post";
-		$entity_props["entitySlug"] = $entity_slug;
-		$entity_props["entityId"] = $entity_id;
-
-		return $entity_props;
+		return [
+			"name" => $name,
+			"image" => $image,
+			"slug" => $slug,
+			"excerpt" => $excerpt,
+			"description" => $description,
+			"url" => $url,
+			"entityType" => $entity_type,
+			"entitySlug" => $entity_slug,
+			"entityId" => $entity_id,
+		];
 	}
 }

@@ -7,6 +7,9 @@ namespace Bring\BlocksWP\Editor;
 use Bring\BlocksWP\Config;
 
 class Revalidate {
+	/**
+	 * @return void
+	 */
 	public static function init() {
 		$data_token = Config::getEnv()["DATA_TOKEN"];
 		$next_url = Config::getEnv()["NEXT_URL"];

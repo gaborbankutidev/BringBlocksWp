@@ -5,6 +5,12 @@ declare(strict_types=1);
 namespace Bring\BlocksWP\Form;
 
 class Mail {
+	/**
+	 * @param int $submission_id
+	 * @param mixed $form_data
+	 * @param string $form_name
+	 * @return void
+	 */
 	public static function send($submission_id, $form_data, $form_name) {
 		$form_submission_mails = apply_filters(
 			"bring_form_submission_mails",

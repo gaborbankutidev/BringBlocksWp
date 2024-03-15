@@ -5,8 +5,15 @@ declare(strict_types=1);
 namespace Bring\BlocksWP\Dynamic;
 
 use Bring\BlocksWP\Utils;
+use WP_Error;
 
 class Props {
+	/**
+	 * @param string $entity_type TODO: should be swapped to an enum
+	 * @param int $entity_id
+	 * @param array<mixed> $custom_data
+	 * @return mixed
+	 */
 	public static function getDynamicProps($entity_type, $entity_id, $custom_data = []) {
 		// author
 		if ($entity_type == "author") {
@@ -16,10 +23,14 @@ class Props {
 		// taxonomy
 		if ($entity_type == "taxonomy") {
 			$term_props = Utils\Props::getDefaultTaxonomyEntityProps($entity_id);
-			$entity_slug = get_term($entity_id)->taxonomy;
+			$term = get_term($entity_id);
+			if ($term instanceof WP_Error || $term === null) {
+				return null;
+			}
+			$entity_slug = $term->taxonomy;
 
 			return Filter::apply(
-				$term_props,
+				$term_props ? $term_props : [],
 				"props",
 				[
 					"id" => $entity_id,
@@ -33,10 +44,14 @@ class Props {
 		// post
 		if ($entity_type == "post") {
 			$post_props = Utils\Props::getDefaultPostEntityProps($entity_id);
-			$entity_slug = get_post($entity_id)->post_type;
+			$post = get_post($entity_id);
+			if ($post === null) {
+				return null;
+			}
+			$entity_slug = $post->post_type;
 
 			return Filter::apply(
-				$post_props,
+				$post_props ? $post_props : [],
 				"props",
 				[
 					"id" => $entity_id,
