@@ -94,10 +94,6 @@ class Render {
 		$data_token = isset($_GET["data_token"]) ? strval($_GET["data_token"]) : null;
 
 		if ($data_token && $data_token === Config::getEnv()["DATA_TOKEN"]) {
-			// self::renderJson();
-			// return;
-			// check bypassed page first
-
 			$response = wp_remote_head(home_url() . "/" . $wp->request . "?bypass=1");
 			$response_code = wp_remote_retrieve_response_code($response);
 
@@ -122,18 +118,16 @@ class Render {
 				$redirect_location = wp_remote_retrieve_header($response, "Location");
 				wp_send_json(
 					[
-						"response_code" => $response_code,
+						"response_code" => intval($response_code),
 						"redirect_to" => str_replace(
 							"?bypass=1",
 							"",
 							str_replace(home_url(), "", $redirect_location),
 						),
 					],
-					200,
+					intval($response_code),
 				);
 			}
-
-			// http://template-v2.bring/asdasdasdasd?data_token=very-secret-data-token
 
 			// Render json response for next rendering
 			self::renderJson();
@@ -144,9 +138,8 @@ class Render {
 			return;
 		}
 
-		return "rekt";
-		// // Redirect to next site
-		// wp_redirect(Config::getEnv()["NEXT_URL"] . $wp->request);
-		// exit();
+		// Redirect to next site
+		wp_redirect(Config::getEnv()["NEXT_URL"] . $wp->request);
+		exit();
 	}
 }
