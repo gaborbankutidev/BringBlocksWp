@@ -19,5 +19,8 @@ class Editor {
 			$fav_url = get_template_directory_uri() . "/vendor/bring/blocks-wp/assets/bring-icon.png";
 			echo "<link rel='shortcut icon' href='$fav_url' />\n";
 		});
+
+		// Add thumbnail support
+		add_theme_support("post-thumbnails");
 	}
 }

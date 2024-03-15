@@ -33,7 +33,7 @@ class Api {
 		// update post content object
 		register_rest_route("bring", "/editor/save", [
 			"methods" => "POST",
-			"permission_callback" => Utils\Api::permissionCallback(...),
+			"permission_callback" => Utils\Api::createPermissionCallback(),
 			"callback" => self::save(...),
 		]);
 	}

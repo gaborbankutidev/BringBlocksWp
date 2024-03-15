@@ -13,12 +13,6 @@ class Render {
 	 */
 	public static function init() {
 		add_action("wp", self::render(...));
-
-		// TODO handle redirects
-		/* if (is_post_type_archive()) {
-			wp_redirect("/");
-			exit();
-		} */
 	}
 
 	/**
@@ -93,10 +87,12 @@ class Render {
 		$bypass = isset($_GET["bypass"]) ? strval($_GET["bypass"]) : null;
 		$data_token = isset($_GET["data_token"]) ? strval($_GET["data_token"]) : null;
 
+		// Data token request
 		if ($data_token && $data_token === Config::getEnv()["DATA_TOKEN"]) {
 			$response = wp_remote_head(home_url() . "/" . $wp->request . "?bypass=1");
 			$response_code = wp_remote_retrieve_response_code($response);
 
+			// Handle not found
 			if ($response_code === "404" || $response_code === 404) {
 				wp_send_json(
 					[
@@ -107,6 +103,7 @@ class Render {
 				);
 			}
 
+			// Handle redirect
 			if (
 				$response_code === "301" ||
 				$response_code === 301 ||
@@ -133,8 +130,8 @@ class Render {
 			self::renderJson();
 		}
 
+		// Return as normal
 		if ($bypass && $bypass === "1") {
-			// Return as normal
 			return;
 		}
 

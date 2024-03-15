@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Bring\BlocksWP\Utils;
 
-use Bring\BlocksWP\Config;
+use Exception;
+use WP_REST_Request;
+use WP_Error;
+
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use WP_REST_Request;
+
+use Bring\BlocksWP\Config;
+use Bring\BlocksWP\Exceptions\UserNotFoundException;
 
 class Api {
 	/**
@@ -56,15 +61,6 @@ class Api {
 	}
 
 	/**
-	 * Return the jwt Secret Key
-	 * @return string
-	 */
-	private static function getJwtSecretKey() {
-		$jwt_secret_key = Config::getEnv()["JWT_SECRET_KEY"];
-		return $jwt_secret_key;
-	}
-
-	/**
 	 * Returns the limit from the request
 	 * @param WP_REST_Request<array<mixed>> $request
 	 * @return int
@@ -90,59 +86,112 @@ class Api {
 
 	/**
 	 * Generates jwt for the current user
-	 * @return string
+	 *
+	 * @param int $user_id
+	 *
+	 * @return string Generated token
 	 */
-	public static function generateToken() {
+	public static function generateToken($user_id = 0) {
+		if (!$user_id) {
+			$user_id = get_current_user_id();
+		}
+
 		// Generating token for user
 		$payload = [
-			"user_id" => get_current_user_id(),
+			"iss" => get_site_url(),
+			"aud" => Config::getEnv()["NEXT_URL"],
+			"exp" => time() + 60 * 60 * 24 * 14, // Expiration Time, 2 weeks
+			"iat" => time(), // Issued At: current time
+			"userId" => $user_id,
 		];
-		return JWT::encode($payload, self::getJwtSecretKey(), "HS256");
+		return JWT::encode($payload, Config::getEnv()["JWT_SECRET_KEY"], "HS256");
 	}
 
 	/**
-	 * Permission callback to check jwt if the user has permission to edit posts
+	 * Validates jwt token
 	 *
-	 * @param WP_REST_Request<array<mixed>> $request
-	 * @param array<string> $capabilities
+	 * @param string $token Token to validate
 	 *
-	 * @return bool
+	 * @throws UserNotFoundException
+	 *
+	 * @return int User id
 	 */
-	public static function permissionCallback(
-		WP_REST_Request $request,
+	public static function validateToken(string $token) {
+		$key = Config::getEnv()["JWT_SECRET_KEY"];
+
+		$token = str_replace(["Bearer ", "\""], "", $token);
+		$decoded = JWT::decode($token, new Key($key, "HS256"));
+
+		if (!isset($decoded->userId)) {
+			throw new Exception("User Id not found in token");
+		}
+
+		$auth_user = get_user_by("id", $decoded->userId);
+		if (!$auth_user) {
+			throw new UserNotFoundException("User not found");
+		}
+
+		return $auth_user->ID;
+	}
+
+	/**
+	 * Creates permission callback to allow users with the selected capabilities
+	 * Empty capabilities array -> no permission check
+	 *
+	 * @param array<string> $capabilities
+	 * @param bool $set_current_user
+	 *
+	 * @return callable|string Permission callback function
+	 */
+	public static function createPermissionCallback(
 		$capabilities = ["edit_posts"],
+		$set_current_user = true,
 	) {
-		$token = $request->get_header("Authorization");
+		return function (WP_REST_Request $request) use ($capabilities, $set_current_user) {
+			$token = $request->get_header("Authorization");
 
-		$token_payload = [];
-
-		if ($token === null) {
-			return false;
-		}
-
-		try {
-			$decoded = JWT::decode($token, new Key(self::getJwtSecretKey(), "HS256"));
-			$token_payload = (array) $decoded;
-		} catch (\Throwable $e) {
-			return false;
-		}
-
-		$user_id = $token_payload["user_id"];
-
-		if (!get_userdata($user_id)) {
-			return false;
-		}
-
-		wp_set_current_user($user_id);
-
-		$user_has_permission = false;
-		foreach ($capabilities as $capability) {
-			if (current_user_can($capability)) {
-				$user_has_permission = true;
-				break;
+			// Unauthorized if token not found
+			if (!$token) {
+				return new WP_Error("jwt_not_found", "Jwt not found", [
+					"status" => 401, // 401 => Unauthorized
+				]);
 			}
-		}
 
-		return $user_has_permission;
+			// Get user from the token
+			try {
+				$user_id = self::validateToken($token);
+
+				if (!$user_id) {
+					return new WP_Error("user_not_found", "User not found", [
+						"status" => 401, // 401 => Unauthorized
+					]);
+				}
+			} catch (Exception $e) {
+				return new WP_Error("invalid_token", $e->getMessage(), [
+					"status" => 401, // 401 => Unauthorized
+				]);
+			}
+
+			// Set current user
+			$set_current_user && wp_set_current_user($user_id);
+
+			// Check permission
+			$user_has_permission = $capabilities === [];
+			foreach ($capabilities as $capability) {
+				if (user_can($user_id, $capability)) {
+					$user_has_permission = true;
+					break;
+				}
+			}
+
+			if (!$user_has_permission) {
+				return new WP_Error("no_permission", "No permission", [
+					"status" => 403, // 403 => Forbidden
+				]);
+			}
+
+			// return true
+			return true;
+		};
 	}
 }
