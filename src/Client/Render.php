@@ -96,6 +96,7 @@ class Render {
 			if ($response_code === "404" || $response_code === 404) {
 				wp_send_json(
 					[
+						"responseCode" => intval($response_code),
 						"slug" => "not_found",
 						"type" => "general",
 					],
@@ -115,12 +116,8 @@ class Render {
 				$redirect_location = wp_remote_retrieve_header($response, "Location");
 				wp_send_json(
 					[
-						"response_code" => intval($response_code),
-						"redirect_to" => str_replace(
-							"?bypass=1",
-							"",
-							str_replace(home_url(), "", $redirect_location),
-						),
+						"responseCode" => intval($response_code),
+						"redirectTo" => str_replace("?bypass=1", "", str_replace(home_url(), "", $redirect_location)),
 					],
 					intval($response_code),
 				);
