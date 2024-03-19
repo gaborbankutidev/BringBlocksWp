@@ -104,10 +104,43 @@ class Content {
 	}
 
 	/**
+	 * @param int|null $entity_id
+	 * @return string|null
+	 */
+	public static function getHead($entity_id) {
+		if (!$entity_id) {
+			return null;
+		}
+
+		$base_head = Config::getRankMath() ? self::getRankMathHead() : "";
+		$head = apply_filters("bring_head", $base_head);
+		return strval($head);
+	}
+
+	/**
 	 * @return string
 	 */
-	public static function getHead() {
-		$head = apply_filters("bring_head", "");
-		return strval($head);
+	public static function getRankMathHead() {
+		global $wp;
+		$rank_math_endpoint = home_url() . "/wp-json/rankmath/v1/getHead";
+		$current_url = home_url() . "/" . $wp->request;
+		$response = wp_remote_get($rank_math_endpoint . "?url=" . $current_url);
+		$response_code = wp_remote_retrieve_response_code($response);
+		if ($response_code !== 200 && $response_code !== "200") {
+			return "";
+		}
+
+		$response_body = wp_remote_retrieve_body($response);
+
+		/**
+		 * @var array{success:bool,head:string}
+		 */
+		$parsed_body = json_decode($response_body);
+
+		if (!$parsed_body["success"]) {
+			return "";
+		}
+
+		return $parsed_body["head"];
 	}
 }

@@ -68,7 +68,7 @@ class Render {
 						is_string($entitySlug) && $entityType ? Content::getLayout($entitySlug, $entityType) : null,
 					"header" => Content::getHeader(),
 					"footer" => Content::getFooter(),
-					"head" => Content::getHead(),
+					"head" => Content::getHead($entityId),
 				],
 			],
 			200,

@@ -25,6 +25,11 @@ class Config {
 	];
 
 	/**
+	 * @var bool
+	 */
+	private static $rank_math = false;
+
+	/**
 	 * @var array<string>
 	 */
 	private static $editor_post_types = ["post", "page"];
@@ -106,6 +111,15 @@ class Config {
 	 */
 	public function useLibrary($v = true) {
 		self::$layout["library"] = $v;
+		return $this;
+	}
+
+	/**
+	 * @param bool $v
+	 * @return Config
+	 */
+	public function useRankMath($v = true) {
+		self::$rank_math = $v;
 		return $this;
 	}
 
@@ -278,5 +292,12 @@ class Config {
 			);
 		}
 		return self::$env;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public static function getRankMath() {
+		return self::$rank_math;
 	}
 }
