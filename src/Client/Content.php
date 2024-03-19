@@ -102,4 +102,12 @@ class Content {
 
 		return self::getContentObject($default_footer_id);
 	}
+
+	/**
+	 * @return string
+	 */
+	public static function getHead() {
+		$head = apply_filters("bring_head", "");
+		return strval($head);
+	}
 }
