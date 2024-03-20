@@ -57,6 +57,7 @@ class Render {
 		// todo return content & props
 		wp_send_json(
 			[
+				"responseCode" => 200,
 				"id" => $entityId,
 				"slug" => $entitySlug,
 				"type" => $entityType,
