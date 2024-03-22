@@ -177,23 +177,17 @@ class Config {
 		return $this;
 	}
 
+	// Init & Public static getter methods
 	/**
 	 * @param array{DATA_TOKEN:string,JWT_SECRET_KEY:string,NEXT_URL:string} $env
 	 * @return Config
 	 */
-	public function env($env) {
-		self::$env = $env;
-		return $this;
-	}
-
-	// Init & Public static getter methods
-	/**
-	 * @return Config
-	 */
-	public static function init() {
+	public static function init($env) {
 		if (self::$is_initialized) {
 			throw new Exception("Already initialized"); // TODO
 		}
+
+		self::$env = $env;
 
 		return new self();
 	}
@@ -299,5 +293,12 @@ class Config {
 	 */
 	public static function getRankMath() {
 		return self::$rank_math;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public static function getIsInitialized() {
+		return self::$is_initialized;
 	}
 }
