@@ -20,6 +20,27 @@ class General {
 	}
 
 	/**
+	 * Returns the relative url of the entity
+	 *
+	 * @param int $entity_id
+	 * @param "post"|"taxonomy"|"author" $entity_type
+	 * @return string
+	 */
+	public static function getEntityUrl($entity_id, $entity_type = "post") {
+		$url = null;
+
+		$entity_type === "post" && ($url = get_permalink($entity_id));
+		$entity_type === "taxonomy" && ($url = get_term_link($entity_id));
+		$entity_type === "author" && ($url = get_author_posts_url($entity_id));
+
+		if (empty($url) || is_wp_error($url)) {
+			return "";
+		}
+
+		return str_replace(home_url(), "", $url);
+	}
+
+	/**
 	 * Returns image by attachment id in ImageType format
 	 *
 	 * @param int $image_id

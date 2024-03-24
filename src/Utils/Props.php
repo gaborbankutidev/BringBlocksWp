@@ -63,8 +63,7 @@ class Props {
 
 		$description_meta = $user_meta["description"];
 		$description = is_string($description_meta) ? $description_meta : null;
-		$url = get_author_posts_url($entity_id);
-
+		$url = General::getEntityUrl($entity_id, "author");
 		$entity_type = "author";
 
 		return [
@@ -105,13 +104,9 @@ class Props {
 		$entity_slug = $term->taxonomy;
 		$name = $term->name;
 		$image = General::getEntityImage($entity_id, "taxonomy", "full");
-
-		$url = get_term_link($term);
-		if ($url instanceof WP_Error) {
-			return null;
-		}
-
 		$slug = $term->slug;
+		$url = General::getEntityUrl($entity_id, "taxonomy");
+
 		$excerpt_meta = get_term_meta($entity_id, "excerpt", true);
 		$excerpt = is_string($excerpt_meta) ? $excerpt_meta : null;
 		$description = $term->description ? $term->description : null;
@@ -168,10 +163,7 @@ class Props {
 
 		$slug = $post->post_name;
 
-		$url = get_permalink($post);
-		if (!$url) {
-			return null;
-		}
+		$url = General::getEntityUrl($entity_id);
 
 		$entity_type = "post";
 

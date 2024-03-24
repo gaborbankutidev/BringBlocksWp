@@ -166,7 +166,7 @@ class Api {
 		}
 
 		$entity_id = sanitize_text_field($request_body["entityId"]);
-		if (is_numeric($entity_id)) {
+		if (!is_numeric($entity_id)) {
 			return new WP_Error("wrong_params", "entityId is not numeric", [
 				"status" => 400,
 			]);

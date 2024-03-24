@@ -18,7 +18,82 @@ class Render {
 	/**
 	 * @return void
 	 */
-	private static function renderJson() {
+	public static function render() {
+		global $wp;
+
+		// Bypass for admin
+		if (is_admin()) {
+			return;
+		}
+
+		// Bypass and return as normal if param is set
+		$bypass = isset($_GET["bypass"]) ? strval($_GET["bypass"]) : null;
+		if ($bypass && $bypass === "1") {
+			return;
+		}
+
+		// Redirect to next site if data token is not set
+		$data_token = isset($_GET["data_token"]) ? strval($_GET["data_token"]) : null;
+		if (!$data_token) {
+			wp_redirect(Config::getEnv()["NEXT_URL"] . "/" . $wp->request);
+			exit();
+		}
+
+		// Check if data token is correct
+		if ($data_token !== Config::getEnv()["DATA_TOKEN"]) {
+			wp_send_json(
+				[
+					"responseCode" => 400,
+					"error" => "wrong_data_token",
+					"entity" => null,
+				],
+				400,
+			);
+		}
+
+		// check head in normal render
+		$response = wp_remote_head(home_url() . "/" . $wp->request . "/?bypass=1");
+		$response_code = intval(wp_remote_retrieve_response_code($response));
+
+		// Handle not found
+		if ($response_code === 404) {
+			wp_send_json(
+				[
+					"responseCode" => $response_code,
+					"error" => "not_found",
+					"entity" => null,
+				],
+				$response_code,
+			);
+		}
+
+		// Handle redirect
+		if ($response_code === 301 || $response_code === 302 || $response_code === 307) {
+			$redirect_location = wp_remote_retrieve_header($response, "Location");
+			wp_send_json(
+				[
+					"responseCode" => $response_code,
+					"redirectTo" => str_replace("?bypass=1", "", str_replace(home_url(), "", $redirect_location)),
+					"entity" => null,
+				],
+				$response_code,
+			);
+		}
+
+		// Render json response for next rendering
+		wp_send_json(
+			[
+				"responseCode" => 200,
+				"entity" => self::renderEntity(),
+			],
+			200,
+		);
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	private static function renderEntity() {
 		$entityId = null;
 		$entitySlug = null;
 		$entityType = null;
@@ -49,93 +124,20 @@ class Render {
 			$entityType = "author";
 		}
 
-		if (is_404()) {
-			$entitySlug = "not_found";
-			$entityType = "general";
-		}
+		return [
+			"id" => $entityId,
+			"slug" => $entitySlug,
+			"type" => $entityType,
 
-		// todo return content & props
-		wp_send_json(
-			[
-				"responseCode" => 200,
-				"id" => $entityId,
-				"slug" => $entitySlug,
-				"type" => $entityType,
-
-				"props" => $entityId && $entityType ? Props::getEntityProps($entityId, $entityType) : null,
-				"content" => [
-					"main" => $main,
-					"layout" =>
-						is_string($entitySlug) && $entityType ? Content::getLayout($entitySlug, $entityType) : null,
-					"header" => Content::getHeader(),
-					"footer" => Content::getFooter(),
-					"head" => Content::getHead($entityId),
-				],
+			"props" => $entityId && $entityType ? Props::getEntityProps($entityId, $entityType) : null,
+			"content" => [
+				"head" => Content::getHead($entityId),
+				"header" => Content::getHeader(),
+				"footer" => Content::getFooter(),
+				"layout" =>
+					is_string($entitySlug) && $entityType ? Content::getLayout($entitySlug, $entityType) : null,
+				"main" => $main,
 			],
-			200,
-		);
-	}
-
-	/**
-	 * @return void
-	 */
-	public static function render() {
-		global $wp;
-
-		if (is_admin()) {
-			return;
-		}
-
-		$bypass = isset($_GET["bypass"]) ? strval($_GET["bypass"]) : null;
-		$data_token = isset($_GET["data_token"]) ? strval($_GET["data_token"]) : null;
-
-		// Data token request
-		if ($data_token && $data_token === Config::getEnv()["DATA_TOKEN"]) {
-			$response = wp_remote_head(home_url() . "/" . $wp->request . "?bypass=1");
-			$response_code = wp_remote_retrieve_response_code($response);
-
-			// Handle not found
-			if ($response_code === "404" || $response_code === 404) {
-				wp_send_json(
-					[
-						"responseCode" => intval($response_code),
-						"slug" => "not_found",
-						"type" => "general",
-					],
-					intval($response_code),
-				);
-			}
-
-			// Handle redirect
-			if (
-				$response_code === "301" ||
-				$response_code === 301 ||
-				$response_code === "302" ||
-				$response_code === 302 ||
-				$response_code === "307" ||
-				$response_code === 307
-			) {
-				$redirect_location = wp_remote_retrieve_header($response, "Location");
-				wp_send_json(
-					[
-						"responseCode" => intval($response_code),
-						"redirectTo" => str_replace("?bypass=1", "", str_replace(home_url(), "", $redirect_location)),
-					],
-					intval($response_code),
-				);
-			}
-
-			// Render json response for next rendering
-			self::renderJson();
-		}
-
-		// Return as normal
-		if ($bypass && $bypass === "1") {
-			return;
-		}
-
-		// Redirect to next site
-		wp_redirect(Config::getEnv()["NEXT_URL"] . $wp->request);
-		exit();
+		];
 	}
 }
