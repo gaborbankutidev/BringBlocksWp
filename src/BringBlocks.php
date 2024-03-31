@@ -11,7 +11,6 @@ use Bring\BlocksWP\Client\Client;
 use Bring\BlocksWP\Dynamic\Dynamic;
 use Bring\BlocksWP\Exceptions\ConfigNotInitializedException;
 use Bring\BlocksWP\Form\Form;
-use Bring\BlocksWP\Exceptions\EnvironmentVariableMissingException;
 
 class BringBlocks {
 	/**

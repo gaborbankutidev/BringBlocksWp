@@ -52,7 +52,9 @@ class Render {
 		}
 
 		// check head in normal render
-		$response = wp_remote_head(home_url() . "/" . $wp->request . "/?bypass=1");
+		$request_url = $wp->request ? $wp->request . "/" : "";
+		$bypass_url = home_url() . "/" . $request_url . "?bypass=1";
+		$response = wp_remote_head($bypass_url);
 		$response_code = intval(wp_remote_retrieve_response_code($response));
 
 		// Handle not found
@@ -131,7 +133,6 @@ class Render {
 
 			"props" => $entityId && $entityType ? Props::getEntityProps($entityId, $entityType) : null,
 			"content" => [
-				"head" => Content::getHead($entityId),
 				"header" => Content::getHeader(),
 				"footer" => Content::getFooter(),
 				"layout" =>
