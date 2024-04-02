@@ -25,7 +25,7 @@ class Api {
 	private static function routes() {
 		// options for controls in editor
 		register_rest_route("bring", "/editor/options", [
-			"methods" => "GET",
+			"methods" => "POST",
 			"permission_callback" => "__return_true",
 			"callback" => self::options(...),
 		]);
