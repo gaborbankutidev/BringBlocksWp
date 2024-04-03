@@ -168,7 +168,7 @@ class General {
 
 		$locations = [];
 		foreach ($menu_locations as $location => $menu_id) {
-			$asd[] = [
+			$locations[] = [
 				"key" => $location,
 				"menuId" => $menu_id,
 			];
@@ -233,7 +233,7 @@ class General {
 			$item = [
 				"id" => $menu_item->ID,
 				"order" => $menu_item->menu_order,
-				"url" => $menu_item->url,
+				"url" => str_replace(home_url(), "", $menu_item->url),
 				"name" => $menu_item->title,
 				"description" => $menu_item->description,
 				"target" => $menu_item->target,
