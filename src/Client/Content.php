@@ -70,11 +70,11 @@ class Content {
 		$entity_type == "general" && ($layout_slug = $entity_slug);
 
 		$default_layout_id = get_option("bring_default_{$layout_slug}_layout_id");
-		if (!$default_layout_id || !is_int($default_layout_id)) {
+		if (!$default_layout_id || !is_numeric($default_layout_id)) {
 			return null;
 		}
 
-		return self::getContentObject($default_layout_id);
+		return self::getContentObject(intval($default_layout_id));
 	}
 
 	/**
@@ -83,11 +83,11 @@ class Content {
 	public static function getHeader() {
 		$default_header_id = get_option("bring_default_header_id");
 		// header_id not found
-		if (!$default_header_id || !is_int($default_header_id)) {
+		if (!$default_header_id || !is_numeric($default_header_id)) {
 			return null;
 		}
 
-		return self::getContentObject($default_header_id);
+		return self::getContentObject(intval($default_header_id));
 	}
 
 	/**
@@ -96,10 +96,10 @@ class Content {
 	public static function getFooter() {
 		$default_footer_id = get_option("bring_default_footer_id");
 		// footer_id not found
-		if (!$default_footer_id || !is_int($default_footer_id)) {
+		if (!$default_footer_id || !is_numeric($default_footer_id)) {
 			return null;
 		}
 
-		return self::getContentObject($default_footer_id);
+		return self::getContentObject(intval($default_footer_id));
 	}
 }
