@@ -38,6 +38,11 @@ class Config {
 	private static $layout_taxonomies = ["category", "post_tag"];
 
 	/**
+	 * @var array<string, string>
+	 */
+	private static $menu_locations = [];
+
+	/**
 	 * @var array<string>
 	 */
 	private static $entity_props = [
@@ -137,6 +142,15 @@ class Config {
 	}
 
 	/**
+	 * @param array<string, string> $locations
+	 * @return Config
+	 */
+	public function menuLocations($locations = []) {
+		self::$menu_locations = $locations;
+		return $this;
+	}
+
+	/**
 	 * @param array<string> $props
 	 * @return Config
 	 */
@@ -229,6 +243,18 @@ class Config {
 		 */
 		$filtered = is_array($filtered_result) ? $filtered_result : [];
 		return $filtered;
+	}
+
+	/**
+	 * @return array<string, string>
+	 */
+	public static function getMenuLocations() {
+		$filtered_result = apply_filters("bring_blocks_menu_locations", self::$menu_locations);
+		/**
+		 * @var array<string,string> TODO: This should be fixed without typecasting
+		 */
+		$filtered = is_array($filtered_result) ? $filtered_result : [];
+		return self::$menu_locations;
 	}
 
 	/**

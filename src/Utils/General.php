@@ -156,6 +156,28 @@ class General {
 	}
 
 	/**
+	 * Returns the list of wp menu location with the menu id
+	 *
+	 * @return array<array{key: string, menuId: int}>
+	 */
+	public static function getMenuLocations() {
+		/**
+		 * @var array<string,int> $menu_locations
+		 */
+		$menu_locations = get_nav_menu_locations();
+
+		$locations = [];
+		foreach ($menu_locations as $location => $menu_id) {
+			$asd[] = [
+				"key" => $location,
+				"menuId" => $menu_id,
+			];
+		}
+
+		return $locations;
+	}
+
+	/**
 	 * Returns the list of wp menus with the menu objects
 	 * @param bool $with_items
 	 * @return array<mixed>

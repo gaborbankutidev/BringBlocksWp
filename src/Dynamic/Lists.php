@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Bring\BlocksWP\Dynamic;
 
 use WP_Error;
-use WP_Term;
 
 class Lists {
 	/**

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Bring\BlocksWP\Client;
 
+use Bring\BlocksWP\Config;
+
 class Client {
 	/**
 	 * @return void
@@ -13,7 +15,7 @@ class Client {
 
 		// Add menu
 		add_action("init", function () {
-			register_nav_menus();
+			register_nav_menus(Config::getMenuLocations());
 		});
 	}
 }

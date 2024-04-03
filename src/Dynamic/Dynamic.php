@@ -138,6 +138,7 @@ class Dynamic {
 	private static function site() {
 		$site_props = [
 			"menus" => Utils\General::getMenus(),
+			"menuLocations" => Utils\General::getMenuLocations(),
 		];
 
 		return [
