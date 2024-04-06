@@ -7,6 +7,7 @@ namespace Bring\BlocksWP;
 use Bring\BlocksWP\Auth\Auth;
 use Bring\BlocksWP\Layout\Layout;
 use Bring\BlocksWP\Editor\Editor;
+use Bring\BlocksWP\Cache\Cache;
 use Bring\BlocksWP\Client\Client;
 use Bring\BlocksWP\Dynamic\Dynamic;
 use Bring\BlocksWP\Exceptions\ConfigNotInitializedException;
@@ -24,6 +25,7 @@ class BringBlocks {
 		Editor::init();
 		Client::init();
 		Dynamic::init();
+		Cache::init();
 
 		Config::getForms() && Form::init();
 	}

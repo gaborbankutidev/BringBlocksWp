@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Bring\BlocksWP\Client;
 
 use Bring\BlocksWP\Config;
+use Bring\BlocksWP\Cache\Head;
 use WP_Term;
 
 class Render {
@@ -51,11 +52,16 @@ class Render {
 			);
 		}
 
-		// check head in normal render
+		// Update cache if param is set
 		$request_url = $wp->request ? $wp->request . "/" : "";
-		$bypass_url = home_url() . "/" . $request_url . "?bypass=1";
-		$response = wp_remote_head($bypass_url);
-		$response_code = intval(wp_remote_retrieve_response_code($response));
+		$update = isset($_GET["updateCache"]) ? strval($_GET["updateCache"]) : null;
+		if ($update && $update === "1") {
+			$new_head = Head::updateHead($request_url);
+			wp_send_json(["Message" => "Url cache updated for " . $request_url, "Value" => $new_head], 200);
+		}
+
+		$head = Head::getHead($request_url);
+		$response_code = $head["response_code"];
 
 		// Handle not found
 		if ($response_code === 404) {
@@ -70,8 +76,13 @@ class Render {
 		}
 
 		// Handle redirect
-		if ($response_code === 301 || $response_code === 302 || $response_code === 307) {
-			$redirect_location = wp_remote_retrieve_header($response, "Location");
+		if (
+			$response_code === 301 ||
+			$response_code === 302 ||
+			$response_code === 307 ||
+			$response_code === 308
+		) {
+			$redirect_location = isset($head["redirect_to"]) ? $head["redirect_to"] : "";
 			wp_send_json(
 				[
 					"responseCode" => $response_code,
