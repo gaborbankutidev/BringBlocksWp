@@ -10,11 +10,10 @@ class Lists {
 	/**
 	 * @param string $entity_type TODO: should be swapped to an enum
 	 * @param string $entity_slug
-	 * @param int $limit
-	 * @param array<mixed> $custom_data
+	 * @param array{limit: int, offset: int, custom_data: array<string,mixed>} $options
 	 * @return mixed
 	 */
-	public static function getDynamicList($entity_type, $entity_slug, $limit = -1, $custom_data = []) {
+	public static function getDynamicList($entity_type, $entity_slug, $options) {
 		$entity_ids = [];
 
 		// author
@@ -27,7 +26,8 @@ class Lists {
 			// query terms
 			$args = [
 				"taxonomy" => $entity_slug,
-				"numberposts" => $limit,
+				"numberposts" => $options["limit"],
+				"offset" => $options["offset"],
 				"fields" => "ids",
 			];
 
@@ -39,7 +39,7 @@ class Lists {
 					"type" => $entity_type,
 					"id" => null,
 				],
-				$custom_data,
+				$options["custom_data"],
 			);
 
 			/**
@@ -54,7 +54,8 @@ class Lists {
 			// query posts
 			$args = [
 				"post_type" => $entity_slug,
-				"numberposts" => $limit,
+				"numberposts" => $options["limit"],
+				"offset" => $options["offset"],
 				"fields" => "ids",
 			];
 
@@ -66,7 +67,7 @@ class Lists {
 					"type" => $entity_type,
 					"id" => null,
 				],
-				$custom_data,
+				$options["custom_data"],
 			);
 
 			/**
@@ -98,7 +99,7 @@ class Lists {
 					"slug" => $entity_slug,
 					"type" => $entity_type,
 				],
-				$custom_data,
+				$options["custom_data"],
 			);
 
 			$entity_list[] = array_merge($item, $custom_item);
@@ -112,7 +113,7 @@ class Lists {
 				"type" => $entity_type,
 				"id" => null,
 			],
-			$custom_data,
+			$options["custom_data"],
 		);
 	}
 }

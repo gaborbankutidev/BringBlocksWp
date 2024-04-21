@@ -21,11 +21,12 @@ class Api {
 	 * @return string|null TODO: should be swapped to an enum
 	 */
 	public static function getEntityType(WP_REST_Request $request) {
-		$request_body = $request->get_json_params();
+		/**
+		 * @var string|null
+		 */
+		$entity_type = $request->get_param("entityType");
 
-		$entity_type = isset($request_body["entityType"])
-			? sanitize_text_field($request_body["entityType"])
-			: "post";
+		$entity_type = !is_null($entity_type) ? sanitize_text_field($entity_type) : "post";
 
 		return in_array($entity_type, ["post", "taxonomy", "author"]) ? $entity_type : null;
 	}
@@ -36,12 +37,12 @@ class Api {
 	 * @return string|null
 	 */
 	public static function getEntitySlug(WP_REST_Request $request) {
-		$request_body = $request->get_json_params();
+		/**
+		 * @var string|null
+		 */
+		$entity_slug = $request->get_param("entitySlug");
 
-		return isset($request_body["entitySlug"])
-			? sanitize_text_field($request_body["entitySlug"])
-			: null;
-
+		return !is_null($entity_slug) ? sanitize_text_field($entity_slug) : null;
 		// TODO refactor that entity slug is optional and checks that entity slug exists
 	}
 
@@ -51,13 +52,14 @@ class Api {
 	 * @return int|null
 	 */
 	public static function getEntityId(WP_REST_Request $request) {
-		$request_body = $request->get_json_params();
+		/**
+		 * @var string|null
+		 */
+		$entity_id = $request->get_param("entityId");
 
-		return isset($request_body["entityId"])
-			? (is_numeric(sanitize_text_field($request_body["entityId"]))
-				? intval(sanitize_text_field($request_body["entityId"]))
-				: null)
-			: null;
+		$entity_id = !is_null($entity_id) ? sanitize_text_field($entity_id) : null;
+
+		return is_numeric($entity_id) ? intval($entity_id) : null;
 	}
 
 	/**
@@ -66,20 +68,49 @@ class Api {
 	 * @return int
 	 */
 	public static function getLimit(WP_REST_Request $request) {
-		$request_body = $request->get_json_params();
-		$limit = isset($request_body["limit"]) ? $request_body["limit"] : null;
+		/**
+		 * @var string|null
+		 */
+		$limit = $request->get_param("limit");
 
-		return is_int($limit) && $limit > 0 ? $limit : -1;
+		$limit = !is_null($limit) ? sanitize_text_field($limit) : null;
+		$limit = is_numeric($limit) ? intval($limit) : 0;
+
+		return $limit > 0 ? $limit : -1;
+	}
+
+	/**
+	 * Returns the offset from the request
+	 * @param WP_REST_Request<array<mixed>> $request
+	 * @return int
+	 */
+	public static function getOffset(WP_REST_Request $request) {
+		/**
+		 * @var string|null
+		 */
+		$offset = $request->get_param("offset");
+
+		$offset = !is_null($offset) ? sanitize_text_field($offset) : null;
+		$offset = is_numeric($offset) ? intval($offset) : 0;
+
+		return $offset >= 0 ? $offset : 0;
 	}
 
 	/**
 	 * Returns the custom data from the request
 	 * @param WP_REST_Request<array<mixed>> $request
-	 * @return array<mixed>
+	 * @return array<string,mixed>
 	 */
 	public static function getCustomData(WP_REST_Request $request) {
-		$request_body = $request->get_json_params();
-		$custom_data = isset($request_body["customData"]) ? $request_body["customData"] : null;
+		/**
+		 * @var string|null
+		 */
+		$custom_data_json = $request->get_param("customData");
+
+		/**
+		 * @var array<string,mixed>|null
+		 */
+		$custom_data = !is_null($custom_data_json) ? json_decode($custom_data_json, true) : null;
 
 		return is_array($custom_data) ? $custom_data : [];
 	}

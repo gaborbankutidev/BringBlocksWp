@@ -11,10 +11,10 @@ class Props {
 	/**
 	 * @param string $entity_type TODO: should be swapped to an enum
 	 * @param int $entity_id
-	 * @param array<mixed> $custom_data
+	 * @param array{custom_data: array<string,mixed>} $options
 	 * @return mixed
 	 */
-	public static function getDynamicProps($entity_type, $entity_id, $custom_data = []) {
+	public static function getDynamicProps($entity_type, $entity_id, $options) {
 		// author
 		if ($entity_type == "author") {
 			// TODO author support
@@ -37,7 +37,7 @@ class Props {
 					"slug" => $entity_slug,
 					"type" => $entity_type,
 				],
-				$custom_data,
+				$options["custom_data"],
 			);
 		}
 
@@ -58,7 +58,7 @@ class Props {
 					"slug" => $entity_slug,
 					"type" => $entity_type,
 				],
-				$custom_data,
+				$options["custom_data"],
 			);
 		}
 

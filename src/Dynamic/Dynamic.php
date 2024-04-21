@@ -21,14 +21,14 @@ class Dynamic {
 	private static function routes() {
 		// value for a post
 		register_rest_route("bring", "/dynamic/props", [
-			"methods" => "POST",
+			"methods" => "GET",
 			"permission_callback" => "__return_true",
 			"callback" => self::props(...),
 		]);
 
 		// for listing posts
 		register_rest_route("bring", "/dynamic/list", [
-			"methods" => "POST",
+			"methods" => "GET",
 			"permission_callback" => "__return_true",
 			"callback" => self::lists(...),
 		]);
@@ -84,7 +84,9 @@ class Dynamic {
 		$custom_data = Utils\Api::getCustomData($request);
 
 		return [
-			"data" => Props::getDynamicProps($entity_type, $entity_id, $custom_data),
+			"data" => Props::getDynamicProps($entity_type, $entity_id, [
+				"custom_data" => $custom_data,
+			]),
 		];
 	}
 
@@ -124,11 +126,18 @@ class Dynamic {
 		// limit
 		$limit = Utils\Api::getLimit($request);
 
+		// offset
+		$offset = Utils\Api::getLimit($request);
+
 		// custom data
 		$custom_data = Utils\Api::getCustomData($request);
 
 		return [
-			"data" => Lists::getDynamicList($entity_type, $entity_slug, $limit, $custom_data),
+			"data" => Lists::getDynamicList($entity_type, $entity_slug, [
+				"limit" => $limit,
+				"offset" => $offset,
+				"custom_data" => $custom_data,
+			]),
 		];
 	}
 
