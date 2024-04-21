@@ -27,6 +27,11 @@ class Render {
 			return;
 		}
 
+		// Bypass for Robots.txt
+		if ($wp->request === "robots.txt") {
+			return;
+		}
+
 		// Bypass and return as normal if param is set
 		$bypass = isset($_GET["bypass"]) ? strval($_GET["bypass"]) : null;
 		if ($bypass && $bypass === "1") {

@@ -85,7 +85,9 @@ class Lists {
 		$entity_list = [];
 		foreach ($entity_ids as $entity_id) {
 			$item = [
-				"id" => intval($entity_id),
+				"entityId" => intval($entity_id),
+				"entitySlug" => $entity_slug,
+				"entityType" => $entity_type,
 			];
 
 			$custom_item = Filter::apply(

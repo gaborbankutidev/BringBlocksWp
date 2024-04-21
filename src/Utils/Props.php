@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Bring\BlocksWP\Utils;
 
-use WP_Error;
 use WP_Post;
 use WP_Term;
 
@@ -45,8 +44,6 @@ class Props {
 	 * 		}
 	 */
 	public static function getDefaultAuthorEntityProps($entity_id) {
-		$entity_props = [];
-
 		/**
 		 * @var array<string,mixed>
 		 */
