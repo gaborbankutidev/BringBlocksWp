@@ -31,7 +31,7 @@ class Lists {
 				"fields" => "ids",
 			];
 
-			$args = Filter::apply(
+			$args = Filter::list(
 				$args,
 				"list_query_args",
 				[
@@ -59,7 +59,7 @@ class Lists {
 				"fields" => "ids",
 			];
 
-			$args = Filter::apply(
+			$args = Filter::list(
 				$args,
 				"list_query_args",
 				[
@@ -85,14 +85,10 @@ class Lists {
 		// props
 		$entity_list = [];
 		foreach ($entity_ids as $entity_id) {
-			$item = [
-				"entityId" => intval($entity_id),
-				"entitySlug" => $entity_slug,
-				"entityType" => $entity_type,
-			];
+			$item = Props::getDynamicProps($entity_type, intval($entity_id), $options) ?? [];
 
-			$custom_item = Filter::apply(
-				[],
+			$custom_item = Filter::props(
+				$item,
 				"list_item",
 				[
 					"id" => $entity_id,
@@ -105,7 +101,7 @@ class Lists {
 			$entity_list[] = array_merge($item, $custom_item);
 		}
 
-		return Filter::apply(
+		return Filter::list(
 			$entity_list,
 			"list",
 			[

@@ -6,70 +6,78 @@ namespace Bring\BlocksWP\Dynamic;
 
 class Filter {
 	/**
-	 * TODO: REFACTOR THIS TO PROPER INPUTS WITH DISCRIMINATIVE UNIONS
+	 * WP filter triplet for rendering dynamic props
+	 * @param array<string, mixed> $item
+	 * @param string $type TODO: should be swapped to an enum (props | list_item)
+	 * @param array{id: int|null, slug: string, type: string} $entity TODO: type key should be swapped to an enum  (post | taxonomy | author)
+	 * @param array<string, mixed> $custom_data
+	 * @return array<string, mixed>
+	 */
+	public static function props($item, $type, $entity, $custom_data = []) {
+		$entity_id = $entity["id"];
+		$entity_slug = $entity["slug"];
+		$entity_type = $entity["type"];
+
+		$item = apply_filters(
+			"bring_dynamic_entity_{$type}",
+			$item,
+			$entity_id,
+			$entity_type,
+			$entity_slug,
+			$custom_data,
+		);
+
+		$item = apply_filters(
+			"bring_dynamic_{$entity_type}_{$type}",
+			$item,
+			$entity_id,
+			$entity_slug,
+			$custom_data,
+		);
+
+		$item = apply_filters(
+			"bring_dynamic_{$entity_type}_{$type}_{$entity_slug}",
+			$item,
+			$entity_id,
+			$custom_data,
+		);
+
+		return $item;
+	}
+
+	/**
 	 * WP filter triplet for rendering dynamic props and list
 	 * @param array<mixed> $items
-	 * @param string $type TODO: should be swapped to an enum (props | list_query_args | list_item | list)
+	 * @param string $type TODO: should be swapped to an enum (list_query_args | list)
 	 * @param array{id: int|null, slug: string, type: string} $entity TODO: type key should be swapped to an enum  (post | taxonomy | author)
 	 * @param array<mixed> $custom_data
 	 * @return array<mixed>
 	 */
-	public static function apply($items, $type, $entity, $custom_data = []) {
-		$with_id = in_array($type, ["props", "list_item"]);
-		$entity_id = $with_id ? $entity["id"] : null;
+	public static function list($items, $type, $entity, $custom_data = []) {
 		$entity_slug = $entity["slug"];
 		$entity_type = $entity["type"];
 
-		if ($with_id) {
-			$items = apply_filters(
-				"bring_dynamic_entity_{$type}",
-				$items,
-				$entity_id,
-				$entity_type,
-				$entity_slug,
-				$custom_data,
-			);
+		$items = apply_filters(
+			"bring_dynamic_entity_{$type}",
+			$items,
+			$entity_type,
+			$entity_slug,
+			$custom_data,
+		);
 
-			$items = apply_filters(
-				"bring_dynamic_{$entity_type}_{$type}",
-				$items,
-				$entity_id,
-				$entity_slug,
-				$custom_data,
-			);
+		$items = apply_filters(
+			"bring_dynamic_{$entity_type}_{$type}",
+			$items,
+			$entity_slug,
+			$custom_data,
+		);
 
-			$items = apply_filters(
-				"bring_dynamic_{$entity_type}_{$type}_{$entity_slug}",
-				$items,
-				$entity_id,
-				$custom_data,
-			);
-		} else {
-			$items = apply_filters(
-				"bring_dynamic_entity_{$type}",
-				$items,
-				$entity_type,
-				$entity_slug,
-				$custom_data,
-			);
+		$items = apply_filters(
+			"bring_dynamic_{$entity_type}_{$type}_{$entity_slug}",
+			$items,
+			$custom_data,
+		);
 
-			$items = apply_filters(
-				"bring_dynamic_{$entity_type}_{$type}",
-				$items,
-				$entity_slug,
-				$custom_data,
-			);
-
-			$items = apply_filters(
-				"bring_dynamic_{$entity_type}_{$type}_{$entity_slug}",
-				$items,
-				$custom_data,
-			);
-		}
-
-		/**
-		 * @var array<mixed> // TODO: this should be checked
-		 */
 		return $items;
 	}
 }

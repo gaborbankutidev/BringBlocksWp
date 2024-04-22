@@ -12,7 +12,7 @@ class Props {
 	 * @param string $entity_type TODO: should be swapped to an enum
 	 * @param int $entity_id
 	 * @param array{custom_data: array<string,mixed>} $options
-	 * @return mixed
+	 * @return array<string, mixed>|null
 	 */
 	public static function getDynamicProps($entity_type, $entity_id, $options) {
 		// author
@@ -29,7 +29,7 @@ class Props {
 			}
 			$entity_slug = $term->taxonomy;
 
-			return Filter::apply(
+			return Filter::props(
 				$term_props ? $term_props : [],
 				"props",
 				[
@@ -50,7 +50,7 @@ class Props {
 			}
 			$entity_slug = $post->post_type;
 
-			return Filter::apply(
+			return Filter::props(
 				$post_props ? $post_props : [],
 				"props",
 				[

@@ -12,7 +12,21 @@ class Props {
 	 * Returns entity props for the entity with the given id and type
 	 * @param int $entity_id
 	 * @param string $entity_type  TODO: should be swapped to an enum
-	 * @return mixed
+	 * @return array{
+	 * 		name:string,
+	 * 		image:array{
+	 * 			src:string,
+	 * 			alt:string,
+	 * 			id:int|null
+	 * 		},
+	 * 		excerpt:string|null,
+	 * 		description:string|null,
+	 * 		slug:string,
+	 * 		url:string,
+	 *		entityType:string,
+	 * 		entitySlug:string,
+	 * 		entityId:int
+	 * 		}|null
 	 */
 	public static function getDefaultEntityProps($entity_id, $entity_type) {
 		switch ($entity_type) {
@@ -23,7 +37,7 @@ class Props {
 			case "author":
 				return self::getDefaultAuthorEntityProps($entity_id);
 			default:
-				return [];
+				return null;
 		}
 	}
 
@@ -36,18 +50,24 @@ class Props {
 	 * 			alt:string,
 	 * 			id:int|null
 	 * 		},
-	 * 		description:string|null,
 	 * 		excerpt:string|null,
+	 * 		description:string|null,
+	 * 		slug:string,
 	 * 		url:string,
 	 *		entityType:string,
+	 * 		entitySlug:string,
 	 * 		entityId:int
-	 * 		}
+	 * 		}|null
 	 */
 	public static function getDefaultAuthorEntityProps($entity_id) {
 		/**
 		 * @var array<string,mixed>
 		 */
 		$user_meta = get_user_meta($entity_id);
+		if (!$user_meta) {
+			return null;
+		}
+
 		$first_name = $user_meta["first_name"];
 		$last_name = $user_meta["last_name"];
 
@@ -68,8 +88,10 @@ class Props {
 			"image" => $image,
 			"description" => $description,
 			"excerpt" => $excerpt,
+			"slug" => "",
 			"url" => $url,
 			"entityType" => $entity_type,
+			"entitySlug" => "",
 			"entityId" => $entity_id,
 		];
 	}
