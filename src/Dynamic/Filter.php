@@ -8,7 +8,7 @@ class Filter {
 	/**
 	 * WP filter triplet for rendering dynamic props
 	 * @param array<string, mixed> $item
-	 * @param string $type TODO: should be swapped to an enum (props | list_item)
+	 * @param string $type TODO: should be swapped to an enum (props | list_item | props_params)
 	 * @param array{id: int|null, slug: string, type: string} $entity TODO: type key should be swapped to an enum  (post | taxonomy | author)
 	 * @param array<string, mixed> $custom_data
 	 * @return array<string, mixed>
@@ -48,10 +48,10 @@ class Filter {
 	/**
 	 * WP filter triplet for rendering dynamic props and list
 	 * @param array<mixed> $items
-	 * @param string $type TODO: should be swapped to an enum (list_query_args | list)
-	 * @param array{id: int|null, slug: string, type: string} $entity TODO: type key should be swapped to an enum  (post | taxonomy | author)
-	 * @param array<mixed> $custom_data
-	 * @return array<mixed>
+	 * @param string $type TODO: should be swapped to an enum (list_query_args | list | list_params)
+	 * @param array{slug: string, type: string} $entity TODO: type key should be swapped to an enum  (post | taxonomy | author)
+	 * @param array<string, mixed> $custom_data
+	 * @return array<string, mixed>
 	 */
 	public static function list($items, $type, $entity, $custom_data = []) {
 		$entity_slug = $entity["slug"];

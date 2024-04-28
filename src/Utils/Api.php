@@ -97,6 +97,23 @@ class Api {
 	}
 
 	/**
+	 * Returns the offset from the request
+	 * @param WP_REST_Request<array<mixed>> $request
+	 * @return int
+	 */
+	public static function getPage(WP_REST_Request $request) {
+		/**
+		 * @var string|null
+		 */
+		$page = $request->get_param("page");
+
+		$page = !is_null($page) ? sanitize_text_field($page) : null;
+		$page = is_numeric($page) ? intval($page) : 1;
+
+		return $page >= 1 ? $page : 1;
+	}
+
+	/**
 	 * Returns the custom data from the request
 	 * @param WP_REST_Request<array<mixed>> $request
 	 * @return array<string,mixed>

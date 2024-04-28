@@ -129,6 +129,9 @@ class Dynamic {
 		// offset
 		$offset = Utils\Api::getLimit($request);
 
+		// page
+		$page = Utils\Api::getPage($request);
+
 		// custom data
 		$custom_data = Utils\Api::getCustomData($request);
 
@@ -136,6 +139,7 @@ class Dynamic {
 			"data" => Lists::getDynamicList($entity_type, $entity_slug, [
 				"limit" => $limit,
 				"offset" => $offset,
+				"page" => $page,
 				"custom_data" => $custom_data,
 			]),
 		];

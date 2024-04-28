@@ -12,9 +12,17 @@ class Props {
 	 * @param string $entity_type TODO: should be swapped to an enum
 	 * @param int $entity_id
 	 * @param array{custom_data: array<string,mixed>} $options
-	 * @return array<string, mixed>|null
+	 * @return array{entityProps: array<string, mixed>, params: array<string, mixed>}|null
 	 */
-	public static function getDynamicProps($entity_type, $entity_id, $options) {
+	public static function getDynamicProps(
+		$entity_type,
+		$entity_id,
+		$options = ["custom_data" => []],
+	) {
+		$entity_props = [];
+		$entity_slug = "";
+		$params = [];
+
 		// author
 		if ($entity_type == "author") {
 			// TODO author support
@@ -29,7 +37,7 @@ class Props {
 			}
 			$entity_slug = $term->taxonomy;
 
-			return Filter::props(
+			$entity_props = Filter::props(
 				$term_props ? $term_props : [],
 				"props",
 				[
@@ -50,7 +58,7 @@ class Props {
 			}
 			$entity_slug = $post->post_type;
 
-			return Filter::props(
+			$entity_props = Filter::props(
 				$post_props ? $post_props : [],
 				"props",
 				[
@@ -62,6 +70,18 @@ class Props {
 			);
 		}
 
-		return null;
+		// params
+		$params = Filter::props(
+			$params,
+			"props_params",
+			[
+				"id" => $entity_id,
+				"slug" => $entity_slug,
+				"type" => $entity_type,
+			],
+			$options["custom_data"],
+		);
+
+		return ["entityProps" => $entity_props, "params" => $params];
 	}
 }
