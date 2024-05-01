@@ -38,6 +38,15 @@ class Config {
 	private static $layout_taxonomies = ["category", "post_tag"];
 
 	/**
+	 * @var bool
+	 */
+	private static $non_editor_front = false;
+	/**
+	 * @var array<string, array<string>>
+	 */
+	private static $non_editor_posts = [];
+
+	/**
 	 * @var array<string, string>
 	 */
 	private static $menu_locations = [];
@@ -138,6 +147,24 @@ class Config {
 	 */
 	public function layoutTaxonomies($taxonomies = []) {
 		self::$layout_taxonomies = array_merge($taxonomies, self::$layout_taxonomies);
+		return $this;
+	}
+
+	/**
+	 * @param bool $non_editor_front
+	 * @return Config
+	 */
+	public function nonEditorFront($non_editor_front) {
+		self::$non_editor_front = $non_editor_front;
+		return $this;
+	}
+
+	/**
+	 * @param array<string, array<string>> $post_types
+	 * @return Config
+	 */
+	public function nonEditorPosts($post_types) {
+		self::$non_editor_posts = $post_types;
 		return $this;
 	}
 
@@ -243,6 +270,20 @@ class Config {
 		 */
 		$filtered = is_array($filtered_result) ? $filtered_result : [];
 		return $filtered;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public static function getNonEditorFront() {
+		return self::$non_editor_front;
+	}
+
+	/**
+	 * @return array<string, array<string>>
+	 */
+	public static function getNonEditorPosts() {
+		return self::$non_editor_posts;
 	}
 
 	/**

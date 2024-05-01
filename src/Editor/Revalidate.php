@@ -31,6 +31,7 @@ class Revalidate {
 			999,
 		);
 
+		// Clear cache on save posts
 		add_action(
 			"save_post",
 			function () use ($next_url, $data_token) {
@@ -42,6 +43,7 @@ class Revalidate {
 			999,
 		);
 
+		// Clear cache on save terms
 		add_action(
 			"edited_term",
 			function () use ($next_url, $data_token) {
