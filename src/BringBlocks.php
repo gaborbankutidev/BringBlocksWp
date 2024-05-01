@@ -12,6 +12,7 @@ use Bring\BlocksWP\Client\Client;
 use Bring\BlocksWP\Dynamic\Dynamic;
 use Bring\BlocksWP\Exceptions\ConfigNotInitializedException;
 use Bring\BlocksWP\Form\Form;
+use Bring\BlocksWP\Modules\Modules;
 
 class BringBlocks {
 	/**
@@ -28,6 +29,7 @@ class BringBlocks {
 		Cache::init();
 
 		Config::getForms() && Form::init();
+		Modules::init();
 	}
 
 	/**

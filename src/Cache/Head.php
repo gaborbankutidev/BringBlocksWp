@@ -25,7 +25,7 @@ class Head {
 
 		// Update transient & cached urls
 		$updated = set_transient("bring_cache_$url", $fetched_head, 7 * DAY_IN_SECONDS);
-		$updated && Urls::updateCachedUrl($url);
+		$updated && self::updateCachedUrl($url);
 
 		return $fetched_head;
 	}
@@ -79,5 +79,35 @@ class Head {
 		return [
 			"response_code" => $response_code,
 		];
+	}
+
+	/**
+	 * Adds a URL to the cached urls option with the current date and time
+	 *
+	 * @param string $url
+	 * @return void
+	 */
+	public static function updateCachedUrl($url) {
+		/**
+		 * @var array<string, string> $cached_urls
+		 */
+		$cached_urls = get_option("bring_cache_urls", []);
+
+		$cached_urls[$url] = date("Y-m-d H:i:s");
+		update_option("bring_cache_urls", $cached_urls);
+	}
+
+	/**
+	 * Adds a URL to the cached urls option with the current date and time
+	 *
+	 * @return array<string, string>
+	 */
+	public static function getCachedUrls() {
+		/**
+		 * @var array<string, string> $cached_urls
+		 */
+		$cached_urls = get_option("bring_cache_urls", []);
+
+		return $cached_urls;
 	}
 }

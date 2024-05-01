@@ -73,6 +73,16 @@ class Config {
 	private static $forms = [];
 
 	/**
+	 * @var bool
+	 */
+	private static $cacheContentHtml = false;
+
+	/**
+	 * @var bool
+	 */
+	private static $rankMath = false;
+
+	/**
 	 * @var array<string>
 	 */
 	private static $blocks = ["postcontent"];
@@ -204,6 +214,24 @@ class Config {
 		return $this;
 	}
 
+	/**
+	 * @param bool $v
+	 * @return Config
+	 */
+	public function cacheContentHtml($v = true) {
+		self::$cacheContentHtml = $v;
+		return $this;
+	}
+
+	/**
+	 * @param bool $v
+	 * @return Config
+	 */
+	public function useRankMath($v = true) {
+		self::$rankMath = $v;
+		return $this;
+	}
+
 	// Init & Public static getter methods
 	/**
 	 * @param array{DATA_TOKEN:string,JWT_SECRET_KEY:string,NEXT_URL:string} $env
@@ -327,6 +355,25 @@ class Config {
 		 */
 		$filtered = is_array($filtered_result) ? $filtered_result : [];
 		return $filtered;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public static function getCacheContentHtml() {
+		// If Rank Math is enabled, we need to cache content html
+		if (self::$rankMath) {
+			return true;
+		}
+
+		return self::$cacheContentHtml;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public static function getRankMath() {
+		return self::$rankMath;
 	}
 
 	/**

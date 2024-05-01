@@ -23,7 +23,7 @@ class Enqueue {
 
 		// editor styles
 		wp_enqueue_style(
-			"editor-styles",
+			"bring-editor-styles",
 			get_template_directory_uri() . "/vendor/bring/blocks-wp/assets/editor.css",
 			[],
 			$theme_version,
@@ -58,9 +58,5 @@ class Enqueue {
 		wp_localize_script("bring-blocks-scripts", "jwt", [
 			"token" => Utils\Api::generateToken(),
 		]);
-
-		// set bring cache
-		// TODO: refactor
-		//wp_localize_script("bring-blocks-scripts", "bringCache", Render::get_bring_cache());
 	}
 }
