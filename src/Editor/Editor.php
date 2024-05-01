@@ -32,6 +32,10 @@ class Editor {
 	 * @return void
 	 */
 	private static function nonEditorPosts() {
+		if (!isset($_GET["post"])) {
+			return;
+		}
+
 		$entity_id = sanitize_text_field($_GET["post"]);
 		if (!is_numeric($entity_id)) {
 			return;

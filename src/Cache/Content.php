@@ -123,8 +123,8 @@ class Content {
 	 * @return void
 	 */
 	private static function localize() {
-		$post_id = sanitize_text_field($_GET["post"]);
-		$terms_id = sanitize_text_field($_GET["tag_ID"]);
+		$post_id = isset($_GET["post"]) ? sanitize_text_field($_GET["post"]) : "";
+		$terms_id = isset($_GET["post"]) ? sanitize_text_field($_GET["tag_ID"]) : "";
 
 		$entity_id = 0;
 		$entity_slug = "";

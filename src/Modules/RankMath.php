@@ -42,7 +42,7 @@ class RankMath {
 		wp_enqueue_script(
 			"bring-rankmath-scripts",
 			get_stylesheet_directory_uri() . "/vendor/bring/blocks-wp/assets/rankmath.js",
-			["rank-math-editor"],
+			[],
 			$theme_version,
 		);
 	}

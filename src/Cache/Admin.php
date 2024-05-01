@@ -113,9 +113,11 @@ class Admin {
 			}
 		}
 
-		$filter_value = in_array($_GET["type"], ["all", "success", "redirect", "not_found", "other"])
-			? $_GET["type"]
-			: "all";
+		$filter_value =
+			isset($_GET["type"]) &&
+			in_array($_GET["type"], ["all", "success", "redirect", "not_found", "other"])
+				? $_GET["type"]
+				: "all";
 
 		$filter = [];
 		foreach ($urls as $type => $items) {

@@ -161,11 +161,11 @@ class Config {
 	}
 
 	/**
-	 * @param bool $non_editor_front
+	 * @param bool $v
 	 * @return Config
 	 */
-	public function nonEditorFront($non_editor_front) {
-		self::$non_editor_front = $non_editor_front;
+	public function nonEditorFront($v = true) {
+		self::$non_editor_front = $v;
 		return $this;
 	}
 

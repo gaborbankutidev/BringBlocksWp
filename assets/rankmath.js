@@ -51,8 +51,23 @@
 		rankMathEditor.refresh();
 	}
 
+	function init($attempt = 0) {
+		if (window.rankMathEditor) {
+			updateRankMathGutenbergAnalyser();
+			updateRankMathEditorAnalyser();
+			return;
+		}
+
+		if ($attempt > 10) {
+			return;
+		}
+
+		setTimeout(function () {
+			init($attempt + 1);
+		}, 500);
+	}
+
 	document.addEventListener("DOMContentLoaded", function () {
-		updateRankMathGutenbergAnalyser();
-		updateRankMathEditorAnalyser();
+		init();
 	});
 })();
