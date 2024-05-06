@@ -116,16 +116,10 @@ class Admin {
 		}
 
 		/**
-		 * @var string $form_data
+		 * @var array<mixed>|false $form_data
 		 */
 		$form_data = get_post_meta($form_submission_id, "form_data", true);
-
-		if (empty($form_data) || !is_string($form_data)) {
-			return;
-		}
-
-		$form_data = unserialize($form_data);
-		if (!is_array($form_data) || !count($form_data)) {
+		if (!is_array($form_data) || empty($form_data)) {
 			return;
 		}
 

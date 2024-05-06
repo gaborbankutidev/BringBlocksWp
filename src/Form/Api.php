@@ -92,7 +92,9 @@ class Api {
 				continue;
 			}
 
-			$form_data[$field_name] = sanitize_text_field($submitted_fields[$field_name]);
+			$form_data[$field_name] = is_array($submitted_fields[$field_name])
+				? $submitted_fields[$field_name]
+				: sanitize_text_field($submitted_fields[$field_name]);
 		}
 
 		// insert form submission
@@ -114,7 +116,7 @@ class Api {
 
 		if (
 			!update_post_meta($submission_id, "form_name", $form_name) ||
-			!update_post_meta($submission_id, "form_data", serialize($form_data))
+			!update_post_meta($submission_id, "form_data", $form_data)
 		) {
 			return new WP_REST_Response(
 				[
