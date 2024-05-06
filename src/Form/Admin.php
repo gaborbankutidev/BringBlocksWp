@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Bring\BlocksWP\Form;
 
 use Bring\BlocksWP\Config;
+use Bring\BlocksWP\Utils;
 use WP_Query;
 
 class Admin {
@@ -170,21 +171,19 @@ class Admin {
 		echo "<div style='margin-bottom: 16px;'>Form name: $form_name</div>";
 
 		/**
-		 * @var string $form_data
+		 * @var array<mixed>|false $form_data
 		 */
 		$form_data = get_post_meta($form_submission_id, "form_data", true);
-
-		if (empty($form_data) || !is_string($form_data)) {
-			return;
-		}
-
-		$form_data = unserialize($form_data);
-		if (!is_array($form_data) || !count($form_data)) {
+		if (!is_array($form_data) || empty($form_data)) {
 			return;
 		}
 
 		$content = "";
 		foreach ($form_data as $name => $value) {
+			if (is_array($value)) {
+				$value = Utils\General::varDumpToString($value);
+			}
+
 			$content .= "
 				<div style='display: flex; margin-bottom: 8px;'>
 					<div style='width: 200px; font-weight:600;'>$name</div>
