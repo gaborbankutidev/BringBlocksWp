@@ -41,7 +41,7 @@ class RankMath {
 
 		wp_enqueue_script(
 			"bring-rankmath-scripts",
-			get_stylesheet_directory_uri() . "/vendor/bring/blocks-wp/assets/rankmath.js",
+			get_template_directory_uri() . "/vendor/bring/blocks-wp/assets/rankmath.js",
 			[],
 			$theme_version,
 		);

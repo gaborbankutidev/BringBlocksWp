@@ -12,16 +12,16 @@ class Next {
 	 */
 	public static function init() {
 		$data_token = Config::getEnv()["DATA_TOKEN"];
-		$next_url = Config::getEnv()["NEXT_URL"];
+		$next_base_url = Config::getEnv()["NEXT_BASE_URL"];
 
 		// Clear cache on save posts
 		add_action(
 			"save_post",
-			function () use ($next_url, $data_token) {
+			function () use ($next_base_url, $data_token) {
 				if (defined("DOING_AUTOSAVE") && DOING_AUTOSAVE) {
 					return;
 				}
-				wp_remote_get("{$next_url}/api/clear-cache?token={$data_token}");
+				wp_remote_get("{$next_base_url}/api/clear-cache?token={$data_token}");
 			},
 			999,
 		);
@@ -29,8 +29,8 @@ class Next {
 		// Clear cache on save terms
 		add_action(
 			"edited_term",
-			function () use ($next_url, $data_token) {
-				wp_remote_get("{$next_url}/api/clear-cache?token={$data_token}");
+			function () use ($next_base_url, $data_token) {
+				wp_remote_get("{$next_base_url}/api/clear-cache?token={$data_token}");
 			},
 			999,
 		);

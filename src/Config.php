@@ -88,7 +88,12 @@ class Config {
 	private static $blocks = ["postcontent"];
 
 	/**
-	 * @var array{DATA_TOKEN:string,JWT_SECRET_KEY:string,NEXT_URL:string}|null
+	 * @var array<string>
+	 */
+	private static $ignore_paths = [];
+
+	/**
+	 * @var array{DATA_TOKEN:string,JWT_SECRET_KEY:string,NEXT_BASE_URL:string}|null
 	 */
 	private static $env = null;
 
@@ -232,9 +237,18 @@ class Config {
 		return $this;
 	}
 
+	/**
+	 * @param array<string> $paths
+	 * @return Config
+	 */
+	public function ignorePaths($paths) {
+		self::$ignore_paths = $paths;
+		return $this;
+	}
+
 	// Init & Public static getter methods
 	/**
-	 * @param array{DATA_TOKEN:string,JWT_SECRET_KEY:string,NEXT_URL:string} $env
+	 * @param array{DATA_TOKEN:string,JWT_SECRET_KEY:string,NEXT_BASE_URL:string} $env
 	 * @return Config
 	 */
 	public static function init($env) {
@@ -280,7 +294,10 @@ class Config {
 	 * @return array<string>
 	 */
 	public static function getLayoutPostTypes() {
-		$filtered_result = apply_filters("bring_blocks_layout_post_types", self::$layout_post_types);
+		$filtered_result = apply_filters(
+			"bring_blocks_layout_post_types",
+			self::$layout_post_types,
+		);
 		/**
 		 * @var array<string> TODO: This should be fixed without typecasting
 		 */
@@ -292,7 +309,10 @@ class Config {
 	 * @return array<string>
 	 */
 	public static function getLayoutTaxonomies() {
-		$filtered_result = apply_filters("bring_blocks_layout_taxonomies", self::$layout_taxonomies);
+		$filtered_result = apply_filters(
+			"bring_blocks_layout_taxonomies",
+			self::$layout_taxonomies,
+		);
 		/**
 		 * @var array<string> TODO: This should be fixed without typecasting
 		 */
@@ -377,7 +397,7 @@ class Config {
 	}
 
 	/**
-	 * @return array{DATA_TOKEN:string,JWT_SECRET_KEY:string,NEXT_URL:string}
+	 * @return array{DATA_TOKEN:string,JWT_SECRET_KEY:string,NEXT_BASE_URL:string}
 	 */
 	public static function getEnv() {
 		if (self::$env === null) {
@@ -393,5 +413,12 @@ class Config {
 	 */
 	public static function getIsInitialized() {
 		return self::$is_initialized;
+	}
+
+	/**
+	 * @return array<string>
+	 */
+	public static function getIgnorePaths() {
+		return self::$ignore_paths;
 	}
 }

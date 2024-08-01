@@ -80,7 +80,9 @@ class Content {
 		}
 
 		// query if meta is empty
-		$url = Config::getEnv()["NEXT_URL"] . Utils\General::getEntityUrl($entity_id, $entity_type);
+		$url =
+			Config::getEnv()["NEXT_BASE_URL"] .
+			Utils\General::getEntityUrl($entity_id, $entity_type);
 
 		$response = wp_remote_get($url);
 		if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {

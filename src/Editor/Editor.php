@@ -17,7 +17,8 @@ class Editor {
 
 		// Add favicon
 		add_action("admin_head", function () {
-			$fav_url = get_template_directory_uri() . "/vendor/bring/blocks-wp/assets/bring-icon.png";
+			$fav_url =
+				get_template_directory_uri() . "/vendor/bring/blocks-wp/assets/bring-icon.png";
 			echo "<link rel='shortcut icon' href='$fav_url' />\n";
 		});
 

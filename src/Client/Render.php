@@ -38,10 +38,16 @@ class Render {
 			return;
 		}
 
+		// Bypass for paths listed in config
+		$ignore_paths = Config::getIgnorePaths();
+		if (in_array($wp->request, $ignore_paths)) {
+			return;
+		}
+
 		// Redirect to next site if data token is not set
 		$data_token = isset($_GET["data_token"]) ? strval($_GET["data_token"]) : null;
 		if (!$data_token) {
-			wp_redirect(Config::getEnv()["NEXT_URL"] . "/" . $wp->request);
+			wp_redirect(Config::getEnv()["NEXT_BASE_URL"] . "/" . $wp->request);
 			exit();
 		}
 
@@ -62,7 +68,10 @@ class Render {
 		$update = isset($_GET["updateCache"]) ? strval($_GET["updateCache"]) : null;
 		if ($update && $update === "1") {
 			$new_head = Head::updateHead($request_url);
-			wp_send_json(["Message" => "Url cache updated for " . $request_url, "Value" => $new_head], 200);
+			wp_send_json(
+				["Message" => "Url cache updated for " . $request_url, "Value" => $new_head],
+				200,
+			);
 		}
 
 		$head = Head::getHead($request_url);
@@ -91,7 +100,11 @@ class Render {
 			wp_send_json(
 				[
 					"responseCode" => $response_code,
-					"redirectTo" => str_replace("?bypass=1", "", str_replace(home_url(), "", $redirect_location)),
+					"redirectTo" => str_replace(
+						"?bypass=1",
+						"",
+						str_replace(home_url(), "", $redirect_location),
+					),
 					"entity" => null,
 				],
 				$response_code,
@@ -147,12 +160,15 @@ class Render {
 			"slug" => $entitySlug,
 			"type" => $entityType,
 
-			"props" => $entityId && $entityType ? Props::getEntityProps($entityId, $entityType) : null,
+			"props" =>
+				$entityId && $entityType ? Props::getEntityProps($entityId, $entityType) : null,
 			"content" => [
 				"header" => Content::getHeader(),
 				"footer" => Content::getFooter(),
 				"layout" =>
-					is_string($entitySlug) && $entityType ? Content::getLayout($entitySlug, $entityType) : null,
+					is_string($entitySlug) && $entityType
+						? Content::getLayout($entitySlug, $entityType)
+						: null,
 				"main" => $main,
 			],
 		];

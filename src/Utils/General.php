@@ -81,7 +81,11 @@ class General {
 	 *
 	 * @return array{src:string,alt:string,id:int|null}
 	 */
-	public static function getEntityImage(int $entity_id, $entity_type = "post", $size = "thumbnail") {
+	public static function getEntityImage(
+		int $entity_id,
+		$entity_type = "post",
+		$size = "thumbnail",
+	) {
 		$image_id = 0;
 
 		// get meta data

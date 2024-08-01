@@ -12,7 +12,7 @@ class Admin {
 	 */
 	public static function init() {
 		$data_token = Config::getEnv()["DATA_TOKEN"];
-		$next_url = Config::getEnv()["NEXT_URL"];
+		$next_base_url = Config::getEnv()["NEXT_BASE_URL"];
 
 		// Cached URLs filter
 		add_filter("query_vars", self::addQueryVar(...));
@@ -23,11 +23,11 @@ class Admin {
 		// Add Clear next cache button to admin bar
 		add_action(
 			"admin_bar_menu",
-			function ($wp_admin_bar) use ($next_url, $data_token) {
+			function ($wp_admin_bar) use ($next_base_url, $data_token) {
 				$args = [
 					"id" => "bring_clear_cache",
 					"title" => "Clear cache",
-					"href" => "{$next_url}/api/clear-cache?token={$data_token}",
+					"href" => "{$next_base_url}/api/clear-cache?token={$data_token}",
 					"meta" => [
 						"class" => "custom-button-class",
 						"target" => "_blank",
@@ -84,7 +84,9 @@ class Admin {
 			$cached_value = Head::getHead($url);
 			$url = $url ? $url : "/";
 			$response_code = $cached_value["response_code"];
-			$redirect_to = isset($cached_value["redirect_to"]) ? " -> " . $cached_value["redirect_to"] : "";
+			$redirect_to = isset($cached_value["redirect_to"])
+				? " -> " . $cached_value["redirect_to"]
+				: "";
 
 			$value = [
 				"url" => $url,
@@ -150,7 +152,11 @@ class Admin {
 		$list = "";
 		foreach ($urls[$filter_value] as $item) {
 			$update_url =
-				home_url() . "/" . $item["url"] . "?updateCache=1&data_token=" . Config::getEnv()["DATA_TOKEN"];
+				home_url() .
+				"/" .
+				$item["url"] .
+				"?updateCache=1&data_token=" .
+				Config::getEnv()["DATA_TOKEN"];
 
 			$list .= "
 				<tr>

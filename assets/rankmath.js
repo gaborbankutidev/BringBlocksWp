@@ -45,7 +45,8 @@
 		}
 
 		// Override content on _data
-		window.rankMathEditor.assessor.dataCollector._data.content = window.bringContentHtml.value ?? "";
+		window.rankMathEditor.assessor.dataCollector._data.content =
+			window.bringContentHtml.value ?? "";
 
 		// Refresh score
 		rankMathEditor.refresh();

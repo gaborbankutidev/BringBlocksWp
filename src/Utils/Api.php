@@ -147,7 +147,7 @@ class Api {
 		// Generating token for user
 		$payload = [
 			"iss" => get_site_url(),
-			"aud" => Config::getEnv()["NEXT_URL"],
+			"aud" => Config::getEnv()["NEXT_BASE_URL"],
 			"exp" => time() + 60 * 60 * 24 * 14, // Expiration Time, 2 weeks
 			"iat" => time(), // Issued At: current time
 			"userId" => $user_id,
