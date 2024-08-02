@@ -1,5 +1,9 @@
 {
+	"name": "@bring/blocks-wp",
+	"version": "0.3.0",
+	"private": true,
 	"scripts": {
+		"copy:version": "node ./scripts/copy-version.mjs",
 		"lint": "vendor/bin/phpstan analyse"
 	}
 }

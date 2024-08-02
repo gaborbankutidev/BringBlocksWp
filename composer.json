@@ -1,7 +1,9 @@
 {
+	"$schema": "https://raw.githubusercontent.com/composer/composer/main/res/composer-schema.json",
 	"name": "bring/blocks-wp",
+	"description": "Bring BlocksWP",
 	"type": "library",
-	"version": "0.2.33",
+	"license": "GPL-2.0-or-later",
 	"autoload": {
 		"psr-4": {
 			"Bring\\BlocksWP\\": "src/"

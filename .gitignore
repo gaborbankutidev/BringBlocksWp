@@ -1,7 +1,26 @@
+# turbo
+.turbo
+
+# docs
+docs/typedoc
+
+# yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
 # dependencies
 vendor
 node_modules
 
+# production
+build
+dist
+
 # misc
 .DS_Store
 *.pem
+
