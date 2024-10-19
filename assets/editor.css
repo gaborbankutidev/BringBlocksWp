@@ -10,7 +10,7 @@ html :where(.wp-block) {
 	width: 40px;
 	height: 40px;
 	background-size: contain;
-	background-image: url("/wp-content/themes/bring-theme/vendor/bring/blocks-wp/assets/bring-icon.png");
+	background-image: url("/wp-content/plugins/bring-app/vendor/bring/blocks-wp/assets/bring-icon.png");
 }
 
 .editor-styles-wrapper .is-root-container p {

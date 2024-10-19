@@ -1,5 +1,11 @@
 # @bring/blocks-wp
 
+## 2.0.0
+
+### Major Changes
+
+-   502f5bd: Move the Bring App functionality into a plugin.
+
 ## 1.0.0
 
 ## 0.3.3

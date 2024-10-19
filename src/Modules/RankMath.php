@@ -32,8 +32,6 @@ class RankMath {
 	 * @return void
 	 */
 	private static function enqueue() {
-		$theme_version = wp_get_theme()->get("Version");
-
 		// Check if the rankmath script is enqueued
 		if (!wp_script_is("rank-math-editor", "enqueued")) {
 			return;
@@ -41,9 +39,9 @@ class RankMath {
 
 		wp_enqueue_script(
 			"bring-rankmath-scripts",
-			get_template_directory_uri() . "/vendor/bring/blocks-wp/assets/rankmath.js",
+			plugin_dir_url(dirname(__FILE__)) . "../assets/rankmath.js",
 			[],
-			$theme_version,
+			BRING_APP_VERSION,
 		);
 	}
 }
