@@ -1,5 +1,11 @@
 # @bring/blocks-wp
 
+## 2.0.1
+
+### Patch Changes
+
+-   f4550aa: Fix logo duplication issue in block editor
+
 ## 2.0.0
 
 ### Major Changes

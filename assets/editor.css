@@ -4,12 +4,14 @@ html :where(.wp-block) {
 
 .editor-styles-wrapper::after {
 	content: "";
+	display: block;
 	position: absolute;
 	top: 24px;
 	left: 8px;
 	width: 40px;
-	height: 40px;
+	height: 40px !important;
 	background-size: contain;
+	background-repeat: no-repeat;
 	background-image: url("/wp-content/plugins/bring-app/vendor/bring/blocks-wp/assets/bring-icon.png");
 }
 
