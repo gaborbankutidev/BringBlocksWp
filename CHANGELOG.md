@@ -1,5 +1,11 @@
 # @bring/blocks-wp
 
+## 2.1.0
+
+### Minor Changes
+
+-   3b61fb2: Disable caching by default, remove obsolete revalidate endpoint
+
 ## 2.0.1
 
 ### Patch Changes

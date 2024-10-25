@@ -14,6 +14,5 @@ class Cache {
 		Admin::init();
 		Config::getCacheContentHtml() && Content::init();
 		Config::getCacheContentHtml() && Api::init();
-		Next::init();
 	}
 }
