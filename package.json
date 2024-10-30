@@ -1,8 +1,8 @@
 {
 	"name": "@bring/blocks-wp",
-	"version": "2.1.1",
+	"version": "2.2.0",
 	"private": true,
 	"scripts": {
-		"lint": "vendor/bin/phpstan analyse"
+		"lint": "composer lint"
 	}
 }

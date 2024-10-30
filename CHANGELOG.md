@@ -1,5 +1,11 @@
 # @bring/blocks-wp
 
+## 2.2.0
+
+### Minor Changes
+
+-   562a637: Add redirect handling logic and admin interface to register redirects
+
 ## 2.1.1
 
 ## 2.1.0

@@ -11,7 +11,6 @@ class Cache {
 	 * @return void
 	 */
 	public static function init() {
-		Admin::init();
 		Config::getCacheContentHtml() && Content::init();
 		Config::getCacheContentHtml() && Api::init();
 	}

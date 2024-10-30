@@ -10,7 +10,7 @@
 		}
 	},
 	"scripts": {
-		"lint": "vendor/bin/phpstan analyse"
+		"lint": "vendor/bin/phpstan analyse --memory-limit=1G"
 	},
 	"authors": [
 		{

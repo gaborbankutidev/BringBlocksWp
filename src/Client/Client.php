@@ -11,7 +11,7 @@ class Client {
 	 * @return void
 	 */
 	public static function init() {
-		Render::init();
+		Api::init();
 
 		// Add menu
 		add_action("init", function () {
