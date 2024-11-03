@@ -47,6 +47,34 @@ class General {
 	}
 
 	/**
+	 * Returns the edit url of the entity
+	 *
+	 * @param int $entity_id
+	 * @param "post"|"taxonomy"|"author" $entity_type
+	 * @return string
+	 */
+	public static function getEntityEditUrl($entity_id, $entity_type = "post") {
+		$url = null;
+
+		$entity_type === "post" && ($url = get_edit_post_link($entity_id, ""));
+
+		if ($entity_type === "taxonomy") {
+			$term = get_term($entity_id);
+			if ($term instanceof WP_Term) {
+				$url = admin_url("term.php?taxonomy={$term->taxonomy}&tag_ID=$entity_id");
+			}
+		}
+
+		$entity_type === "author" && ($url = admin_url("user-edit.php?user_id=$entity_id"));
+
+		if (empty($url)) {
+			return "";
+		}
+
+		return $url;
+	}
+
+	/**
 	 * Returns image by attachment id in ImageType format
 	 *
 	 * @param int $image_id

@@ -23,6 +23,7 @@ class Props {
 	 * 		description:string|null,
 	 * 		slug:string,
 	 * 		url:string,
+	 * 		editUrl:string|null,
 	 *		entityType:string,
 	 * 		entitySlug:string,
 	 * 		entityId:int
@@ -54,6 +55,7 @@ class Props {
 	 * 		description:string|null,
 	 * 		slug:string,
 	 * 		url:string,
+	 * 		editUrl:string|null,
 	 *		entityType:string,
 	 * 		entitySlug:string,
 	 * 		entityId:int
@@ -83,6 +85,10 @@ class Props {
 		$description_meta = $user_meta["description"];
 		$description = is_string($description_meta) ? $description_meta : null;
 		$url = General::getEntityUrl($entity_id, "author");
+		$edit_url = current_user_can("edit_user", $entity_id)
+			? General::getEntityEditUrl($entity_id, "author")
+			: null;
+
 		$entity_type = "author";
 
 		return [
@@ -92,6 +98,7 @@ class Props {
 			"excerpt" => $excerpt,
 			"slug" => "",
 			"url" => $url,
+			"editUrl" => $edit_url,
 			"entityType" => $entity_type,
 			"entitySlug" => "",
 			"entityId" => $entity_id,
@@ -111,6 +118,7 @@ class Props {
 	 * 		description:string|null,
 	 * 		slug:string,
 	 * 		url:string,
+	 * 		editUrl:string|null,
 	 * 		entityType:string,
 	 * 		entitySlug:string,
 	 * 		entityId:int
@@ -127,6 +135,9 @@ class Props {
 		$image = General::getEntityImage($entity_id, "taxonomy", "full");
 		$slug = $term->slug;
 		$url = General::getEntityUrl($entity_id, "taxonomy");
+		$edit_url = current_user_can("edit_term", $entity_id)
+			? General::getEntityEditUrl($entity_id, "taxonomy")
+			: null;
 
 		$excerpt_meta = get_term_meta($entity_id, "excerpt", true);
 		$excerpt = is_string($excerpt_meta) ? $excerpt_meta : null;
@@ -140,6 +151,7 @@ class Props {
 			"description" => $description,
 			"slug" => $slug,
 			"url" => $url,
+			"editUrl" => $edit_url,
 			"entityType" => $entity_type,
 			"entitySlug" => $entity_slug,
 			"entityId" => $entity_id,
@@ -159,6 +171,7 @@ class Props {
 	 * 		excerpt:string|null,
 	 * 		description:string|null,
 	 * 		url:string,
+	 * 		editUrl:string|null,
 	 * 		entityType:string,
 	 * 		entitySlug:string,
 	 * 		entityId:int
@@ -185,6 +198,9 @@ class Props {
 		$slug = $post->post_name;
 
 		$url = General::getEntityUrl($entity_id);
+		$edit_url = current_user_can("edit_post", $entity_id)
+			? General::getEntityEditUrl($entity_id)
+			: null;
 
 		$entity_type = "post";
 
@@ -195,6 +211,7 @@ class Props {
 			"excerpt" => $excerpt,
 			"description" => $description,
 			"url" => $url,
+			"editUrl" => $edit_url,
 			"entityType" => $entity_type,
 			"entitySlug" => $entity_slug,
 			"entityId" => $entity_id,

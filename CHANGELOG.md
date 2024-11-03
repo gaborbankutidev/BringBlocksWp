@@ -1,5 +1,11 @@
 # @bring/blocks-wp
 
+## 2.5.0
+
+### Minor Changes
+
+-   79380f1: Add edit url to entity props for users with sufficient permissions
+
 ## 2.4.0
 
 ### Minor Changes

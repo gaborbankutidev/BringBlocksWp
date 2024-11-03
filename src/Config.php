@@ -60,6 +60,7 @@ class Config {
 		"entitySlug",
 		"slug",
 		"url",
+		"editUrl",
 
 		"name",
 		"image",
