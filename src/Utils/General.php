@@ -37,7 +37,13 @@ class General {
 			return "";
 		}
 
-		return str_replace(home_url(), "", $url);
+		// remove home url
+		$url = str_replace(home_url(), "", $url);
+
+		// remove trailing slash
+		$url = rtrim($url, "/");
+
+		return $url;
 	}
 
 	/**

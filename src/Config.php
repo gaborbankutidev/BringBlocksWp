@@ -93,6 +93,11 @@ class Config {
 	private static $ignore_paths = [];
 
 	/**
+	 * @var array{posts:array<string>,taxonomies:array<string>,authors:bool}|false
+	 */
+	private static $sitemap = false;
+
+	/**
 	 * @var array{DATA_TOKEN:string,JWT_SECRET_KEY:string,NEXT_BASE_URL:string}|null
 	 */
 	private static $env = null;
@@ -243,6 +248,35 @@ class Config {
 	 */
 	public function ignorePaths($paths) {
 		self::$ignore_paths = $paths;
+		return $this;
+	}
+
+	/**
+	 * @param array{posts?:array<string>|false,taxonomies?:array<string>|false,authors?:bool}|false $sitemap
+	 * @return Config
+	 */
+	public function sitemap($sitemap) {
+		if (!$sitemap) {
+			self::$sitemap = false;
+			return $this;
+		}
+
+		self::$sitemap = [
+			"posts" => [],
+			"taxonomies" => [],
+			"authors" => false,
+		];
+
+		isset($sitemap["posts"]) &&
+			$sitemap["posts"] &&
+			(self::$sitemap["posts"] = $sitemap["posts"]);
+
+		isset($sitemap["taxonomies"]) &&
+			$sitemap["taxonomies"] &&
+			(self::$sitemap["taxonomies"] = $sitemap["taxonomies"]);
+
+		isset($sitemap["authors"]) && (self::$sitemap["authors"] = $sitemap["authors"]);
+
 		return $this;
 	}
 
@@ -420,5 +454,12 @@ class Config {
 	 */
 	public static function getIgnorePaths() {
 		return self::$ignore_paths;
+	}
+
+	/**
+	 * @return array{posts:array<string>,taxonomies:array<string>,authors:bool}|false
+	 */
+	public static function getSitemap() {
+		return self::$sitemap;
 	}
 }

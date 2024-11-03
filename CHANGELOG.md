@@ -1,5 +1,11 @@
 # @bring/blocks-wp
 
+## 2.4.0
+
+### Minor Changes
+
+-   d1d8842: Add sitemap generation
+
 ## 2.3.0
 
 ### Minor Changes

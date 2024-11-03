@@ -14,6 +14,7 @@ use Bring\BlocksWP\Exceptions\ConfigNotInitializedException;
 use Bring\BlocksWP\Form\Form;
 use Bring\BlocksWP\Modules\Modules;
 use Bring\BlocksWP\Redirects\Redirects;
+use Bring\BlocksWP\Sitemap\Sitemap;
 
 if (!defined("BRING_APP_VERSION")) {
 	define("BRING_APP_VERSION", "1.0.0");
@@ -72,6 +73,7 @@ class BringBlocks {
 		Cache::init();
 		Redirects::init();
 
+		Config::getSitemap() && Sitemap::init();
 		Config::getForms() && Form::init();
 		Modules::init();
 	}
