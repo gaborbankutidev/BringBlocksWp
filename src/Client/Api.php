@@ -94,14 +94,8 @@ class Api {
 		// Parse permalink & set wp globals -> The rest api request will be handled as a normal request so all WP Query functions will work
 		$parsed = Parse::parsePermalink($permalink);
 
-		if ($parsed) {
-			$wp->query_posts();
-			$wp->handle_404();
-			$wp->register_globals();
-		}
-
 		// Handle 404
-		if (is_404()) {
+		if (is_404() || !$parsed) {
 			return new WP_REST_Response(
 				[
 					"responseCode" => "404",

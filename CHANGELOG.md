@@ -1,5 +1,11 @@
 # @bring/blocks-wp
 
+## 2.3.0
+
+### Minor Changes
+
+-   1c0348e: Enforce WordPress permalink setting to "/%postname%/"
+
 ## 2.2.0
 
 ### Minor Changes

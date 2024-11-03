@@ -345,6 +345,11 @@ class Parse {
 		 */
 		do_action_ref_array("parse_request", [&$wp]);
 
+		// Set up the WordPress query and other globals
+		$wp->query_posts();
+		$wp->handle_404();
+		$wp->register_globals();
+
 		return true;
 	}
 }

@@ -11,6 +11,7 @@ class Client {
 	 * @return void
 	 */
 	public static function init() {
+		Permalinks::init();
 		Api::init();
 
 		// Add menu
