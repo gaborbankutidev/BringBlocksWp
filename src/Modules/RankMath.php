@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Bring\BlocksWP\Modules;
 
 use Bring\BlocksWP\Cache\Content;
+use Bring\BlocksWP\Config;
 
 class RankMath {
 	/**
@@ -41,7 +42,7 @@ class RankMath {
 			"bring-rankmath-scripts",
 			plugin_dir_url(dirname(__FILE__)) . "../assets/rankmath.js",
 			[],
-			BRING_APP_VERSION,
+			Config::getEnv()["BRING_APP_VERSION"],
 		);
 	}
 }

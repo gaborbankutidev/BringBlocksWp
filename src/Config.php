@@ -99,7 +99,7 @@ class Config {
 	private static $sitemap = false;
 
 	/**
-	 * @var array{DATA_TOKEN:string,JWT_SECRET_KEY:string,NEXT_BASE_URL:string}|null
+	 * @var array{JWT_SECRET_KEY:string,NEXT_BASE_URL:string,BRING_APP_PLUGIN_PATH:string,BRING_APP_PLUGIN_URL:string,BRING_APP_VERSION:string}|null
 	 */
 	private static $env = null;
 
@@ -109,6 +109,9 @@ class Config {
 	}
 
 	/**
+	 * Turn on/off header layout feature.
+	 * Users can build their own header with blocks and set default header in the theme settings.
+	 *
 	 * @param bool $v
 	 * @return Config
 	 */
@@ -118,6 +121,9 @@ class Config {
 	}
 
 	/**
+	 * Turn on/off footer layout feature.
+	 * Users can build their own footer with blocks and set default footer in the theme settings.
+	 *
 	 * @param bool $v
 	 * @return Config
 	 */
@@ -127,6 +133,9 @@ class Config {
 	}
 
 	/**
+	 * Turn on/off layout feature.
+	 * Users can build their own layout with blocks and set default layouts for layout post types and taxonomies in the theme settings.
+	 *
 	 * @param bool $v
 	 * @return Config
 	 */
@@ -136,6 +145,10 @@ class Config {
 	}
 
 	/**
+	 * Turn on/off library feature.
+	 * Users can build reusable blocks from other blocks and use them in the editor.
+	 * This feature is not available yet.
+	 *
 	 * @param bool $v
 	 * @return Config
 	 */
@@ -145,6 +158,8 @@ class Config {
 	}
 
 	/**
+	 * Define post types that can be edited with blocks.
+	 *
 	 * @param array<string> $post_types
 	 * @return Config
 	 */
@@ -154,6 +169,8 @@ class Config {
 	}
 
 	/**
+	 * Define post types that can be used in layout.
+	 *
 	 * @param array<string> $post_types
 	 * @return Config
 	 */
@@ -163,6 +180,8 @@ class Config {
 	}
 
 	/**
+	 * Define taxonomies that can be used in layout.
+	 *
 	 * @param array<string> $taxonomies
 	 * @return Config
 	 */
@@ -172,6 +191,10 @@ class Config {
 	}
 
 	/**
+	 * Define if the front page can't be edited with blocks.
+	 * If nonEditorFront is true, the builder won't be loaded for the front page.
+	 * Other setting such as custom fields are still available.
+	 *
 	 * @param bool $v
 	 * @return Config
 	 */
@@ -181,6 +204,10 @@ class Config {
 	}
 
 	/**
+	 * Define post types that can't be edited with blocks by setting the slugs of the posts by post type.
+	 * For the slugs defined here the editor won't loaded.
+	 * Other setting such as custom fields are still available.
+	 *
 	 * @param array<string, array<string>> $post_types
 	 * @return Config
 	 */
@@ -190,6 +217,8 @@ class Config {
 	}
 
 	/**
+	 * Define the menu locations that can be used in the menu settings as selectable locations.
+	 *
 	 * @param array<string, string> $locations
 	 * @return Config
 	 */
@@ -199,6 +228,9 @@ class Config {
 	}
 
 	/**
+	 * Define the global entity props that are available in the return value of getEntity function.
+	 * Use the bring_{entityType}_props_{entitySlug} hook to set the props, entityProps are set null otherwise.
+	 *
 	 * @param array<string> $props
 	 * @return Config
 	 */
@@ -208,6 +240,8 @@ class Config {
 	}
 
 	/**
+	 * Define the allowed blocks in the editor.
+	 *
 	 * @param array<string> $blocks
 	 * @return Config
 	 */
@@ -217,6 +251,9 @@ class Config {
 	}
 
 	/**
+	 * Define the allowed forms.
+	 * You can use the bring_{form_name}_form_fields hook to set fields for the form and the bring_{form_name}_form_submission_mails hook to set the mail settings.
+	 *
 	 * @param array<string> $forms
 	 * @return Config
 	 */
@@ -226,6 +263,9 @@ class Config {
 	}
 
 	/**
+	 * Turn on/off caching of the content html.
+	 * If true, wordpress caches the rendered html by next to bring_content_html metafield.
+	 *
 	 * @param bool $v
 	 * @return Config
 	 */
@@ -235,6 +275,8 @@ class Config {
 	}
 
 	/**
+	 * Turn on/off Rank Math SEO plugin integration.
+	 *
 	 * @param bool $v
 	 * @return Config
 	 */
@@ -253,6 +295,8 @@ class Config {
 	}
 
 	/**
+	 * Define the post types, taxonomies and authors that should be included in the sitemap.
+	 *
 	 * @param array{posts?:array<string>|false,taxonomies?:array<string>|false,authors?:bool}|false $sitemap
 	 * @return Config
 	 */
@@ -283,7 +327,7 @@ class Config {
 
 	// Init & Public static getter methods
 	/**
-	 * @param array{DATA_TOKEN:string,JWT_SECRET_KEY:string,NEXT_BASE_URL:string} $env
+	 * @param array{JWT_SECRET_KEY:string,NEXT_BASE_URL:string,BRING_APP_PLUGIN_PATH:string,BRING_APP_PLUGIN_URL:string,BRING_APP_VERSION:string} $env
 	 * @return Config
 	 */
 	public static function init($env) {
@@ -432,7 +476,7 @@ class Config {
 	}
 
 	/**
-	 * @return array{DATA_TOKEN:string,JWT_SECRET_KEY:string,NEXT_BASE_URL:string}
+	 * @return array{JWT_SECRET_KEY:string,NEXT_BASE_URL:string,BRING_APP_PLUGIN_PATH:string,BRING_APP_PLUGIN_URL:string,BRING_APP_VERSION:string}
 	 */
 	public static function getEnv() {
 		if (self::$env === null) {

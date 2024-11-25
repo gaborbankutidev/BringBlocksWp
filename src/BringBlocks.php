@@ -16,48 +16,6 @@ use Bring\BlocksWP\Modules\Modules;
 use Bring\BlocksWP\Redirects\Redirects;
 use Bring\BlocksWP\Sitemap\Sitemap;
 
-if (!defined("BRING_APP_VERSION")) {
-	define("BRING_APP_VERSION", "1.0.0");
-}
-
-// Throw error if constants are not defined when using the package outside of the Bring App plugin scope.
-if (!defined("BRING_APP_PLUGIN_URL")) {
-	define("BRING_APP_PLUGIN_URL", "");
-	wp_die(
-		"The required url constant for the components (build) parent directory is not defined: BRING_APP_PLUGIN_URL. The block editor could not be loaded.",
-		"Error",
-	);
-}
-
-if (!defined("BRING_APP_PLUGIN_PATH")) {
-	define("BRING_APP_PLUGIN_PATH", "");
-	wp_die(
-		"The required path constant for the components (build) parent directory is not defined: BRING_APP_PLUGIN_PATH. The block editor could not be loaded.",
-		"Error",
-	);
-}
-
-if (!defined("BRING_APP_VERSION")) {
-	define("BRING_APP_VERSION", "1.0.0");
-}
-
-// Throw error if constants are not defined when using the package outside of the Bring App plugin scope.
-if (!defined("BRING_APP_PLUGIN_URL")) {
-	define("BRING_APP_PLUGIN_URL", "");
-	wp_die(
-		"The required url constant for the components (build) parent directory is not defined: BRING_APP_PLUGIN_URL. The block editor could not be loaded.",
-		"Error",
-	);
-}
-
-if (!defined("BRING_APP_PLUGIN_PATH")) {
-	define("BRING_APP_PLUGIN_PATH", "");
-	wp_die(
-		"The required path constant for the components (build) parent directory is not defined: BRING_APP_PLUGIN_PATH. The block editor could not be loaded.",
-		"Error",
-	);
-}
-
 class BringBlocks {
 	/**
 	 * @return void

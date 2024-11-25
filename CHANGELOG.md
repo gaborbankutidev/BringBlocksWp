@@ -1,5 +1,11 @@
 # @bring/blocks-wp
 
+## 2.7.0
+
+### Minor Changes
+
+-   4c4cb02: Bring App plugin is refactored to PSR-4. DATA_TOKEN is removed. SearchWP is added to Extend.
+
 ## 2.6.0
 
 ## 2.5.0
