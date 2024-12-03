@@ -29,6 +29,15 @@ html :where(.wp-block) {
 	margin-right: 12px !important;
 }
 
+.editor-styles-wrapper .block-editor-inner-blocks .wp-block {
+	margin-left: 0px !important;
+	margin-right: 0px !important;
+}
+
+.block-editor-default-block-appender .block-editor-inserter {
+	top: 24px;
+}
+
 .editor-row-content > div > div {
 	display: grid;
 }

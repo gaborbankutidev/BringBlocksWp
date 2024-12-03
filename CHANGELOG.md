@@ -1,5 +1,11 @@
 # @bring/blocks-wp
 
+## 2.8.0
+
+### Minor Changes
+
+-   7188ea0: Refactor BlockProps and EditorProps
+
 ## 2.7.0
 
 ### Minor Changes
