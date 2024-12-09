@@ -312,9 +312,7 @@ class Config {
 			"authors" => false,
 		];
 
-		isset($sitemap["posts"]) &&
-			$sitemap["posts"] &&
-			(self::$sitemap["posts"] = $sitemap["posts"]);
+		isset($sitemap["posts"]) && $sitemap["posts"] && (self::$sitemap["posts"] = $sitemap["posts"]);
 
 		isset($sitemap["taxonomies"]) &&
 			$sitemap["taxonomies"] &&
@@ -373,10 +371,7 @@ class Config {
 	 * @return array<string>
 	 */
 	public static function getLayoutPostTypes() {
-		$filtered_result = apply_filters(
-			"bring_blocks_layout_post_types",
-			self::$layout_post_types,
-		);
+		$filtered_result = apply_filters("bring_blocks_layout_post_types", self::$layout_post_types);
 		/**
 		 * @var array<string> TODO: This should be fixed without typecasting
 		 */
@@ -388,10 +383,7 @@ class Config {
 	 * @return array<string>
 	 */
 	public static function getLayoutTaxonomies() {
-		$filtered_result = apply_filters(
-			"bring_blocks_layout_taxonomies",
-			self::$layout_taxonomies,
-		);
+		$filtered_result = apply_filters("bring_blocks_layout_taxonomies", self::$layout_taxonomies);
 		/**
 		 * @var array<string> TODO: This should be fixed without typecasting
 		 */

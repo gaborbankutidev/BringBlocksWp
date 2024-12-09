@@ -243,10 +243,7 @@ class Admin {
 				if ($redirect->getFrom() === $_POST["redirect_from"]) {
 					set_transient(
 						"redirect_error",
-						__(
-							"The 'from url' has already a redirect. Please use a different one.",
-							"blocks-wp",
-						),
+						__("The 'from url' has already a redirect. Please use a different one.", "blocks-wp"),
 						30,
 					);
 					return $post_id;
@@ -262,10 +259,7 @@ class Admin {
 				if ($redirect->getFrom() === $_POST["redirect_to"]) {
 					set_transient(
 						"redirect_error",
-						__(
-							"The 'to url' has already a redirect. Please use a different one.",
-							"blocks-wp",
-						),
+						__("The 'to url' has already a redirect. Please use a different one.", "blocks-wp"),
 						30,
 					);
 					return $post_id;

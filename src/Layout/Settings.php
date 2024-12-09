@@ -109,10 +109,7 @@ class Settings {
 		// selects for general layouts
 		if (self::$layout_config["layout"]) {
 			foreach (self::LAYOUT_GENERALS as $general) {
-				register_setting(
-					"bring_layout_options",
-					"bring_default_" . "$general" . "_layout_id",
-				);
+				register_setting("bring_layout_options", "bring_default_" . "$general" . "_layout_id");
 				add_settings_field(
 					"bring_default_" . $general . "_layout_id",
 					ucfirst("$general layout"),
@@ -134,10 +131,7 @@ class Settings {
 			);
 
 			foreach ($layout_post_types as $post_type) {
-				register_setting(
-					"bring_layout_options",
-					"bring_default_pt_" . "$post_type" . "_layout_id",
-				);
+				register_setting("bring_layout_options", "bring_default_pt_" . "$post_type" . "_layout_id");
 				add_settings_field(
 					"bring_default_pt_" . $post_type . "_layout_id",
 					ucfirst("$post_type layout"),
@@ -159,10 +153,7 @@ class Settings {
 			);
 
 			foreach ($layout_taxonomies as $taxonomy) {
-				register_setting(
-					"bring_layout_options",
-					"bring_default_tax_" . "$taxonomy" . "_layout_id",
-				);
+				register_setting("bring_layout_options", "bring_default_tax_" . "$taxonomy" . "_layout_id");
 				add_settings_field(
 					"bring_default_tax_" . $taxonomy . "_layout_id",
 					ucfirst("$taxonomy layout"),

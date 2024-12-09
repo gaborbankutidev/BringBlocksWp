@@ -1,8 +1,19 @@
 {
 	"name": "@bring/blocks-wp",
-	"version": "2.8.0",
+	"version": "2.9.0",
 	"private": true,
 	"scripts": {
 		"lint": "composer lint"
+	},
+	"devDependencies": {
+		"eslint": "^9.14.0"
+	},
+	"lint-staged": {
+		"*.{ts,tsx,js,jsx,json,css,md,yml,yaml,php}": [
+			"prettier --write"
+		],
+		"*.php": [
+			"composer lint --fix"
+		]
 	}
 }

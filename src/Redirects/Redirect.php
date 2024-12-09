@@ -108,9 +108,7 @@ class Redirect {
 		$this->to = is_string($to_post_meta) ? $to_post_meta : "";
 
 		$status_code_post_meta = get_post_meta($id, "status_code", true);
-		$this->status_code = is_numeric($status_code_post_meta)
-			? (int) $status_code_post_meta
-			: 307;
+		$this->status_code = is_numeric($status_code_post_meta) ? (int) $status_code_post_meta : 307;
 
 		$hits_post_meta = get_post_meta($id, "hits", true);
 		$this->hits = is_numeric($hits_post_meta) ? (int) $hits_post_meta : 0;

@@ -74,9 +74,7 @@ class Props {
 		$last_name = $user_meta["last_name"];
 
 		$name =
-			(is_string($first_name) ? $first_name : "") .
-			" " .
-			(is_string($last_name) ? $last_name : "");
+			(is_string($first_name) ? $first_name : "") . " " . (is_string($last_name) ? $last_name : "");
 		$image = General::getEntityImage($entity_id, "author", "full");
 
 		$excerpt_meta = get_user_meta($entity_id, "excerpt", true);

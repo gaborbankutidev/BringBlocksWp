@@ -46,8 +46,7 @@ class Render {
 			"slug" => $entitySlug,
 			"type" => $entityType,
 
-			"props" =>
-				$entityId && $entityType ? Props::getEntityProps($entityId, $entityType) : null,
+			"props" => $entityId && $entityType ? Props::getEntityProps($entityId, $entityType) : null,
 			"content" => [
 				"header" => Content::getHeader(),
 				"footer" => Content::getFooter(),

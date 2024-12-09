@@ -1,74 +1,73 @@
-(function () {
+;(function () {
 	function updateRankMathGutenbergAnalyser() {
 		const originalCollectGutenbergData =
-			window.rankMathGutenberg?.assessor?.dataCollector?.collectGutenbergData;
+			window.rankMathGutenberg?.assessor?.dataCollector?.collectGutenbergData
 
 		// return if not gutenberg
 		if (!originalCollectGutenbergData) {
-			console.log("RankMath Gutenberg is not set");
-			return;
+			console.log("RankMath Gutenberg is not set")
+			return
 		}
 
 		// return if content html is not available
 		if (window.bringContentHtml === undefined) {
-			return;
+			return
 		}
 
 		// Override collectGutenbergData
 		window.rankMathGutenberg.assessor.dataCollector.collectGutenbergData = function (...args) {
 			// Call the original function
-			const result = originalCollectGutenbergData.apply(this, args);
+			const result = originalCollectGutenbergData.apply(this, args)
 
 			// Modify the result
-			result.content = window.bringContentHtml.value ?? "";
+			result.content = window.bringContentHtml.value ?? ""
 
 			// Return the result
-			return result;
-		};
+			return result
+		}
 
 		// Refresh score
-		rankMathGutenberg.refresh();
+		rankMathGutenberg.refresh()
 	}
 
 	function updateRankMathEditorAnalyser() {
-		const dataCollector = window.rankMathEditor?.assessor?.dataCollector;
+		const dataCollector = window.rankMathEditor?.assessor?.dataCollector
 
 		// return if not editor
 		if (!dataCollector) {
-			console.log("RankMath Editor is not set");
-			return;
+			console.log("RankMath Editor is not set")
+			return
 		}
 
 		// return if content html is not available
 		if (window.bringContentHtml === undefined) {
-			return;
+			return
 		}
 
 		// Override content on _data
-		window.rankMathEditor.assessor.dataCollector._data.content =
-			window.bringContentHtml.value ?? "";
+		window.rankMathEditor.assessor.dataCollector._data.content = window.bringContentHtml.value ?? ""
 
 		// Refresh score
-		rankMathEditor.refresh();
+		rankMathEditor.refresh()
 	}
 
 	function init($attempt = 0) {
 		if (window.rankMathEditor) {
-			updateRankMathGutenbergAnalyser();
-			updateRankMathEditorAnalyser();
-			return;
+			updateRankMathGutenbergAnalyser()
+			updateRankMathEditorAnalyser()
+			return
 		}
 
 		if ($attempt > 10) {
-			return;
+			return
 		}
 
 		setTimeout(function () {
-			init($attempt + 1);
-		}, 500);
+			init($attempt + 1)
+		}, 500)
 	}
 
 	document.addEventListener("DOMContentLoaded", function () {
-		init();
-	});
-})();
+		init()
+	})
+})()

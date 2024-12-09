@@ -232,11 +232,7 @@ class Parse {
 		foreach ($wp->public_query_vars as $wpvar) {
 			if (isset($wp->extra_query_vars[$wpvar])) {
 				$wp->query_vars[$wpvar] = $wp->extra_query_vars[$wpvar];
-			} elseif (
-				isset($_GET[$wpvar]) &&
-				isset($_POST[$wpvar]) &&
-				$_GET[$wpvar] !== $_POST[$wpvar]
-			) {
+			} elseif (isset($_GET[$wpvar]) && isset($_POST[$wpvar]) && $_GET[$wpvar] !== $_POST[$wpvar]) {
 				wp_die(
 					__("A variable mismatch has been detected."),
 					__("Sorry, you are not allowed to view this item."),
@@ -271,28 +267,18 @@ class Parse {
 		// Convert urldecoded spaces back into '+'.
 		foreach (get_taxonomies([], "objects") as $taxonomy => $t) {
 			if ($t->query_var && isset($wp->query_vars[$t->query_var])) {
-				$wp->query_vars[$t->query_var] = str_replace(
-					" ",
-					"+",
-					$wp->query_vars[$t->query_var],
-				);
+				$wp->query_vars[$t->query_var] = str_replace(" ", "+", $wp->query_vars[$t->query_var]);
 			}
 		}
 
 		// Don't allow non-publicly queryable taxonomies to be queried from the front end.
 		if (!is_admin()) {
-			foreach (
-				get_taxonomies(["publicly_queryable" => false], "objects")
-				as $taxonomy => $t
-			) {
+			foreach (get_taxonomies(["publicly_queryable" => false], "objects") as $taxonomy => $t) {
 				/*
 				 * Disallow when set to the 'taxonomy' query var.
 				 * Non-publicly queryable taxonomies cannot register custom query vars. See register_taxonomy().
 				 */
-				if (
-					isset($wp->query_vars["taxonomy"]) &&
-					$taxonomy === $wp->query_vars["taxonomy"]
-				) {
+				if (isset($wp->query_vars["taxonomy"]) && $taxonomy === $wp->query_vars["taxonomy"]) {
 					unset($wp->query_vars["taxonomy"], $wp->query_vars["term"]);
 				}
 			}

@@ -114,9 +114,7 @@ class Api {
 			])
 			: [];
 		foreach ($authors as $author) {
-			$url =
-				Config::getEnv()["NEXT_BASE_URL"] .
-				Utils\General::getEntityUrl($author->ID, "author");
+			$url = Config::getEnv()["NEXT_BASE_URL"] . Utils\General::getEntityUrl($author->ID, "author");
 
 			$sitemap[] = [
 				"post_title" => $author->display_name,

@@ -35,13 +35,7 @@ class Props {
 	public static function getAuthorEntityProps($entity_id) {
 		$entity_props = Utils\Props::getDefaultAuthorEntityProps($entity_id);
 
-		$entity_props = apply_filters(
-			"bring_entity_props",
-			$entity_props,
-			$entity_id,
-			"author",
-			"",
-		);
+		$entity_props = apply_filters("bring_entity_props", $entity_props, $entity_id, "author", "");
 
 		$entity_props = apply_filters("bring_author_props", $entity_props, $entity_id);
 
@@ -71,18 +65,9 @@ class Props {
 			$entity_slug,
 		);
 
-		$entity_props = apply_filters(
-			"bring_taxonomy_props",
-			$entity_props,
-			$entity_id,
-			$entity_slug,
-		);
+		$entity_props = apply_filters("bring_taxonomy_props", $entity_props, $entity_id, $entity_slug);
 
-		$entity_props = apply_filters(
-			"bring_taxonomy_props_$entity_slug",
-			$entity_props,
-			$entity_id,
-		);
+		$entity_props = apply_filters("bring_taxonomy_props_$entity_slug", $entity_props, $entity_id);
 
 		$entity_props["entityType"] = "taxonomy";
 		$entity_props["entitySlug"] = $entity_slug;
