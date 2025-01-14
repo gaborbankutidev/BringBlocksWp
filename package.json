@@ -1,8 +1,9 @@
 {
 	"name": "@bring/blocks-wp",
-	"version": "2.9.0",
+	"version": "2.10.0",
 	"private": true,
 	"scripts": {
+		"composer": "composer",
 		"lint": "composer lint"
 	},
 	"devDependencies": {
