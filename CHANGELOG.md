@@ -1,5 +1,11 @@
 # @bring/blocks-wp
 
+## 2.11.0
+
+### Minor Changes
+
+- 34c3820: Remove unused legacy code
+
 ## 2.10.0
 
 ## 2.9.0

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Bring\BlocksWP;
 
-use Bring\BlocksWP\Auth\Auth;
 use Bring\BlocksWP\Layout\Layout;
 use Bring\BlocksWP\Editor\Editor;
 use Bring\BlocksWP\Cache\Cache;
@@ -23,7 +22,6 @@ class BringBlocks {
 	public static function init() {
 		self::checkConfig();
 
-		Auth::init();
 		Layout::init();
 		Editor::init();
 		Client::init();
