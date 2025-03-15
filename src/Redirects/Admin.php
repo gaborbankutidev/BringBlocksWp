@@ -215,6 +215,7 @@ class Admin {
 		add_action("save_post", function ($post_id) {
 			if (
 				!isset($_POST["redirect_meta_nonce"]) ||
+				!is_string($_POST["redirect_meta_nonce"]) ||
 				!wp_verify_nonce($_POST["redirect_meta_nonce"], "save_redirect_meta")
 			) {
 				return $post_id;
@@ -224,23 +225,44 @@ class Admin {
 				return $post_id;
 			}
 
-			if (isset($_POST["redirect_from"]) && empty($_POST["redirect_from"])) {
+			// Check, sanitize and format from url
+			if (!isset($_POST["redirect_from"]) || !is_string($_POST["redirect_from"])) {
 				set_transient("redirect_error", __("The 'from url' is required.", "blocks-wp"), 30);
 				return $post_id;
 			}
+			$redirect_from = sanitize_text_field($_POST["redirect_from"]);
+			$redirect_from = rtrim($redirect_from, "/");
+			$redirect_from = ltrim($redirect_from, "/");
+			$redirect_from = "/" . $redirect_from;
 
-			if (isset($_POST["redirect_to"]) && empty($_POST["redirect_to"])) {
+			// Check, sanitize and format to url
+			if (!isset($_POST["redirect_to"]) || !is_string($_POST["redirect_to"])) {
 				set_transient("redirect_error", __("The 'to url' is required.", "blocks-wp"), 30);
 				return $post_id;
 			}
+			$redirect_to = sanitize_text_field($_POST["redirect_to"]);
+			$redirect_to = rtrim($redirect_to, "/");
+			$redirect_to = ltrim($redirect_to, "/");
+			$redirect_to = "/" . $redirect_to;
 
-			$from_redirects = Redirect::getRedirectsByFromPermalink($_POST["redirect_from"]);
+			// Check if from and to urls are the same
+			if ($redirect_from === $redirect_to) {
+				set_transient(
+					"redirect_error",
+					__("The 'from url' and 'to url' cannot be the same.", "blocks-wp"),
+					30,
+				);
+				return $post_id;
+			}
+
+			// Check if from url is already in use
+			$from_redirects = Redirect::getRedirectsByFromPermalink($redirect_from);
 			foreach ($from_redirects as $redirect) {
 				if ($redirect->getId() === $post_id) {
 					continue;
 				}
 
-				if ($redirect->getFrom() === $_POST["redirect_from"]) {
+				if ($redirect->getFrom() === $redirect_from) {
 					set_transient(
 						"redirect_error",
 						__("The 'from url' has already a redirect. Please use a different one.", "blocks-wp"),
@@ -250,16 +272,19 @@ class Admin {
 				}
 			}
 
-			$to_redirects = Redirect::getRedirectsByFromPermalink($_POST["redirect_to"]);
+			$to_redirects = Redirect::getRedirectsByFromPermalink($redirect_to);
 			foreach ($to_redirects as $redirect) {
 				if ($redirect->getId() === $post_id) {
 					continue;
 				}
 
-				if ($redirect->getFrom() === $_POST["redirect_to"]) {
+				if ($redirect->getFrom() === $redirect_to) {
 					set_transient(
 						"redirect_error",
-						__("The 'to url' has already a redirect. Please use a different one.", "blocks-wp"),
+						__(
+							"The 'to url' has already a redirect as a 'from url'. Please use a different one to avoid redirect chains",
+							"blocks-wp",
+						),
 						30,
 					);
 					return $post_id;
@@ -271,23 +296,10 @@ class Admin {
 				return $post_id;
 			}
 
-			if (isset($_POST["redirect_from"])) {
-				$from = sanitize_text_field($_POST["redirect_from"]);
-				$from = rtrim($from, "/");
-				$from = ltrim($from, "/");
-				$from = "/" . $from;
-				$redirect->setFrom($from);
-			}
+			$redirect->setFrom($redirect_from);
+			$redirect->setTo($redirect_to);
 
-			if (isset($_POST["redirect_to"])) {
-				$to = sanitize_text_field($_POST["redirect_to"]);
-				$to = rtrim($to, "/");
-				$to = ltrim($to, "/");
-				$to = "/" . $to;
-				$redirect->setTo($to);
-			}
-
-			if (isset($_POST["redirect_status_code"])) {
+			if (isset($_POST["redirect_status_code"]) && is_numeric($_POST["redirect_status_code"])) {
 				$redirect->setStatusCode(intval($_POST["redirect_status_code"]));
 			}
 		});
@@ -318,12 +330,13 @@ class Admin {
 				0 => "", // Unused. Messages start from index 1.
 				1 => __("Redirect updated.", "blocks-wp"),
 				4 => __("Redirect updated.", "blocks-wp"),
-				5 => isset($_GET["revision"])
-					? sprintf(
-						__("Redirect restored to revision from %s", "blocks-wp"),
-						wp_post_revision_title((int) $_GET["revision"], false),
-					)
-					: false,
+				5 =>
+					isset($_GET["revision"]) && is_numeric($_GET["revision"])
+						? sprintf(
+							__("Redirect restored to revision from %s", "blocks-wp"),
+							wp_post_revision_title((int) $_GET["revision"], false),
+						)
+						: false,
 				6 => __("Redirect published.", "blocks-wp"),
 				7 => __("Redirect saved.", "blocks-wp"),
 			];

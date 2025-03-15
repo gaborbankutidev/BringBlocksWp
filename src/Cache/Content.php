@@ -124,8 +124,12 @@ class Content {
 	 * @return void
 	 */
 	private static function localize() {
-		$post_id = isset($_GET["post"]) ? sanitize_text_field($_GET["post"]) : "";
-		$terms_id = isset($_GET["tag_ID"]) ? sanitize_text_field($_GET["tag_ID"]) : "";
+		$post_id =
+			isset($_GET["post"]) && is_string($_GET["post"]) ? sanitize_text_field($_GET["post"]) : "";
+		$terms_id =
+			isset($_GET["tag_ID"]) && is_string($_GET["tag_ID"])
+				? sanitize_text_field($_GET["tag_ID"])
+				: "";
 
 		$entity_id = 0;
 		$entity_slug = "";
@@ -162,10 +166,6 @@ class Content {
 				return;
 			}
 		} else {
-			return;
-		}
-
-		if (!is_numeric($entity_id)) {
 			return;
 		}
 

@@ -72,7 +72,7 @@ class Redirect {
 				"relation" => "AND",
 				[
 					"key" => "from",
-					"value" => "/" . $from_permalink,
+					"value" => "/" . $permalink,
 					"compare" => "=",
 				],
 				[

@@ -83,7 +83,6 @@ class Model {
 		$layout = Config::getLayout();
 
 		foreach ($layout_pts as $pt => $pt_args) {
-			/* @phpstan-ignore-next-line */ // TODO: this will take serious work
 			$layout[$pt] && register_post_type("bring_$pt", array_merge($def_args, $pt_args));
 		}
 	}

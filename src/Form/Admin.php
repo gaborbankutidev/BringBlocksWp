@@ -117,7 +117,7 @@ class Admin {
 		}
 
 		/**
-		 * @var array<mixed>|false $form_data
+		 * @var array<string,string|array<mixed>>|false $form_data
 		 */
 		$form_data = get_post_meta($form_submission_id, "form_data", true);
 		if (!is_array($form_data) || empty($form_data)) {
@@ -126,6 +126,9 @@ class Admin {
 
 		$content = "";
 		foreach ($form_data as $name => $value) {
+			if (is_array($value)) {
+				$value = Utils\General::varDumpToString($value);
+			}
 			$content .= "
 				<div style='display: flex;'>
 					<div style='width: 120px; font-weight:600;'>$name</div>
@@ -171,7 +174,7 @@ class Admin {
 		echo "<div style='margin-bottom: 16px;'>Form name: $form_name</div>";
 
 		/**
-		 * @var array<mixed>|false $form_data
+		 * @var array<string,string|array<mixed>>|false $form_data
 		 */
 		$form_data = get_post_meta($form_submission_id, "form_data", true);
 		if (!is_array($form_data) || empty($form_data)) {

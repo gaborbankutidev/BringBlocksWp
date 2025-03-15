@@ -92,9 +92,14 @@ class Api {
 				continue;
 			}
 
-			$form_data[$field_name] = is_array($submitted_fields[$field_name])
-				? $submitted_fields[$field_name]
-				: sanitize_text_field($submitted_fields[$field_name]);
+			// store array field data in a php serialized format
+			if (is_array($submitted_fields[$field_name])) {
+				$form_data[$field_name] = $submitted_fields[$field_name];
+			} elseif (is_scalar($submitted_fields[$field_name])) {
+				$form_data[$field_name] = sanitize_text_field((string) $submitted_fields[$field_name]);
+			} else {
+				$form_data[$field_name] = "";
+			}
 		}
 
 		// insert form submission

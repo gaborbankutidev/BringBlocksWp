@@ -60,6 +60,7 @@ class Parse {
 			$wp->did_permalink = true;
 
 			$pathinfo = isset($_SERVER["PATH_INFO"]) ? $_SERVER["PATH_INFO"] : "";
+			/* @phpstan-ignore-next-line */
 			[$pathinfo] = explode("?", $pathinfo);
 			$pathinfo = str_replace("%", "%25", $pathinfo);
 
@@ -83,6 +84,7 @@ class Parse {
 			$req_uri = str_replace($pathinfo, "", $req_uri);
 			$req_uri = trim($req_uri, "/");
 			$pathinfo = trim($pathinfo, "/");
+			/* @phpstan-ignore-next-line */
 			$self = trim($self, "/");
 
 			if (!empty($home_path_regex)) {
@@ -189,6 +191,7 @@ class Parse {
 				parse_str($query, $perma_query_vars);
 
 				// If we're processing a 404 request, clear the error var since we found something.
+				/* @phpstan-ignore-next-line */
 				if ("404" === $error) {
 					unset($error, $_GET["error"]);
 				}
@@ -198,10 +201,12 @@ class Parse {
 			if (
 				empty($requested_path) ||
 				$requested_file === $self ||
+				/* @phpstan-ignore-next-line */
 				str_contains($_SERVER["PHP_SELF"], "wp-admin/")
 			) {
 				unset($error, $_GET["error"]);
 
+				/* @phpstan-ignore-next-line */
 				if (isset($perma_query_vars) && str_contains($_SERVER["PHP_SELF"], "wp-admin/")) {
 					unset($perma_query_vars);
 				}
@@ -248,6 +253,7 @@ class Parse {
 
 			if (!empty($wp->query_vars[$wpvar])) {
 				if (!is_array($wp->query_vars[$wpvar])) {
+					/* @phpstan-ignore-next-line */
 					$wp->query_vars[$wpvar] = (string) $wp->query_vars[$wpvar];
 				} else {
 					foreach ($wp->query_vars[$wpvar] as $vkey => $v) {
@@ -267,6 +273,7 @@ class Parse {
 		// Convert urldecoded spaces back into '+'.
 		foreach (get_taxonomies([], "objects") as $taxonomy => $t) {
 			if ($t->query_var && isset($wp->query_vars[$t->query_var])) {
+				/* @phpstan-ignore-next-line */
 				$wp->query_vars[$t->query_var] = str_replace(" ", "+", $wp->query_vars[$t->query_var]);
 			}
 		}

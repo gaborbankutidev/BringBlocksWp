@@ -32,7 +32,7 @@ class Editor {
 	 * @return void
 	 */
 	private static function nonEditorPosts() {
-		if (!isset($_GET["post"])) {
+		if (!isset($_GET["post"]) || !is_string($_GET["post"])) {
 			return;
 		}
 

@@ -1,5 +1,11 @@
 # @bring/blocks-wp
 
+## 2.13.0
+
+### Minor Changes
+
+- 8f2df6b: Update packages
+
 ## 2.12.0
 
 ## 2.11.1

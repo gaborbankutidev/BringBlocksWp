@@ -230,7 +230,8 @@ class General {
 
 		$menus = [];
 		foreach ($menu_terms as $menu_term) {
-			if (!$menu_term instanceof WP_Term) {
+			/* @phpstan-ignore-next-line */ // Linter thinks this is always a WP_Term, but it can be int or string
+			if (!($menu_term instanceof WP_Term)) {
 				continue;
 			}
 			$menu = [
