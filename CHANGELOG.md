@@ -1,5 +1,11 @@
 # @bring/blocks-wp
 
+## 2.14.0
+
+### Minor Changes
+
+- 5e1e9d4: Update RankMath & Add GTM to template, update Yarn version
+
 ## 2.13.0
 
 ### Minor Changes
