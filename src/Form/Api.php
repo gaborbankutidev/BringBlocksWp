@@ -92,7 +92,7 @@ class Api {
 				continue;
 			}
 
-			// store array field data in a php serialized format
+			// store array field data directly (arrays will be serialized automatically by update_post_meta)
 			if (is_array($submitted_fields[$field_name])) {
 				$form_data[$field_name] = $submitted_fields[$field_name];
 			} elseif (is_scalar($submitted_fields[$field_name])) {

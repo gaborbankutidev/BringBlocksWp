@@ -24,6 +24,9 @@ class Editor {
 		// Add thumbnail support
 		add_theme_support("post-thumbnails");
 
+		// Add excerpt support for pages
+		add_post_type_support("page", "excerpt");
+
 		// Turn off editor for non-editor posts
 		add_action("init", self::nonEditorPosts(...));
 	}
@@ -64,7 +67,7 @@ class Editor {
 			? $non_editor_posts[$post_type]
 			: [];
 
-		if (in_array($slug, $non_editor_posts)) {
+		if ($non_editor_posts === true || in_array($slug, $non_editor_posts)) {
 			remove_post_type_support($post_type, "editor");
 			return;
 		}

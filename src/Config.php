@@ -42,12 +42,12 @@ class Config {
 	 */
 	private static $non_editor_front = false;
 	/**
-	 * @var array<string, array<string>>
+	 * @var array<string,array<string>|true>
 	 */
 	private static $non_editor_posts = [];
 
 	/**
-	 * @var array<string, string>
+	 * @var array<string,string>
 	 */
 	private static $menu_locations = [];
 
@@ -208,7 +208,7 @@ class Config {
 	 * For the slugs defined here the editor won't loaded.
 	 * Other setting such as custom fields are still available.
 	 *
-	 * @param array<string, array<string>> $post_types
+	 * @param array<string,array<string>|true> $post_types
 	 * @return Config
 	 */
 	public function nonEditorPosts($post_types) {
@@ -219,7 +219,7 @@ class Config {
 	/**
 	 * Define the menu locations that can be used in the menu settings as selectable locations.
 	 *
-	 * @param array<string, string> $locations
+	 * @param array<string,string> $locations
 	 * @return Config
 	 */
 	public function menuLocations($locations = []) {
@@ -399,14 +399,14 @@ class Config {
 	}
 
 	/**
-	 * @return array<string, array<string>>
+	 * @return array<string,array<string>|true>
 	 */
 	public static function getNonEditorPosts() {
 		return self::$non_editor_posts;
 	}
 
 	/**
-	 * @return array<string, string>
+	 * @return array<string,string>
 	 */
 	public static function getMenuLocations() {
 		$filtered_result = apply_filters("bring_blocks_menu_locations", self::$menu_locations);

@@ -1,5 +1,11 @@
 # @bring/blocks-wp
 
+## 2.15.0
+
+### Minor Changes
+
+- d714f58: Refactor app layout components, add sample components for testing, refactor array controls, add responsive select and image controls
+
 ## 2.14.0
 
 ### Minor Changes
